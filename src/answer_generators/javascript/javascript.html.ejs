@@ -1,0 +1,47 @@
+<%
+  var rv = null;
+  var ex = null;
+
+  try {
+    rv = JSON.stringify(eval(q), null, 2);
+  } catch (err) {
+    ex = err;
+  }
+%>
+
+<html>
+  <head></head>
+  <body>
+    <% if (ex) { %>
+      <h4>Doh!</h4>
+    <% } %>
+
+    <pre><%= q %></pre>
+
+    <% if (ex) { %>
+      <p>
+      threw an exception
+
+      <% if (ex.name) { %>
+        named <code><%= ex.name %></code>
+      <% } else { %>
+        with no name
+      <% } %>
+      and with
+
+      <% if (ex.message) { %>
+        message
+        </p>
+        <pre><%= ex.message %></pre>
+      <% } else { %>
+        no message.
+        </p>
+      <% } %>
+    <% } else { %>
+      <p>
+      evaluated to
+      </p>
+      <pre><%= rv %></pre>
+    <% } %>
+  </body>
+</html>

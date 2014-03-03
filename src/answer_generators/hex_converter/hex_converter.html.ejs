@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hex Converter</title>
+  </head>
+  <body>
+    <%
+    var number = null;
+    var numberResult = recognitionResults['com.solveforall.recognition.Number'];
+
+    if (numberResult) {
+      number = Math.floor(numberResult[0].doubleValue);
+    } else {
+      number = parseInt(q, 10);
+    }
+
+    var hexString = number.toString(16);
+    %>
+    <pre><%= number %><sub>10</sub> == 0x<%= hexString %></pre>
+  </body>
+</html>

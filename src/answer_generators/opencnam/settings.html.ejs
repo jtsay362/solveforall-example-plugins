@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <title>opencname Settings</title>
+  </head>
+  <body>
+    <p>
+      To access the Professional Tier service (unlimited and up-to-date lookups),
+      enter your Account SID and Auth Token below. If you don't have this
+      information, you need to
+      <a href="https://www.opencnam.com/account" target="opencnam">sign up</a>
+      first.
+    </p>
+
+    <form>
+      <fieldset>
+        <label>Account SID</label>
+        <input name="accountSid" type="text"
+         value="<%= settings.accountSid || '' %>" class="span4">
+        <label>Auth Token</label>
+        <input name="authToken" type="text"
+         value="<%= settings.authToken || '' %>" class="span4">
+        <br/>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-check"></i>&nbsp;Save
+        </button>
+      </fieldset>
+    </form>
+  </body>
+</html>

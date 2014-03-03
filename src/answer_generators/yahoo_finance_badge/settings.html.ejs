@@ -1,0 +1,49 @@
+<%
+var chartIntervalValues = ['None', '1d', '5d', '3m', '6m', '1y', '2y', '5y', 'my'];
+var chartIntervalLabels = ['None', '1 day', '5 days', '3 months', '6 months', '1 year', '2 years', '5 years', 'Max years'];
+selectedChartInterval = settings.chartInterval || '5d';
+
+var newsCountValues = ['None', '3', '5', '10'];
+var selectedNewsCount = settings.newsCount || '5';
+%>
+
+<!doctype html>
+<html>
+  <head>
+    <title>Yahoo! Finance Settings</title>
+  </head>
+  <body>
+    <form>
+      <fieldset>
+        <label>Chart Interval</label>
+        <select name="chartInterval">
+          <% for (var i = 0; i < chartIntervalValues.length; i++) { %>
+
+            <option value="<%= chartIntervalValues[i] %>"
+             <% if (chartIntervalValues[i] === selectedChartInterval) { %>
+               selected
+             <% } %>
+
+            ><%= chartIntervalLabels[i] %></option>
+          <% } %>
+        </select>
+
+        <label>News Stories</label>
+        <select name="newsCount">
+          <% for (var i = 0; i < newsCountValues.length; i++) { %>
+            <option value="<%= newsCountValues[i] %>"
+              <% if (newsCountValues[i] === selectedNewsCount) { %>
+                selected
+              <% } %>
+            ><%= newsCountValues[i] %></option>
+          <% } %>
+        </select>
+        <br/>
+        <br/>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-check"></i>&nbsp;Save
+        </button>
+      </fieldset>
+    </form>
+  </body>
+</html>
