@@ -9,7 +9,7 @@ function generateResults(recognitionResults, q, context) {
 
   if (skypeAccountNameResult) {
     participants = skypeAccountNameResult[0].matchedText;
-    relevance = 0.8;
+    relevance = 0.6;
   } else {
     var phoneNumbers = recognitionResults['com.solveforall.recognition.UsPhoneNumber'];
 
@@ -28,7 +28,7 @@ function generateResults(recognitionResults, q, context) {
       }
 
       participants = users.join(';');
-      relevance = Math.max(0.8 - 0.2 * (users.length - 1), 0.0);
+      relevance = Math.max(0.6 - 0.2 * (users.length - 1), 0.0);
     }
   }
 
@@ -36,10 +36,13 @@ function generateResults(recognitionResults, q, context) {
     for (var i = 0; i < words.length; i++) {
       var w = words[i].toLowerCase();
 
-      if ((w === 'audio') || (w === 'video') || (w === 'chat')) {
+      if (!callType && ((w === 'audio') || (w === 'video') || (w === 'chat'))) {
         callType = w;
-        relevance = Math.min(relevance + 0.5, 1.0);
-        break;
+        relevance = Math.min(relevance + 0.2, 1.0);        
+      } else if (w === 'skype') {
+        relevance = 1.0;
+      } else if (w === 'call') {
+        relevance = Math.min(relevance + 0.2, 1.0);
       }
     }
 
