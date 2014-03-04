@@ -1,0 +1,37 @@
+<%
+var callTypeValues = ['audio', 'video', 'chat'];
+var callTypeLabels = ['Audio call', 'Video call', 'Chat'];
+selectedCallType = settings.callType || 'audio';
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Skype Settings</title>
+  </head>
+  <body>
+    <form>
+      <fieldset>
+        <label>Default Action</label>
+        <select name="callType">
+          <% for (var i = 0; i < callTypeValues.length; i++) { %>
+
+            <option value="<%= callTypeValues[i] %>"
+             <% if (callTypeValues[i] === selectedCallType) { %>
+               selected
+             <% } %>
+
+            ><%= callTypeValues[i] %></option>
+          <% } %>
+        </select>
+        <p>
+          Note: you can override the default action by including <code>audio</code>, <code>video</code>, or <code>chat</code> in your answer query.
+        </p>
+        <br/>
+        <br/>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-check"></i>&nbsp;Save
+        </button>
+      </fieldset>
+    </form>
+  </body>
+</html>
