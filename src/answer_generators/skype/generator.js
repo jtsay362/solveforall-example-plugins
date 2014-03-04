@@ -8,8 +8,12 @@ function generateResults(recognitionResults, q, context) {
   var skypeAccountNameResult = recognitionResults['com.solveforall.recognition.messaging.SkypeAccountName'];
 
   if (skypeAccountNameResult) {
-    participants = skypeAccountNameResult[0].matchedText;
-    relevance = 0.6;
+    participants = skypeAccountNameResult[0].accountName;
+
+    relevance = 0.2;  
+    if (w.search(/[0-9_\-]/) >= 0) {
+      relevance = 0.4; 
+    }
   } else {
     var phoneNumbers = recognitionResults['com.solveforall.recognition.UsPhoneNumber'];
 
@@ -20,7 +24,7 @@ function generateResults(recognitionResults, q, context) {
       callType = 'audio'; // Don't allow video or chat
     } else {
       var users = _(words).filter(function (w) {
-        return w.match(/[\w\.\-_,]{6,32}/) && (w !== 'audio') && (w !== 'video') && (w !== 'chat');
+        return w.match(/[\w\.\-_,]{6,32}/);
       });
 
       if (users.length === 0) {
@@ -28,7 +32,13 @@ function generateResults(recognitionResults, q, context) {
       }
 
       participants = users.join(';');
-      relevance = Math.max(0.6 - 0.2 * (users.length - 1), 0.0);
+
+      relevance = 0.2;    
+      if (participants.search(/[0-9_\-]/) >= 0) {
+        relevance = 0.4; 
+      }
+
+      relevance = Math.max(relevance - 0.2 * (users.length - 1), 0.0);
     }
   }
 
