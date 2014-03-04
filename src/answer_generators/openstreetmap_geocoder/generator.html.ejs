@@ -1,0 +1,98 @@
+<%
+  var address = recognitionResults['com.solveforall.recognition.location.UsAddress'][0];
+%>
+
+<!doctype html>
+<html>
+  <head>
+    <title>Geocoder</title>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div>
+      <div>
+        Coordinates for 
+        <% if (address.streetAddress) { %><%= address.streetAddress %>, <% } %>
+        <% if (address.city) { %><%= address.city %>, <% } %>
+        <%= address.stateAbbreviation || '' %>
+        <%= address.postalCode || '' %>
+      </div>      
+      <div id="coordinates">
+        <i>Loading ...</i>
+      </div>
+      <div>        
+        <small>
+          Data provided by 
+          <a href="https://www.openstreetmap.org/" target="_top">OpenStreetMap<a> and          
+          <a href="http://www.openstreetmap.org/copyright" target="_top">copyright</a> 
+          OpenStreetMap contributors, ODbL 1.0. 
+        </small>
+      </div>
+    </div>
+
+    <div id="info_holder"
+     data-settings="<%= JSON.stringify(context.settings) %>"
+     data-address="<%= JSON.stringify(address) %>">
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.string/2.3.3/underscore.string.min.js"></script>
+
+    <script type="application/javascript">
+      
+_.mixin(_.string.exports());
+
+$(function() {
+  var infoHolder = $('#info_holder');
+  var address = JSON.parse(infoHolder.attr('data-address'));
+
+  var url = 'http://nominatim.openstreetmap.org/search?format=json';
+
+  if (address.streetAddress) {
+    url += '&street=' + encodeURIComponent(address.streetAddress);
+  }
+
+  if (address.city) {
+    url += '&city=' + encodeURIComponent(address.city);
+  }
+
+  if (address.stateAbbreviation) {
+    url += '&state=' + encodeURIComponent(address.stateAbbreviation);
+  }
+
+  if (address.postalCode) {
+    url += '&postalcode=' + encodeURIComponent(address.postalCode);
+  }
+
+  url += '&email=admin@solveforall.com&limit=1&countrycodes=us';
+
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    crossDomain: true,
+    headers: { 'X-Alt-Referer': 'https://solveforall.com' },
+    success: function(result) {
+      var contents = null;
+
+      if (result && (result.length > 0)){
+        var info = result[0];
+        contents = 'Latitude: <strong>' + _(info.lat || 'Unknown').escapeHTML() + 
+          '</strong>&nbsp;&nbsp;&nbsp;';
+        contents += 'Longitude: <strong>' + _(info.lon || 'Unknown').escapeHTML() + '</strong><br/>';
+        contents += 'Type: <strong>' + _(info.type || 'Unknown').escapeHTML() + '</strong>';
+      } else {
+        contents = 'Not found';
+      }
+
+      $('#coordinates').html(contents);
+    }, 
+    error: function() {
+      $('#coordinates').html('Sorry, a communication error has occurred. Please try again later.');
+    }
+  });
+});
+
+    </script>
+  </body>
+</html>
