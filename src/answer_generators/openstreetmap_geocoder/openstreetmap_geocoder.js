@@ -34,10 +34,11 @@ $(function() {
 
       if (result && (result.length > 0)){
         var info = result[0];
-        contents = 'Latitude: <strong>' + _(info.lat || 'Unknown').escapeHTML() + 
+        contents = 'Display name: ' + _(info.display_name || 'Not found').escapeHTML() + '<br/>';        
+        contents += 'Latitude: <strong>' + _(info.lat || 'Unknown').escapeHTML() + 
           '</strong>&nbsp;&nbsp;&nbsp;';
         contents += 'Longitude: <strong>' + _(info.lon || 'Unknown').escapeHTML() + '</strong><br/>';
-        contents += 'Type: <strong>' + _(info.type || 'Unknown').escapeHTML() + '</strong>';
+        contents += 'Address Type: <strong>' + _(info.type || 'Unknown').escapeHTML() + '</strong>';
       } else {
         contents = 'Not found';
       }
