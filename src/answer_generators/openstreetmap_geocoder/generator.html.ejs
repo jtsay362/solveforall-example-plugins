@@ -15,7 +15,7 @@
         <% if (address.streetAddress) { %><%= address.streetAddress %>, <% } %>
         <% if (address.city) { %><%= address.city %>, <% } %>
         <%= address.stateAbbreviation || '' %>
-        <%= address.postalCode || '' %>
+        <%= address.postalCode || '' %>:
       </div>      
       <div id="coordinates">
         <i>Loading ...</i>
@@ -23,7 +23,7 @@
       <div>        
         <small>
           Data provided by 
-          <a href="https://www.openstreetmap.org/" target="_top">OpenStreetMap<a> and          
+          <a href="https://www.openstreetmap.org/" target="_top">OpenStreetMap</a> and          
           <a href="http://www.openstreetmap.org/copyright" target="_top">copyright</a> 
           OpenStreetMap contributors, ODbL 1.0. 
         </small>
