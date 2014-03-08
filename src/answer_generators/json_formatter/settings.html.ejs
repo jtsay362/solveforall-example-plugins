@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title>JSON Formatter Settings</title>
+  </head>
+  <body>
+    <form>
+      <fieldset>
+        <label>Indentation Level</label>
+        <input name="indentLevel" type="number"
+         value="<%= settings.indentLevel || '2' %>" class="span4" min="0" max="10">        
+        <br/>
+        <button type="submit" class="btn btn-primary">
+          <i class="fa fa-check"></i>&nbsp;Save
+        </button>
+      </fieldset>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<%
+  var obj = JSON.parse(recognitionResults['com.solveforall.recognition.programming.Json'][0].matchedText);
+
+  var settings = context.settings;
+  var indentLevel = 2; 
+  if (settings && settings.indentLevel) {
+    try {
+      indentLevel = parseInt(settings.indentLevel) || indentLevel;
+    } catch (e) {
+      ;
+    }
+  }
+
+  var formatted = JSON.stringify(obj, null, indentLevel);
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>JSON Formatter</title>    
+  </head>
+  <body>
+    <div>
+      <pre>
+<%= formatted %>
+</pre>
+    </div>
+  </body>
+</html>
