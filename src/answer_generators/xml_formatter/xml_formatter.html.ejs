@@ -1,0 +1,45 @@
+<%
+  var matchedText = q;
+
+  try {
+    matchedText = recognitionResults['com.solveforall.recognition.programming.Xml'][0].matchedText;
+  } catch (e) {
+    ;
+  }
+
+  var parseErrorMessage = null;
+  var formatted = null;
+  try {
+    var xml = new XML(matchedText);
+    formatted = xml.toXMLString();
+  } catch (e) {    
+    if (e instanceof TypeError) {
+      parseErrorMessage = e.message;
+    }   
+  }
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>XML Formatter</title>    
+  </head>
+  <body>
+    <% if (formatted) { %>
+    <div><em>Valid XML</em></div>
+    <div>
+      <pre>
+<%= formatted %>
+</pre>
+    </div>
+    <% } else { %>
+    <div><em>Invalid XML</em></div>
+    <div>
+      <pre>
+<%= matchedText %>
+</pre>
+    <div>
+    <%= parseErrorMessage || 'Unknown error' %>        
+    </div>        
+    <% } %>
+  </body>
+</html>
