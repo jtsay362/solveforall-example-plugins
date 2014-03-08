@@ -1,22 +1,18 @@
-function generateResults
-(
-  recognitionResults,
-  q,
-  context
-)
-{
-  if (!recognitionResults['com.solveforall.recognition.business.UPSTrackingNumber'])
-  {
+function generateResults(recognitionResults, q, context) {
+  var results = recognitionResults['com.solveforall.recognition.business.UPSTrackingNumber'];
+  if (!results) {
     return null;
   }    
   
   return [{
-    label: "UPS",
-    uri: 'http://wwwapps.ups.com/WebTracking/processInputRequest?sort_by=status&tracknums_displayed=1&TypeOfInquiryNumber=T&loc=en_us&InquiryNumber1=' + 
-         q + '&track.x=0&track.y=0',      
+    label: 'UPS',
+    uri: 'http://wwwapps.ups.com/WebTracking/processRequest?HTMLVersion=5.0&Requester=NES&AgreeToTermsAndConditions=yes&loc=en_US&tracknum=' + 
+      encodeURIComponent(results[0].matchedText || q),
     iconUrl: 'http://www.ups.com/favicon.ico',
     tooltip: 'UPS Tracking Number',
-    embeddable: false
+    summaryHtml: 'Track at package sent by UPS.',
+    embeddable: false,
+    relevance: results[0].recognitionLevel
   }];  
 }
 
