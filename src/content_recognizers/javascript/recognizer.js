@@ -1,7 +1,5 @@
-function recognize(s, context)
-{    
-  try
-  {
+function recognize(s, context) {    
+  try {
     var result = eval('function () {' + s + '}');
     
     return {
@@ -12,9 +10,7 @@ function recognize(s, context)
         }
       ]
     };            
-  }
-  catch (e)
-  {
+  } catch (e) {
     return null;        
   }    
 }
