@@ -10,7 +10,7 @@ function recognize(s, context) {
       'com.solveforall.recognition.programming.Json' : [
         {
           matchedText: s,
-          formattedString: JSON.stringify(result, 2),
+          formattedString: JSON.stringify(result, null, 2),
           recognitionLevel : 1.0,
         }
       ]
