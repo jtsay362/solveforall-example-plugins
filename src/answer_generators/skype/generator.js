@@ -11,7 +11,7 @@ function generateResults(recognitionResults, q, context) {
     participants = skypeAccountNameResult[0].accountName;
 
     relevance = 0.2;  
-    if (w.search(/[0-9_\-]/) >= 0) {
+    if (participants.search(/[0-9_\-]/) >= 0) {
       relevance = 0.4; 
     }
   } else {
