@@ -7,7 +7,7 @@
   <body>
     <div>
       <span>
-        Caller ID for <%= recognitionResults['com.solveforall.recognition.UsPhoneNumber'][0].fullNumber %>:
+        Caller ID for <%= recognitionResults['com.solveforall.recognition.phone.UsPhoneNumber'][0].fullNumber %>:
       </span>
       &nbsp;
       <span id="caller_id">
@@ -26,7 +26,7 @@
     <div id="info_holder"
      data-settings="<%= JSON.stringify(context.settings) %>"
      data-client-kind="<%= context.client.kind %>"
-     data-full-number="<%= recognitionResults['com.solveforall.recognition.UsPhoneNumber'][0].fullNumber %>">
+     data-full-number="<%= recognitionResults['com.solveforall.recognition.phone.UsPhoneNumber'][0].fullNumber %>">
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

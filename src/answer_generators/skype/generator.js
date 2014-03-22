@@ -15,7 +15,7 @@ function generateResults(recognitionResults, q, context) {
       relevance = 0.4; 
     }
   } else {
-    var phoneNumbers = recognitionResults['com.solveforall.recognition.UsPhoneNumber'];
+    var phoneNumbers = recognitionResults['com.solveforall.recognition.phone.UsPhoneNumber'];
 
     if (phoneNumbers) {
       var phoneNumber = phoneNumbers[0].fullNumber;
