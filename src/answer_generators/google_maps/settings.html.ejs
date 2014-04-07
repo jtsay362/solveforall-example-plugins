@@ -1,0 +1,68 @@
+<%
+var mapTypeValues = ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN'];
+var mapTypeLabels = ['Road map', 'Satellite', 'Hybrid', 'Terrain'];
+var selectedMapType = settings.mapType || 'ROADMAP';
+var savedZoomLevel = settings.zoomLevel || '15';
+var savedTilt = settings.tilt || 'true';
+%>
+
+<!doctype html>
+<html>
+  <head>
+    <title>Google Maps Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label for="input_map_type">Map Type</label>
+        <div class="controls">
+          <select id="input_map_type" name="mapType">
+            <% for (var i = 0; i < mapTypeValues.length; i++) { %>
+              <option value="<%= mapTypeValues[i] %>"
+                <% if (mapTypeValues[i] === selectedMapType) { %>
+                  selected
+                <% } %>
+              ><%= mapTypeLabels[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="input_zoom_level">Zoom Level</label>
+        <div class="controls">
+          <input id="input_zoom_level" name="zoomLevel" type="number" min="0" max="30"
+           value="<%= savedZoomLevel %>" >
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="input_tilt">Tilt</label>
+        <div class="controls">
+          <label class="checkbox inline">
+            <input id="input_tilt" name="tilt" type="radio" value="true"
+              <% if (savedTilt === 'true') { %>
+                checked
+              <% } %>
+            >Yes
+          </label>
+          <label class="checkbox inline">
+            <input name="tilt" type="radio" value="false"
+              <% if (savedTilt !== 'true') { %>
+                checked
+              <% } %>
+            >No
+          </label>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
