@@ -1,0 +1,68 @@
+<%
+var savedSize = settings.size || '80';
+
+var defaultAvatarValues = ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'];
+var defaultAvatarLabels = ['Mystery-Man', 'Identicon', 'Monster', 'Wavatar', 'Retro', 'Blank'];
+var selectedDefaultAvatar = settings.defaultAvatar || 'mm';
+
+var ratingValues = ['g', 'pg', 'r', 'x'];
+var ratingLabels = _(ratingValues).map(function(rating) { return rating.toUpperCase(); });
+var selectedRating = settings.rating || 'g';
+%>
+
+<!doctype html>
+<html>
+  <head>
+    <title>Gravatar Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label for="input_size">Size</label>
+        <div class="controls">
+          <input id="input_size" name="size" type="number" min="1" max="2048"
+           value="<%= savedSize %>" >
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="input_default_avatar">Default Avatar</label>
+        <div class="controls">
+          <select id="input_default_avatar" name="defaultAvatar">
+            <% for (var i = 0; i < defaultAvatarValues.length; i++) { %>
+              <option value="<%= defaultAvatarValues[i] %>"
+                <% if (defaultAvatarValues[i] === selectedDefaultAvatar) { %>
+                  selected
+                <% } %>
+              ><%= defaultAvatarLabels[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="input_rating">Rating</label>
+        <div class="controls">
+          <select id="input_rating" name="rating">
+            <% for (var i = 0; i < ratingValues.length; i++) { %>
+              <option value="<%= ratingValues[i] %>"
+                <% if (ratingValues[i] === selectedRating) { %>
+                  selected
+                <% } %>
+              ><%= ratingLabels[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
