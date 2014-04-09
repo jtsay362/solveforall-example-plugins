@@ -30,8 +30,10 @@ var rating = settings.rating || 'g';
 <body>
   <img src="https://secure.gravatar.com/avatar/<%= hash %>.jpg?s=<%= size %>&d=<%= encodeURIComponent(defaultAvatar) %>&r=<%= encodeURIComponent(rating) %>" width="<%= size %>" height="<%= size %>">
   &nbsp;
-  <a href="https://secure.gravatar.com/<%= hash %>">
+  <a href="mailto:<%= address %>">
     <%= address %>    
   </a>
+  &nbsp;/&nbsp;
+  <a href="https://secure.gravatar.com/<%= hash %>">Gravatar profile</a>
 </body>
 </html>
