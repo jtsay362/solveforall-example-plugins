@@ -8,8 +8,8 @@ function generateResults(recognitionResults, q, context) {
   var rrs = recognitionResults['com.solveforall.recognition.finance.stocks.StockSymbol'];
 
   if (rrs) {
-    var stockSymbolArray = _(rrs[0].stockList).map(function (stock) {
-      return stock.englishSymbol;
+    var stockSymbolArray = _(rrs).map(function (rr) {
+      return rr.symbol;
     });
 
     if (stockSymbolArray.length > 0) {
