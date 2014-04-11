@@ -1,0 +1,57 @@
+<%
+var categoryLabels = ['Apps', 'Music', 'Books', 'Movies', 'Newspapers', 'Devices'];
+var categoryValues = ['apps', 'music', 'books', 'movies', 'newsstand', 'devices'];
+var selectedCategory = settings.category || 'apps';
+
+var priceTypeLabels = ['Any', 'Free', 'Paid'];
+var priceTypeValues = ['', '1', '2'];
+var selectedPriceType = settings.priceType || '';
+%>
+
+<!doctype html>
+<html>
+  <head>
+    <title>Google Play Search Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label for="input_category" class="control-label">Category</label>
+        <div class="controls">
+          <select id="input_category" name="category">
+            <% for (var i = 0; i < categoryValues.length; i++) { %>
+              <option value="<%= categoryValues[i] %>"
+                <% if (categoryValues[i] === selectedCategory) { %>
+                  selected
+                <% } %>
+              ><%= categoryLabels[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="input_price_type" class="control-label">Price Type</label>
+        <div class="controls">
+          <select id="input_price_type" name="priceType">
+            <% for (var i = 0; i < priceTypeValues.length; i++) { %>
+              <option value="<%= priceTypeValues[i] %>"
+                <% if (priceTypeValues[i] === selectedPriceType) { %>
+                  selected
+                <% } %>
+              ><%= priceTypeLabels[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
