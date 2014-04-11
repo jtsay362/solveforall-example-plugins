@@ -18,7 +18,7 @@ var selectedRating = settings.rating || 'g';
   <body>
     <form class="form-horizontal">
       <div class="control-group">
-        <label for="input_size">Size</label>
+        <label for="input_size" class="control-label">Size</label>
         <div class="controls">
           <input id="input_size" name="size" type="number" min="1" max="2048"
            value="<%= savedSize %>" >
@@ -26,7 +26,7 @@ var selectedRating = settings.rating || 'g';
       </div>
 
       <div class="control-group">
-        <label for="input_default_avatar">Default Avatar</label>
+        <label for="input_default_avatar" class="control-label">Default Avatar</label>
         <div class="controls">
           <select id="input_default_avatar" name="defaultAvatar">
             <% for (var i = 0; i < defaultAvatarValues.length; i++) { %>
@@ -41,7 +41,7 @@ var selectedRating = settings.rating || 'g';
       </div>
 
       <div class="control-group">
-        <label for="input_rating">Rating</label>
+        <label for="input_rating" class="control-label">Rating</label>
         <div class="controls">
           <select id="input_rating" name="rating">
             <% for (var i = 0; i < ratingValues.length; i++) { %>
