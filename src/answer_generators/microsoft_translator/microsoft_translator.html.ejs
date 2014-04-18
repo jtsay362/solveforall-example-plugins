@@ -1,0 +1,138 @@
+<%
+  var sourceLanguageCode = null;
+  var targetLanguageCode = 'zh-CHT';
+
+  if (context.settings) {
+    if (context.settings.sourceLanguageCode) {
+      sourceLanguageCode = context.settings.sourceLanguageCode;
+    }
+    if (context.settings.targetLanguageCode) {
+      targetLanguageCode = context.settings.targetLanguageCode;
+    }
+  }
+%>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Translation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <br/>
+      <div id="translation_progress">
+        <p>
+          Translating ...
+        </p>
+        <div class="well well-sm"><%= q %></div>
+        <div id="translation_progress_container" class="progress progress-striped active">
+          <div id="translation_progress_bar" class="progress-bar" role="progressbar"
+           aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            0%
+          </div>
+        </div>
+      </div>
+
+      <div id="translation_result" class="hidden">
+        <div class="notranslate" >
+          <p>The translation of</p>
+          <div class="well well-sm"><%= q %></div>
+          from <b><span id="source_language">an auto-detected language</span></b>
+          to <b><span id="selected_target_language">the language previously selected below</span></b> is
+        </div>
+        <br/>
+        <div class="well well-sm"><%= q %></div>
+      </div>
+
+      <div id="translation_error" class="hidden">
+        <p>Translation error:</p>
+        <div class="well well-sm"><%= q %></div>
+        <p>
+          could not be translated. Maybe try setting the source or target language,
+          or other content to translate?
+        </p>
+      </div>
+
+      <div id="data-holder" data-source-language-code="<%= sourceLanguageCode ? sourceLanguageCode : 'null' %>"
+       data-target-language-code="<%= targetLanguageCode %>"></div>
+      <!-- Space for widget -->
+      <br/><br/><br/>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.0,underscorejs@1.6.0,bootstrap@3.1.1">
+    </script>
+
+    <script src="https://ssl.microsofttranslator.com/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**"></script>
+
+    <script type="text/javascript">
+      var sourceLanguageCode = $('#data-holder').attr('data-source-language-code');
+      if (sourceLanguageCode === 'null') {
+        sourceLanguageCode = null;
+      }
+
+      var targetLanguageCode = $('#data-holder').attr('data-target-language-code');;
+
+      $(function() {
+        function handleLanguages(languages) {
+          if (sourceLanguageCode) {
+            var foundSourceLanguage = _(languages).find(function (lang) {
+              return lang['Code'] === sourceLanguageCode;
+            });
+
+            if (foundSourceLanguage) {
+              $('#source_language').text(foundSourceLanguage.Name);
+            }
+          }
+
+          var foundTargetLanguage = _(languages).find(function (lang) {
+            return lang['Code'] === targetLanguageCode;
+          });
+
+          if (foundTargetLanguage) {
+            $('#selected_target_language').text(foundTargetLanguage.Name);
+          }
+        }
+
+        function updateProgress(percent) {
+          $('#translation_progress_bar').css('width', percent + '%').attr(
+            'aria-valuenow', percent).html('' + percent + '%');
+        }
+
+        function onProgress(value) {
+          updateProgress(Math.round(value * 100.0));
+        }
+
+        function onError(error) {
+          $('#translation_progress').addClass('hidden');
+          $('#translation_error').removeClass('hidden').addClass('show');
+        }
+
+        function onComplete() {
+          $('#translation_progress').addClass('hidden');
+          $('#translation_result').removeClass('hidden').addClass('show');
+
+          $('#WidgetFloaterPanels').css({
+            top: '85vh',
+            left: '10px'
+          });
+        }
+
+        function onRestoreOriginal() {
+        }
+
+        $('#translation_progress_container').css({
+          'margin-left': '20vw',
+          'margin-right': '20vw'
+        });
+
+        updateProgress(0);
+
+        Microsoft.Translator.Widget.GetLanguagesForTranslate('en', handleLanguages);
+
+        Microsoft.Translator.Widget.Translate(sourceLanguageCode, targetLanguageCode,
+          onProgress, onError, onComplete, onRestoreOriginal, 8000);
+      });
+    </script>
+  </body>
+</html>

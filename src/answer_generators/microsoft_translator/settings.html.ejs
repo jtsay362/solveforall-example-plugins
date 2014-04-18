@@ -1,0 +1,60 @@
+<%
+var targetLanguageCodes = ['ar', 'bg', 'ca', 'zh-CHS', 'zh-CHT', 'cs', 'da', 'nl', 'en', 'et', 'fi', 'fr', 'de', 'el', 'ht', 'he', 'hi', 'mww', 'hu', 'id', 'it', 'ja', 'tlh', 'ko', 'lv', 'lt', 'ms', 'mt', 'no', 'fa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'es', 'sv', 'th', 'tr', 'uk', 'ur', 'vi', 'cy'];
+var targetLanguageNames = ['Arabic', 'Bulgarian', 'Catalan', 'Chinese Simplified', 'Chinese Traditional', 'Czech', 'Danish', 'Dutch', 'English', 'Estonian', 'Finnish', 'French', 'German', 'Greek', 'Haitian Creole', 'Hebrew', 'Hindi', 'Hmong Daw', 'Hungarian', 'Indonesian', 'Italian', 'Japanese', 'Klingon', 'Korean', 'Latvian', 'Lithuanian', 'Malay', 'Maltese', 'Norwegian', 'Persian', 'Polish', 'Portuguese', 'Romanian', 'Russian', 'Slovak', 'Slovenian', 'Spanish', 'Swedish', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese', 'Welsh'];
+
+var selectedTargetLanguageCode = settings.targetLanguageCode || 'zh-CHT';
+
+var sourceLanguageCodes = _(targetLanguageCodes).toArray();
+sourceLanguageCodes.unshift('null');
+var sourceLanguageNames = _(targetLanguageNames).toArray();
+sourceLanguageNames.unshift('Auto-detect');
+
+var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Microsoft Translator Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label for="input_source_language_code" class="control-label">Source Language</label>
+        <div class="controls">
+          <select id="input_source_language_code" name="sourceLanguageCode">
+            <% for (var i = 0; i < sourceLanguageCodes.length; i++) { %>
+              <option value="<%= sourceLanguageCodes[i] %>"
+                <% if (sourceLanguageCodes[i] === selectedSourceLanguageCode) { %>
+                  selected
+                <% } %>
+              ><%= sourceLanguageNames[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label for="input_target_language_code" class="control-label">Target Language</label>
+        <div class="controls">
+          <select id="input_target_language_code" name="targetLanguageCode">
+            <% for (var i = 0; i < targetLanguageCodes.length; i++) { %>
+              <option value="<%= targetLanguageCodes[i] %>"
+                <% if (targetLanguageCodes[i] === selectedTargetLanguageCode) { %>
+                  selected
+                <% } %>
+              ><%= targetLanguageNames[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>           
+
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
