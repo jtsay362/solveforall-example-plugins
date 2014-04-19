@@ -1,3 +1,6 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, HostAdapter, hostAdapter */
+
 function makeResult(matchedText, recognitionLevel, isValid, parseErrorMessage) {
   'use strict';
 
@@ -13,7 +16,6 @@ function makeResult(matchedText, recognitionLevel, isValid, parseErrorMessage) {
   };
 }
 
-// TODO: does not recognize "<?xml version="1.0" encoding="UTF-8"?>" 
 function recognize(s, context) {
   'use strict';
 
@@ -69,7 +71,11 @@ function recognize(s, context) {
 
 
   try {
-    new XML(matchedText);
+    var toParse = matchedText.replace(/^<\?[^?]+\?>/, '');
+    // FIXME: doesn't handle - in comments
+    toParse = toParse.replace(/<!--[^\-]*-->/, '');
+  
+    new XML(toParse);
     return makeResult(matchedText, 1.0, true);
   } catch (e) {
     var parseErrorMessage = null;

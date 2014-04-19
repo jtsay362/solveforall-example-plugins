@@ -10,7 +10,11 @@
   var parseErrorMessage = null;
   var formatted = null;
   try {
-    var xml = new XML(matchedText);
+    var toParse = matchedText.replace(/^<\?[^?]+\?>/, '');
+    // FIXME: doesn't handle - in comments
+    toParse = toParse.replace(/<!--[^\-]*-->/, '');      
+    
+    var xml = new XML(toParse);
     formatted = xml.toXMLString();
   } catch (e) {    
     if (e instanceof TypeError) {
