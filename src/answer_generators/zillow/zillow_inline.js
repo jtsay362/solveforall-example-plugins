@@ -1,3 +1,5 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, HostAdapter, hostAdapter, XML */
 function isNonBlankString(s) {
   'use strict';
   return s && (s.trim().length > 0);
@@ -29,7 +31,7 @@ function handleResponse(responseText, httpResponse) {
   var xml = new XML(responseText);
 
   var code = xml.message.code.text().toString().trim();
-  if (code != '0') {
+  if (code !== '0') {
     console.error('Unexpected error code: ' + code);
     return [];
   }

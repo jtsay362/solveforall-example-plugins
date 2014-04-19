@@ -1,6 +1,8 @@
-"use strict";
+/*jslint browser: true, continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global $, _ */
 
 var Calculator = function () {
+  "use strict";
   var initialValue = $('#display').text().trim();
 
   // Helper variable declarations
@@ -26,8 +28,8 @@ var Calculator = function () {
   };
 
   self.setShowingResult = function(isShowing) {
-    return self.isShowing = isShowing;
-  }
+    return (self.isShowing = isShowing);
+  };
 
   // Callback for each number button
   self.digit = function (n) {
@@ -77,7 +79,7 @@ var Calculator = function () {
                break;
            default:
                self.sum = x;
-       };
+       }
    }
 
    // Avoid showing a result until you have at least
@@ -87,17 +89,17 @@ var Calculator = function () {
 
      if (displayValue.indexOf('.') >= 0) {
        var length = displayValue.length;
-       while (displayValue.substr(length - 1) == '0') {
+       while (displayValue.substr(length - 1) === '0') {
          displayValue = displayValue.substr(0, length - 1);
          length -= 1;
        }
 
-       if (displayValue.substr(length - 1) == '.') {
+       if (displayValue.substr(length - 1) === '.') {
          displayValue = displayValue.substr(0, length - 1);
          length -= 1;
        }
 
-       if (length == 0) {
+       if (length === 0) {
          displayValue = '0';
        }
      }

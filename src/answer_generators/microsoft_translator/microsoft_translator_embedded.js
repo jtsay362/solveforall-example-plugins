@@ -1,9 +1,11 @@
+/*jslint browser: true, continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global $, _, Microsoft */
 var sourceLanguageCode = $('#data-holder').attr('data-source-language-code');
 if (sourceLanguageCode === 'null') {
   sourceLanguageCode = null;
 }
 
-var targetLanguageCode = $('#data-holder').attr('data-target-language-code');;
+var targetLanguageCode = $('#data-holder').attr('data-target-language-code');
 
 $(function() {
   function handleLanguages(languages) {
@@ -27,8 +29,8 @@ $(function() {
   }
 
   function updateProgress(percent) {
-    $('#translation_progress_bar').css('width', percent + '%').attr(
-      'aria-valuenow', percent).html('' + percent + '%');
+    $('#translation_progress_bar').css('width', '' + percent + '%').attr(
+      'aria-valuenow', '' + percent).html('' + percent + '%');
   }
 
   function onProgress(value) {

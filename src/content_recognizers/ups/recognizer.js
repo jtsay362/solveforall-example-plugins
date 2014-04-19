@@ -1,51 +1,38 @@
 /** Based on http://www.codeproject.com/KB/recipes/Generate_UPS_Check_Digit.aspx
  */
-function calculate_check_digit(trk)
-{
-   var runningtotal = 0;
-   
-   for (var i = 0; i < trk.length; i++)
-   {
-      var c = trk.charCodeAt(i) - 48;
-     
-      if ((i & 1) == 1) 
-      {        
-        if ((c >= 0) && (c < 9))
-        {
-          runningtotal += (2 * c);            
-        }
-        else 
-        {          
-          runningtotal += c;
-        }
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, HostAdapter, hostAdapter */
+function calculate_check_digit(trk) {
+  var runningtotal = 0;
+
+  for (var i = 0; i < trk.length; i++) {
+    var c = trk.charCodeAt(i) - 48;
+
+    if ((i & 1) == 1)  {        
+      if ((c >= 0) && (c < 9)) {
+        runningtotal += (2 * c);            
+      } else  {          
+        runningtotal += c;
       }
-      else 
-      {        
-         if ((c >= 0) && (c < 9))         
-         {
-           runningtotal += c;
-         }
-         else // Indicates alpha value
-         {
-           runningtotal += ((2 * c) - (9 * (c / 5)));
-         }
-      }
-   }
-      
-   var x = (runningtotal % 10);
-   if (x == 0) 
-   {
-     return 0;
-   }
-   else
-   {
-     return (10 - x);
-   }
+    } else {        
+       if ((c >= 0) && (c < 9)) {
+         runningtotal += c;
+       } else {
+         // Indicates alpha value 
+         runningtotal += ((2 * c) - (9 * (c / 5)));
+       }
+    }
+  }
+
+  var x = (runningtotal % 10);
+  if (x == 0)  {
+   return 0;
+  } else {
+   return (10 - x);
+  }
 }
 
-
-function recognize(s, context)
-{
+function recognize(s, context) {
   var startIndex = s.indexOf("1Z");
   
   if (startIndex < 0) {

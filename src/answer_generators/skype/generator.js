@@ -1,3 +1,6 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, HostAdapter, hostAdapter */
+
 function generateResults(recognitionResults, q, context) {
   'use strict';
 
@@ -43,7 +46,8 @@ function generateResults(recognitionResults, q, context) {
   }
 
   if (!callType) {
-    for (var i = 0; i < words.length; i++) {
+    var i = 0;
+    for (i = 0; i < words.length; i++) {
       var w = words[i].toLowerCase();
 
       if (!callType && ((w === 'audio') || (w === 'video') || (w === 'chat'))) {

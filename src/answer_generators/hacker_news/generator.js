@@ -1,4 +1,5 @@
-/*jslint continue: true, devel: true, evil: true, indent: 2, plusplus: true, rhino: true, unparam: true, vars: true, white: true */
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, HostAdapter, hostAdapter */
 function handleResponse(responseText, response) {
   'use strict';
   
@@ -13,7 +14,10 @@ function handleResponse(responseText, response) {
 
   console.log('Got ' + resultObject.hits.length + ' hits');
   
-  return _(resultObject.hits).map(function (hit) {
+  return _(resultObject.hits).chain().filter(function (hit) {
+    return !!hit.url;
+  }).map(function (hit) {
+    console.log('got hit url = ' + hit.url);
     return {
       label : hit.title || '',
       iconUrl: 'https://news.ycombinator.com/favicon.ico',
@@ -22,7 +26,7 @@ function handleResponse(responseText, response) {
       summaryHtml: _(hit.story_text || '').escapeHTML(),
       relevance: 0.4 * (1.0 - Math.pow(2.0, -Math.max((hit.points || 0), 1) * 0.01))
     };
-  });
+  }).value();
 }
 
 function generateResults(recognitionResults, q, context) {

@@ -1,6 +1,10 @@
+/*jslint browser: true, continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global $, _ */
 _.mixin(_.string.exports());
 
 $(function() {
+  'use strict';
+  
   var infoHolder = $('#info_holder');
   var address = JSON.parse(infoHolder.attr('data-address'));
 

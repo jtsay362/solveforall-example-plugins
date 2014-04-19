@@ -1,4 +1,8 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, HostAdapter, hostAdapter */
+
 function pad(num, length, def) {
+  'use strict';  
   return _('' + (num || def)).pad(length, '0');
 }
 
@@ -7,7 +11,7 @@ function generateResults(recognitionResults, q, context) {
 
   var recognitionResult = recognitionResults['com.solveforall.recognition.date.DateRange'];
 
-  if (!recognitionResult || (recognitionResult.length == 0)) {
+  if (!recognitionResult || (recognitionResult.length === 0)) {
     console.warn("No recognition result found");
     return [];
   }

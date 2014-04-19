@@ -1,3 +1,5 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, HostAdapter, hostAdapter */
 function generateResults(recognitionResults, q, context) {
   'use strict';
 
@@ -28,7 +30,7 @@ function generateResults(recognitionResults, q, context) {
         summaryHtml: 'Search Maven Central for ' + _(result.fullyQualifiedClassName).escapeHTML(),
         relevance: result.recognitionLevel,
         embeddable: EMBEDDABLE
-      }
+      };
     });
   }
 

@@ -1,4 +1,9 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global $, _, google */
+
 $(function () {
+  'use strict';
+  
   var map;
   var geocoder;
   var targetLatLng;
@@ -14,15 +19,16 @@ $(function () {
 
   var zoom = 15;
 
+  var zoomString = $('#data').attr('data-zoom');
   try {
-    zoom = parseInt($('#data').attr('data-zoom') || '15');
+    zoom = parseInt(zoomString || '15', 10);
   } catch (e) {
-    console.error('Can\'t parse zoom: "' + settings.zoom + '"');
+    console.error('Can\'t parse zoom: "' + zoomString + '"');
   }
 
   var mapType = $('#data').attr('data-map-type');
 
-  if (mapType.length == 0) {
+  if (mapType.length === 0) {
     mapType = 'roadmap';
   }
 
@@ -46,7 +52,7 @@ $(function () {
   geocoder.geocode({
     address: address
   }, function (results, status) {
-    if ((status == google.maps.GeocoderStatus.OK) && (results.length > 0) &&
+    if ((status === google.maps.GeocoderStatus.OK) && (results.length > 0) &&
         results[0].geometry && results[0].geometry.location) {
       targetLatLng = results[0].geometry.location;
       map.setCenter(targetLatLng);
