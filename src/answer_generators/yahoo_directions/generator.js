@@ -14,7 +14,22 @@ function generateResults(recognitionResults, q, context) {
     console.info("No physical addresses available");
     return [];
   }
-      
+
+  var rrs = recognitionResults['com.solveforall.recognition.location.UsAddress'];
+  var destAddressString = q;
+  var relevance = 0.0;
+  if (rrs && (rrs.length > 0)) {
+    var rr = rrs[0];
+    
+    if (isNonBlankString(rr.city)) {    
+      destAddressString = rr.normalizedFullAddressWithoutCountry;
+      relevance = rrs[0].recognitionLevel;
+    } else {      
+      // Yahoo! Directions requires a city
+      return []; 
+    }
+  }
+    
   var startAddress = _(user.physicalAddresses).find(function (address) {
     return address.country && (address.country.name === 'United States');
   });
@@ -34,6 +49,8 @@ function generateResults(recognitionResults, q, context) {
   var hasCity = isNonBlankString(startAddress.city);
   if (hasCity) {
     startAddressString += startAddress.city;     
+  } else {
+    return []; 
   }
   
   var hasState = isNonBlankString(startAddress.region.abbreviation);
@@ -45,7 +62,7 @@ function generateResults(recognitionResults, q, context) {
     startAddressString += startAddress.region.abbreviation;     
   }
   
-  if (!hasCity && isNonBlankString(startAddress.postalCode)) {
+  if (!hasCity) {
     if (startAddressString.length > 0) {
       startAddressString += ', ';
     }
@@ -53,14 +70,6 @@ function generateResults(recognitionResults, q, context) {
     startAddressString += startAddress.postalCode;    
   }
       
-  var rrs = recognitionResults['com.solveforall.recognition.location.UsAddress'];
-  var destAddressString = q;
-  var relevance = 0.0;
-  if (rrs && (rrs.length > 0)) {
-    destAddressString = rrs[0].normalizedFullAddressWithoutCountry;
-    relevance = rrs[0].recognitionLevel;
-  }
-
   return [{
     label: 'Yahoo! Directions',
     iconUrl: 'https://www.yahoo.com/favicon.ico',
