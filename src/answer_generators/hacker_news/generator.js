@@ -22,7 +22,7 @@ function handleResponse(responseText, response) {
       label : hit.title || '',
       iconUrl: 'https://news.ycombinator.com/favicon.ico',
       uri : hit.url,
-      embeddable: false,
+      // embeddable: false, let solveforall guess
       summaryHtml: _(hit.story_text || '').escapeHTML(),
       relevance: 0.4 * (1.0 - Math.pow(2.0, -Math.max((hit.points || 0), 1) * 0.01))
     };
