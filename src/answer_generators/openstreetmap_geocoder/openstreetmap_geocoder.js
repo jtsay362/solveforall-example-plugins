@@ -2,6 +2,23 @@
 /*global $, _ */
 _.mixin(_.string.exports());
 
+function processAngle(c) {
+  try {
+    if (c) {      
+      if (typeof c === 'string') {      
+        c = parseFloat(c); 
+      }
+
+      // 5 digits = accuracy of 1.11 m at equator
+      return c.toFixed(5);
+    } else {
+      return 'Unknown'; 
+    }
+  } catch (e) {
+    return 'Error';     
+  }
+}
+
 $(function() {
   'use strict';
   
@@ -39,9 +56,10 @@ $(function() {
       if (result && (result.length > 0)){
         var info = result[0];
         contents = 'Display name: ' + _(info.display_name || 'Not found').escapeHTML() + '<br/>';        
-        contents += 'Latitude: <strong>' + _(info.lat || 'Unknown').escapeHTML() + 
+                        
+        contents += 'Latitude: <strong>' + _(processAngle(info.lat)).escapeHTML() + 
           '</strong>&nbsp;&nbsp;&nbsp;';
-        contents += 'Longitude: <strong>' + _(info.lon || 'Unknown').escapeHTML() + '</strong><br/>';
+        contents += 'Longitude: <strong>' + _(processAngle(info.lon)).escapeHTML() + '</strong><br/>';
         contents += 'Address Type: <strong>' + _(info.type || 'Unknown').escapeHTML() + '</strong>';
       } else {
         contents = 'Not found';
