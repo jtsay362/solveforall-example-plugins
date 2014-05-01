@@ -54,6 +54,9 @@ function generateResults(recognitionResults, q, context) {
       '/badge' + chartFragment + comparisonIndicator + ';news=' +
       newsCount + ';quote/HTML/f.white?AppID=f0L2..pOymKhmdoad.D7vJulKkc5&sig=Ypb18cXVe63kvDF9Uz5GH5RcLBU-&t=1393739815394',
     embeddable: true,
-    relevance: relevance
+    relevance: relevance,
+    minHeight: 614,
+    preferredHeight: 614,
+    preferredWidth: 338
   }];
 }
