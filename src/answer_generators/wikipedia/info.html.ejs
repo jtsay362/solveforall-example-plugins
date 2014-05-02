@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Wikipedia Infobox</title>
+  </head>
+  <body>
+    <%
+    var results = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
+    if (!results || (results.length < 1)) {
+      return null
+    }
+    
+    var result = null;
+    var imageUri = null;
+    var text = null; 
+    var i = 0;
+    do {
+      var r = results[i];
+      imageUri = r.depictionImageUri || r.thumbnailImageUri;
+      text = r.longAbstract_en; 
+      
+      if (imageUri || text) {
+        result = r; 
+      }
+      i++;
+    } while ((result === null) && (i < results.length));
+
+    if (!result) {      
+      throw "No eligible result found";
+    }
+    %>    
+    
+    <h3><%= result.matchedText %></h3>
+      
+    <p>
+      <% if (imageUri) { %>    
+        <span class="pull-left">
+          <a href="<%= imageUri %>">
+            <img src="<%= imageUri %>" alt="<%= result.matchedText %>" height="128" width="128">
+          </a>  
+          &nbsp;&nbsp;
+        </span>
+      <% } %>  
+    
+      <% if (text) { %>      
+        <%= text %>      
+      <% } %>
+    </p>
+  
+    <div class="clearfix"></div>
+    
+    <p>
+      <small>
+        View 
+        <% if (text) { %>    
+          the full article 
+        <% } %>        
+        at <a href="http://wikipedia.org/wiki/<%= result.article %>">Wikipedia</a>
+      </small>
+    </p>      
+  </body>
+</html>
