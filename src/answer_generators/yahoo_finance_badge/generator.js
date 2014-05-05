@@ -15,7 +15,9 @@ function generateResults(recognitionResults, q, context) {
     });
 
     if (stockSymbolArray.length > 0) {
-      relevance = 1.0;
+      relevance = _(rrs).max(function(rr) {
+        return rr.recognitionLevel;
+      });        
     }
 
     if (stockSymbolArray.length > 1) {
