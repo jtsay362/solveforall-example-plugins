@@ -4,19 +4,6 @@
 $(function () {
   'use strict';
   
-  var map;
-  var geocoder;
-  var targetLatLng;
-  var targetMarker;
-  var infoWindow;
-
-  function updateLocation(position) {
-    var start = new google.maps.LatLng(parseFloat(position.coords.latitude),
-      parseFloat(position.coords.longitude));
-
-    map.setCenter(start);
-  }
-
   var zoom = 15;
 
   var zoomString = $('#data').attr('data-zoom');
@@ -41,48 +28,74 @@ $(function () {
     mapTypeId: mapTypeId
   };
 
-  map = new google.maps.Map($('#map_canvas').get(0), myOptions);
+  var map = new google.maps.Map($('#map_canvas').get(0), myOptions);
 
-  infoWindow = new google.maps.InfoWindow();
+  var infoWindow = new google.maps.InfoWindow();
+    
+  function updateLocation(position) {
+    var start = new google.maps.LatLng(parseFloat(position.coords.latitude),
+      parseFloat(position.coords.longitude));
 
-  geocoder = new google.maps.Geocoder();
+    map.setCenter(start);
+  }
+  
+  function handleLocation(targetLatLng, label) {    
+    map.setCenter(targetLatLng);
 
+    var targetMarker = new google.maps.Marker({
+      position: targetLatLng,
+      map: map,
+      title: label,
+      animation: google.maps.Animation.DROP
+    });
+
+    infoWindow.setContent(label);
+    infoWindow.open(map, targetMarker);
+
+    google.maps.event.addListener(targetMarker, 'click', function() {
+       infoWindow.setContent(label);
+       infoWindow.open(map, targetMarker);
+    });
+
+    if (($('#data').attr('data-tilt') === 'false') &&
+        ((mapTypeId === google.maps.MapTypeId.SATELLITE) ||
+         (mapTypeId === google.maps.MapTypeId.HYBRID))) {
+      map.setTilt(0);
+    }            
+  }
+    
   var address = $('#data').attr('data-address');
+  var label = $('#data').attr('data-label');
 
-  geocoder.geocode({
-    address: address
-  }, function (results, status) {
-    if ((status === google.maps.GeocoderStatus.OK) && (results.length > 0) &&
-        results[0].geometry && results[0].geometry.location) {
-      targetLatLng = results[0].geometry.location;
-      map.setCenter(targetLatLng);
-
-      targetMarker = new google.maps.Marker({
-        position: targetLatLng,
-        map: map,
-        title: address,
-        animation: google.maps.Animation.DROP
-      });
-
-      infoWindow.setContent(address);
-      infoWindow.open(map, targetMarker);
-
-      google.maps.event.addListener(targetMarker, 'click', function() {
-         infoWindow.setContent(address);
-         infoWindow.open(map, targetMarker);
-      });
-
-      if (($('#data').attr('data-tilt') === 'false') &&
-          ((mapTypeId === google.maps.MapTypeId.SATELLITE) ||
-           (mapTypeId === google.maps.MapTypeId.HYBRID))) {
-        map.setTilt(0);
-      }
-    } else {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(updateLocation);
-      }
+  if (address && (address.length > 0)) {  
+    if (!label) {
+      label = address;
     }
-  });
+    
+    var geocoder = new google.maps.Geocoder();
+    
+    geocoder.geocode({
+      address: address
+    }, function (results, status) {
+      if ((status === google.maps.GeocoderStatus.OK) && (results.length > 0) &&
+          results[0].geometry && results[0].geometry.location) {
+        handleLocation(results[0].geometry.location, label);
+      } else {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(updateLocation);
+        }
+      }
+    });
+  } else {
+    var latitude = parseFloat($('#data').attr('data-latitude'));
+    var longitude = parseFloat($('#data').attr('data-longitude'));
+    
+    if (!label) {
+      label = latitude.toFixed(5) + ", " + longitude.toFixed(5);       
+    }
+    
+    handleLocation(new google.maps.LatLng(latitude, longitude), label);                      
+  }
 
 /*
     if(navigator.geolocation) {
