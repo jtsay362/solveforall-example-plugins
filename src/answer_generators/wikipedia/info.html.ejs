@@ -13,8 +13,7 @@
     var result = null;
     var imageUri = null;
     var text = null; 
-    var i = 0;
-    do {
+    var i = 0;    do {
       var r = results[i];
       imageUri = r.depictionImageUri || r.thumbnailImageUri;
       text = r.longAbstract_en; 
@@ -31,7 +30,26 @@
     %>    
     
     <h3><%= result.matchedText %></h3>
-      
+    
+    <p>
+      <small>
+        View 
+        <% if (text) { %>    
+          the full article 
+        <% } %>        
+        at <a href="http://wikipedia.org/wiki/<%= result.article %>">Wikipedia</a>
+          
+        <% if (result.homePageUri) { %>
+          &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>">Website</a>            
+        <% } %>
+    
+        <% if (result.latitude && result.longitude) { %>            
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <a href="http://mapq.st/map?q=<%= result.latitude %>+<%= result.longitude %>&maptype=map&layer=traffic">Map</a>           
+        <% } %>
+      </small>      
+    </p>      
+    
     <p>
       <% if (imageUri) { %>    
         <span class="pull-left">
@@ -49,14 +67,6 @@
   
     <div class="clearfix"></div>
     
-    <p>
-      <small>
-        View 
-        <% if (text) { %>    
-          the full article 
-        <% } %>        
-        at <a href="http://wikipedia.org/wiki/<%= result.article %>">Wikipedia</a>
-      </small>
-    </p>      
+    
   </body>
 </html>
