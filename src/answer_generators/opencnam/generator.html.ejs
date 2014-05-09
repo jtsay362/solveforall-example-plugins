@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>opencnam Lookup</title>
-    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap-theme.css" rel="stylesheet">
   </head>
   <body>
     <div>
@@ -28,11 +28,10 @@
      data-client-kind="<%= context.client.kind %>"
      data-full-number="<%= recognitionResults['com.solveforall.recognition.phone.UsPhoneNumber'][0].fullNumber %>">
     </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.string/2.3.3/underscore.string.min.js"></script>
-
+        
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.0,underscorejs@1.6.0,underscore.string@2.3.3,bootstrap@3.1.1">
+    </script>
+    
     <script src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/opencnam/lookup.js"></script>
   </body>
 </html>
