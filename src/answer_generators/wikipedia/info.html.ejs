@@ -1,60 +1,62 @@
+<%
+var results = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
+if (!results || (results.length < 1)) {
+  return null
+}
+
+var result = null;
+var imageUri = null;
+var text = null; 
+var i = 0;    do {
+  var r = results[i];
+  imageUri = r.depictionImageUri || r.thumbnailImageUri;
+  text = r.longAbstract_en; 
+
+  if (imageUri || text) {
+    result = r; 
+  }
+  i++;
+} while ((result === null) && (i < results.length));
+
+if (!result) {      
+  throw "No eligible result found";
+}
+
+var label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
+
+var settings = context.settings || {};
+var showImage = (imageUri !== null) && (settings.showImage === 'true');
+%>    
 <!doctype html>
 <html>
   <head>
     <title>Wikipedia Infobox</title>
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap-theme.min.css" rel="stylesheet">
+    <% /* will be picked up as the URI in the future */ %>
+    <meta name="com.solveforall.meta.answer.uri" content="http://wikipedia.org/wiki/<%= result.article %>">
   </head>
-  <body>
-    <%
-    var results = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
-    if (!results || (results.length < 1)) {
-      return null
-    }
-    
-    var result = null;
-    var imageUri = null;
-    var text = null; 
-    var i = 0;    do {
-      var r = results[i];
-      imageUri = r.depictionImageUri || r.thumbnailImageUri;
-      text = r.longAbstract_en; 
-      
-      if (imageUri || text) {
-        result = r; 
-      }
-      i++;
-    } while ((result === null) && (i < results.length));
+  <body>    
+    <strong><%= result.humanFormattedArticle %></strong>    
+    <small>          
+      &nbsp;&nbsp;
+      <a href="http://wikipedia.org/wiki/<%= result.article %>">Full article</a></a>
 
-    if (!result) {      
-      throw "No eligible result found";
-    }
-    %>    
-    
-    <h3><%= result.matchedText %></h3>
-    
-    <p>
-      <small>
-        View 
-        <% if (text) { %>    
-          the full article 
-        <% } %>        
-        at <a href="http://wikipedia.org/wiki/<%= result.article %>">Wikipedia</a>
-          
-        <% if (result.homePageUri) { %>
-          &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>">Website</a>            
-        <% } %>
-    
-        <% if (result.latitude && result.longitude) { %>            
-          &nbsp;&nbsp;|&nbsp;&nbsp;
-          <a href="http://mapq.st/map?q=<%= result.latitude %>+<%= result.longitude %>&maptype=map&layer=traffic">Map</a>           
-        <% } %>
-      </small>      
-    </p>      
+      <% if (result.homePageUri) { %>
+        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>">Website</a>            
+      <% } %>
+
+      <% if (result.latitude && result.longitude) { %>            
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic">Map</a>           
+      <% } %>
+    </small>            
     
     <p>
-      <% if (imageUri) { %>    
+      <% if (showImage) { %>    
         <span class="pull-left">
           <a href="<%= imageUri %>">
-            <img src="<%= imageUri %>" alt="<%= result.matchedText %>" height="128" width="128">
+            <img src="<%= imageUri %>" alt="<%= result.humanFormattedArticle %>" height="128" width="128">
           </a>  
           &nbsp;&nbsp;
         </span>
@@ -65,8 +67,6 @@
       <% } %>
     </p>
   
-    <div class="clearfix"></div>
-    
-    
+    <div class="clearfix"></div>      
   </body>
 </html>
