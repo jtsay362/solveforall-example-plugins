@@ -25,7 +25,32 @@ if (!result) {
 var label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
 
 var settings = context.settings || {};
-var showImage = (imageUri !== null) && (settings.showImage === 'true');
+var showImage = (imageUri !== null) && (settings.showImage !== 'false');
+
+var imageType = 'image/jpeg';
+var requiresExplicitHeight = false;
+if (showImage) {
+  var altImageUri = null;
+  
+  if (imageUri.indexOf('/commons/') > 0) {
+    altImageUri = imageUri.replace('/commons/', '/en/');
+  } else if (imageUri.indexOf('/en/') > 0) { 
+    altImageUri = imageUri.replace('/en/', '/commons/');
+  }
+  
+  var lastDotIndex = imageUri.lastIndexOf('.');
+  
+  if (lastDotIndex >= 0) {
+    imageType = 'image/' + imageUri.substring(lastDotIndex + 1);
+    
+    if (imageType === 'image/jpg') {
+      imageType = 'image/jpeg';
+    } else if (imageType === 'image/svg') {
+      requiresExplicitHeight = true;
+      imageType += '+xml';  
+    }
+  }  
+}
 %>    
 <!doctype html>
 <html>
@@ -53,10 +78,23 @@ var showImage = (imageUri !== null) && (settings.showImage === 'true');
     </small>            
     
     <p>
-      <% if (showImage) { %>    
+      <% if (showImage) { %>                  
         <span class="pull-left">
           <a href="<%= imageUri %>">
-            <img src="<%= imageUri %>" alt="<%= result.humanFormattedArticle %>" height="128" width="128">
+            <object data="<%= imageUri %>" type="<%= imageType %>" width="128"
+              <% if (requiresExplicitHeight) { %>
+              height="128"
+              <% } %>
+              >
+              <% if (altImageUri) { %>
+                <object data="<%= altImageUri %>" type="<%= imageType %>" width="128"
+                  <% if (requiresExplicitHeight) { %>
+                  height="128"
+                  <% } %> 
+                >
+                </object>  
+              <% } %>
+            </object>
           </a>  
           &nbsp;&nbsp;
         </span>
