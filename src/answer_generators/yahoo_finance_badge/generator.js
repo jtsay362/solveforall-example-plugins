@@ -15,9 +15,11 @@ function generateResults(recognitionResults, q, context) {
     });
 
     if (stockSymbolArray.length > 0) {
-      relevance = _(rrs).max(function(rr) {
+      relevance = _(rrs).chain().map(function(rr) {
         return rr.recognitionLevel;
-      });        
+      }).max().value();    
+      
+      console.log('set relevance = ' + relevance);
     }
 
     if (stockSymbolArray.length > 1) {
