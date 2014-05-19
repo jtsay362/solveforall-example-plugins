@@ -25,7 +25,7 @@ if (!result) {
 var label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
 
 var settings = context.settings || {};
-var showImage = (imageUri !== null) && (settings.showImage !== 'false');
+var showImage = imageUri && (settings.showImage !== 'false');
 
 var imageType = 'image/jpeg';
 var requiresExplicitHeight = false;
@@ -65,22 +65,22 @@ if (showImage) {
     <strong><%= result.humanFormattedArticle %></strong>    
     <small>          
       &nbsp;&nbsp;
-      <a href="http://wikipedia.org/wiki/<%= result.article %>">Full article</a></a>
+      <a href="http://wikipedia.org/wiki/<%= result.article %>" target="_blank">Full article</a></a>
 
       <% if (result.homePageUri) { %>
-        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>">Website</a>            
+        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_blank">Website</a>            
       <% } %>
 
       <% if (result.latitude && result.longitude) { %>            
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic">Map</a>           
+        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic" target="_blank">Map</a>           
       <% } %>
     </small>            
     
     <p>
       <% if (showImage) { %>                  
-        <span class="pull-left">
-          <a href="<%= imageUri %>">
+        <span class="pull-left" style="margin-right: 5px">
+          <a href="<%= imageUri %>"  target="_blank">
             <object data="<%= imageUri %>" type="<%= imageType %>" width="128"
               <% if (requiresExplicitHeight) { %>
               height="128"
@@ -95,8 +95,7 @@ if (showImage) {
                 </object>  
               <% } %>
             </object>
-          </a>  
-          &nbsp;&nbsp;
+          </a>            
         </span>
       <% } %>  
     
