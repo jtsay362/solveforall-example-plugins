@@ -1,0 +1,35 @@
+<% var majorVersions =  ['2', '3'] %>
+<% var selectedMajorVersion = settings.pythonMajorVersion || '3'; %>
+<!doctype html>
+<html>
+  <head>
+    <title>Python Standard Library Answer Generator Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal" >
+      <div class="control-group">
+        <label for="version_input" class="control-label">Python Version</label>
+
+        <div class="controls">
+          <select name="pythonMajorVersion">
+            <% for (var i = 0; i < majorVersions.length; i++) { %>
+                <option
+                <% if (selectedMajorVersion === majorVersions[i]) { %>
+                     selected="selected"
+                <% } %>
+                >
+                <%= majorVersions[i] %>
+                </option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>

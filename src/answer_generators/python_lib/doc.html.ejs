@@ -1,0 +1,35 @@
+<%
+var results = recognitionResults['com.solveforall.recognition.programming.python.StandardLibrary'];
+
+if (results.length === 0) {
+  throw "No result found";   
+}
+
+var result = results[0];
+
+var pythonMajorVersion = null;
+if (context.settings && context.settings.pythonVersion) {
+  pythonMajorVersion = context.settings.pythonVersion;  
+}
+pythonMajorVersion = pythonMajorVersion || '3';
+ 
+var uri = 'https://docs.python.org/' + pythonMajorVersion + '/library/' + result.path;
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= result.name %></title>
+    <meta charset="UTF-8">
+    <meta name="title" content="<%= result.content %>" >
+    <meta name="uri" content="<%= uri %>" >
+  </head>
+  <body>
+    <pre><%= result.name %>(<%= result.params.join(', ') %>)</pre>
+    <p>
+      <%= result.summary %>    
+    </p>
+    <p>      
+      <a href="<%= uri %>">View on docs.python.org</a>
+    </p>
+  </body>
+</html>
