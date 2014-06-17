@@ -1,11 +1,13 @@
-<%
-var results = recognitionResults['com.solveforall.recognition.programming.python.StandardLibrary'];
+<%  
+var rr = recognitionResult;
+if (!rr) {
+  var results = recognitionResults['com.solveforall.recognition.programming.python.StandardLibrary'];
 
-if (results.length === 0) {
-  throw "No result found";   
+  if (results.length === 0) {
+    throw "No result found";   
+  }
+  rr = results[0];    
 }
-
-var result = results[0];
 
 var pythonMajorVersion = null;
 if (context.settings && context.settings.pythonVersion) {
@@ -13,20 +15,20 @@ if (context.settings && context.settings.pythonVersion) {
 }
 pythonMajorVersion = pythonMajorVersion || '3';
  
-var uri = 'https://docs.python.org/' + pythonMajorVersion + '/library/' + result.path;
+var uri = 'https://docs.python.org/' + pythonMajorVersion + '/library/' + rr.path;
 %>
 <!doctype html>
 <html>
   <head>
-    <title><%= result.name %></title>
+    <title><%= rr.name %></title>
     <meta charset="UTF-8">
-    <meta name="title" content="<%= result.content %>" >
+    <meta name="title" content="<%= rr.content %>" >
     <meta name="uri" content="<%= uri %>" >
   </head>
   <body>
-    <pre><%= result.name %>(<%= result.params.join(', ') %>)</pre>
+    <pre><%= rr.name %>(<%= rr.params.join(', ') %>)</pre>
     <p>
-      <%= result.summary %>    
+      <%= rr.summary %>    
     </p>
     <p>      
       <a href="<%= uri %>">View on docs.python.org</a>
