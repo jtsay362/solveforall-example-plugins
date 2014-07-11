@@ -1,0 +1,65 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>The qualified name</td>
+    </tr>
+    <tr>
+      <td>simpleName</td>
+      <td>String</td>
+      <td>The simple name (without qualifiers)</td>
+    </tr>
+    <tr>
+      <td>params</td>
+      <td>Array</td>
+      <td>An array of parameter names</td>
+    </tr>    
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>The kind of symbol. One of:
+        <ul>
+          <li>method</li>
+          <li>function</li>
+          <li>class</li>
+          <li>exception</li>        
+        </ul>      
+      </td>
+    </tr>
+    <tr>
+      <td>path</td>
+      <td>String</td>
+      <td>The path of the documentation, relative to https://docs.python.org/[version]/library/</td>
+    </tr>
+    <tr>
+      <td>summary</td>
+      <td>String</td>
+      <td>A summary of the function/method/class/exception</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>
+{
+  &quot;name&quot;: &quot;set.add&quot;,
+  &quot;simpleName&quot;: &quot;add&quot;,
+  &quot;params&quot;: [&quot;elem&quot;],
+  &quot;kind&quot;: &quot;method&quot;,
+  &quot;path&quot;: &quot;stdtypes.html#set.add&quot;,
+  &quot;summary&quot;: &quot;Add element elem to the set.\n&quot;
+}
+</pre>
