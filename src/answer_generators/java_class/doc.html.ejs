@@ -1,0 +1,123 @@
+<%  
+var results = recognitionResults['com.solveforall.recognition.programming.java.JdkClass'];
+
+var rr = _(results).find(function (r) {
+   return ((r.kind === 'class') || (r.kind === 'interface') || (r.kind === 'enum') || (r.kind === 'annotation'))    
+});
+
+if (!rr) {
+  throw "No result found";   
+}
+
+var jdkMajorVersion = null;
+if (context.settings && context.settings.jdkVersion) {
+  jdkMajorVersion = context.settings.jdkVersion;  
+}
+jdkMajorVersion = jdkMajorVersion || '7';
+  
+function makeClassUri(className) {
+  return 'http://docs.oracle.com/javase/' + jdkMajorVersion + '/docs/api/' + 
+    className.replace(/\./g, '/') + '.html';    
+}
+
+function makeTypeLink(className) {
+  if (className.indexOf('.') >= 0) {  
+    return '<a href="' + makeClassUri(className) + '">' + _(className).escapeHTML() + '</a>';    
+  } else {
+    return _(className).escapeHTML()    
+  }
+}
+
+function orderedModifiersText(modifiers) {
+  var modifiersObj = {}
+  _(modifiers || []).each(function (m) {
+    modifiersObj[m] = true;  
+  });
+
+  var orderedModifiers = [];
+  _(['public', 'protected', 'private', 'abstract', 'static', 'final']).each(function (p) {
+    if (modifiersObj[p]) {
+      orderedModifiers.push(p);        
+    }  
+  });
+
+  var modifiersText = orderedModifiers.join(' ');
+
+  if (modifiersText.length > 0) {
+    modifiersText += ' ';
+  }
+  
+  return modifiersText;
+}
+
+var uri = makeClassUri(rr.qualifiedClass);
+
+var implementsList = 'No interfaces implemented';
+
+if (rr.implements && (rr.implements.length > 0)) {
+  implementsList = _(rr.implements).map(function (imp) {
+    return makeTypeLink(imp);  
+  }).join(', ');
+}
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= rr.qualifiedClass %></title>
+    <meta charset="UTF-8">
+    <meta name="com.solveforall.meta.answer.label" content="<%= rr.qualifiedClass %>" >
+    <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>" >
+  </head>
+  <body>
+    <pre><%= orderedModifiersText(rr.modifiers) %><%= rr.kind %> <%= (rr.kind === 'annotation') ? '@' : '' %><%= rr.qualifiedClass %></pre>
+    <% if (rr.superClass) { %>
+      <p>
+        <strong>Extends</strong>: <%- makeTypeLink(rr.superClass) %>
+      </p>
+    <% } %>
+    <% if (rr.kind !== 'annotation') { %>
+      <p>
+        <strong>Implements</strong>: <%- implementsList %>
+      </p>    
+    <% } %>
+    <p>
+      <%= rr.description %>    
+    </p>
+    <% if (rr.since) { %>
+      <p>
+        <strong>Since</strong>: <%= rr.since %>  
+      </p>
+    <% } %>
+    
+    <% if (rr.kind !== 'annotation') { %>
+      <% if (rr.methods && (rr.methods.length > 0)) { %>
+        <p><strong>Methods</strong>:</p>
+        <ul>
+          <% _(rr.methods).each(function (m) { %>
+            <li>
+              <code>
+                <%= orderedModifiersText(m.modifiers) %><%= m.returnType %> <%= m.name %>(
+                <% _(m.params).each(function (param, index) { 
+                    if (index > 0) {
+                %>,&nbsp;
+                <%  } %>            
+                  <%- makeTypeLink(param.type) %> <%= param.name %>                
+                <% }); %>
+                )
+              </code>
+              <br/>
+              <%= m.description %>
+            </li>
+          <% }); %>    
+        </ul>
+      <% } else { %>
+        <p>No methods</p>
+      <% } %>    
+    <% } %>
+    <p>
+      <small>      
+        View full docs at <a href="<%= uri %>">docs.oracle.org</a>
+      </small>
+    </p>
+  </body>
+</html>
