@@ -56,10 +56,10 @@ if (showImage) {
 <html>
   <head>
     <title>Wikipedia Infobox</title>
-    <link href="https://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap-theme.min.css" rel="stylesheet">
-    <% /* will be picked up as the URI in the future */ %>
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet">    
     <meta name="com.solveforall.meta.answer.uri" content="http://wikipedia.org/wiki/<%= result.article %>">
+    <meta name="com.solveforall.meta.answer.embeddable" content="true">    
   </head>
   <body>    
     <strong><%= result.humanFormattedArticle %></strong>    
