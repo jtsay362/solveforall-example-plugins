@@ -1,23 +1,14 @@
 <%  
-var results = recognitionResults['com.solveforall.recognition.programming.java.JdkClass'];
-
-var rr = _(results).find(function (r) {
-   return ((r.kind === 'class') || (r.kind === 'interface') || (r.kind === 'enum') || (r.kind === 'annotation'))    
-});
-
-if (!rr) {
-  throw "No result found";   
-}
-
 var jdkMajorVersion = null;
 if (context.settings && context.settings.jdkVersion) {
   jdkMajorVersion = context.settings.jdkVersion;  
 }
 jdkMajorVersion = jdkMajorVersion || '7';
-  
+
+var apiRootUri = 'http://docs.oracle.com/javase/' + jdkMajorVersion + '/docs/api/';
+
 function makeClassUri(className) {
-  return 'http://docs.oracle.com/javase/' + jdkMajorVersion + '/docs/api/' + 
-    className.replace(/\./g, '/') + '.html';    
+  return apiRootUri + className.replace(/\./g, '/') + '.html';    
 }
 
 function makeTypeLink(className) {
@@ -50,69 +41,137 @@ function orderedModifiersText(modifiers) {
   return modifiersText;
 }
 
-var uri = makeClassUri(rr.qualifiedClass);
+var results = recognitionResults['com.solveforall.recognition.programming.java.JdkClass'];
 
-var implementsList = 'No interfaces implemented';
+var rr = null;
 
-if (rr.implements && (rr.implements.length > 0)) {
-  implementsList = _(rr.implements).map(function (imp) {
-    return makeTypeLink(imp);  
-  }).join(', ');
+if (results && (results.length > 0)) {
+  rr = results[0];
+}
+
+var methodResults = recognitionResults['com.solveforall.recognition.programming.java.JdkMethod'];
+var methodResult = null;
+
+if (methodResults && (methodResults.length > 0)) {
+  methodResult = methodResults[0];  
+}
+
+if (rr) {
+  if (methodResult) {
+    if (methodResult.recognitionLevel >= rr.recognitionLevel) {
+      rr = methodResult;       
+    }   
+  }  
+} else {
+  rr = methodResult;   
+}
+
+if (!rr) {
+  throw "No result found";   
+}
+
+var title = rr.qualifiedName;
+var uri = apiRootUri + rr.path;
+var implementsList = null;
+
+if (rr.kind === 'method') {
+  title += '()';    
+} else {  
+  implementsList = 'No interfaces implemented';
+
+  if (rr.implements && (rr.implements.length > 0)) {
+    implementsList = _(rr.implements).map(function (imp) {
+      return makeTypeLink(imp);  
+    }).join(', ');
+  }
 }
 %>
 <!doctype html>
 <html>
   <head>
-    <title><%= rr.qualifiedClass %></title>
+    <title><%= title %></title>
     <meta charset="UTF-8">
-    <meta name="com.solveforall.meta.answer.label" content="<%= rr.qualifiedClass %>" >
+    <meta name="com.solveforall.meta.answer.label" content="<%= title %>" >
     <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>" >
   </head>
-  <body>
-    <pre><%= orderedModifiersText(rr.modifiers) %><%= rr.kind %> <%= (rr.kind === 'annotation') ? '@' : '' %><%= rr.qualifiedClass %></pre>
-    <% if (rr.superClass) { %>
+  <body>    
+    <% if (rr.kind === 'method') { %>
       <p>
-        <strong>Extends</strong>: <%- makeTypeLink(rr.superClass) %>
+        Method in <code><%- makeTypeLink(rr.qualifiedClass) %></code>:
       </p>
-    <% } %>
-    <% if (rr.kind !== 'annotation') { %>
-      <p>
-        <strong>Implements</strong>: <%- implementsList %>
-      </p>    
-    <% } %>
-    <p>
-      <%= rr.description %>    
-    </p>
-    <% if (rr.since) { %>
-      <p>
-        <strong>Since</strong>: <%= rr.since %>  
-      </p>
-    <% } %>
+      <pre><%= orderedModifiersText(rr.modifiers) %><%= rr.returnType %> <%= rr.name %>(<% _(rr.params).each(function (param, index) { if (index > 0) { %>,&nbsp;<%  } %><%- makeTypeLink(param.type) %> <%= param.name %><% }); %>)</pre>        
+      <br>
+      <p><strong>Parameters</strong>:
     
-    <% if (rr.kind !== 'annotation') { %>
-      <% if (rr.methods && (rr.methods.length > 0)) { %>
-        <p><strong>Methods</strong>:</p>
-        <ul>
-          <% _(rr.methods).each(function (m) { %>
-            <li>
-              <code>
-                <%= orderedModifiersText(m.modifiers) %><%= m.returnType %> <%= m.name %>(
-                <% _(m.params).each(function (param, index) { 
-                    if (index > 0) {
-                %>,&nbsp;
-                <%  } %>            
-                  <%- makeTypeLink(param.type) %> <%= param.name %>                
-                <% }); %>
-                )
-              </code>
-              <br/>
-              <%= m.description %>
+      <% if (rr.params.length > 0) { %>
+        </p>
+        <ul>        
+          <% _(rr.params).each(function (param) { %>
+            <li>      
+              <strong><%= param.name %></strong>: <%= param.description %>
             </li>
-          <% }); %>    
+          <% }); %>
         </ul>
       <% } else { %>
-        <p>No methods</p>
-      <% } %>    
+        None</p>
+      <% } %>
+    
+      <p>
+        <%= rr.description %>    
+      </p>
+    
+      <% if (rr.since) { %>
+        <p>
+          <strong>Since</strong>: <%= rr.since %>  
+        </p>
+      <% } %>
+    
+    <% } else { %>
+    
+      <pre><%= orderedModifiersText(rr.modifiers) %><%= rr.kind %> <%= (rr.kind === 'annotation') ? '@' : '' %><%= rr.qualifiedClass %></pre>
+      <% if (rr.superClass) { %>
+        <p>
+          <strong>Extends</strong>: <%- makeTypeLink(rr.superClass) %>
+        </p>
+      <% } %>
+      <% if (rr.kind !== 'annotation') { %>
+        <p>
+          <strong>Implements</strong>: <%- implementsList %>
+        </p>    
+      <% } %>
+      <p>
+        <%= rr.description %>    
+      </p>
+      <% if (rr.since) { %>
+        <p>
+          <strong>Since</strong>: <%= rr.since %>  
+        </p>
+      <% } %>
+
+      <% if (rr.kind !== 'annotation') { %>
+        <% if (rr.methods && (rr.methods.length > 0)) { %>
+          <p><strong>Methods</strong>:</p>
+          <ul>
+            <% _(rr.methods).each(function (m) { %>
+              <li>
+                <a href="<%= apiRootUri + m.path %>">
+                  <code>
+                  <%= orderedModifiersText(m.modifiers) %><%= m.returnType %> <%= m.name %>(<% _(m.params).each(function (param, index) { 
+                      if (index > 0) {
+                  %>,&nbsp;<%  } %><%- makeTypeLink(param.type) %> <%= param.name %>                
+                  <% }); %>
+                  )
+                  </code>
+                </a>  
+                <br/>
+                <%= m.description %>
+              </li>
+            <% }); %>    
+          </ul>
+        <% } else { %>
+          <p>No methods</p>
+        <% } %>    
+      <% } %>
     <% } %>
     <p>
       <small>      
