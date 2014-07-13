@@ -1,9 +1,13 @@
 <%  
 var jdkMajorVersion = null;
-if (context.settings && context.settings.jdkVersion) {
-  jdkMajorVersion = context.settings.jdkVersion;  
+if (context.settings && context.settings.jdkMajorVersion) {
+  jdkMajorVersion = context.settings.jdkMajorVersion;  
 }
 jdkMajorVersion = jdkMajorVersion || '7';
+
+if (jdkMajorVersion === '5') {
+  jdkMajorVersion = '1.5.0'; 
+}
 
 var apiRootUri = 'http://docs.oracle.com/javase/' + jdkMajorVersion + '/docs/api/';
 
@@ -70,12 +74,28 @@ if (!rr) {
   throw "No result found";   
 }
 
+var annotationsHtml = '';
+
+_(rr.annotations || []).each(function (annotation) {
+  annotationsHtml += _(annotation).escapeHTML();
+  annotationsHtml += '\n';
+});
+
 var title = rr.qualifiedName;
 var uri = apiRootUri + rr.path;
 var implementsList = null;
+var throwsHtml = '';
 
 if (rr.kind === 'method') {
   title += '()';    
+  
+  throwsHtml = _(rr.throws || []).map(function (t) {
+    return _(t).escapeHTML();    
+  }).join(', ');
+  
+  if (throwsHtml.length > 0) {
+    throwsHtml = '\nthrows ' + throwsHtml;    
+  }  
 } else {  
   implementsList = 'No interfaces implemented';
 
@@ -99,7 +119,8 @@ if (rr.kind === 'method') {
       <p>
         Method in <code><%- makeTypeLink(rr.qualifiedClass) %></code>:
       </p>
-      <pre><%= orderedModifiersText(rr.modifiers) %><%= rr.returnType %> <%= rr.name %>(<% _(rr.params).each(function (param, index) { if (index > 0) { %>,&nbsp;<%  } %><%- makeTypeLink(param.type) %> <%= param.name %><% }); %>)</pre>        
+          
+      <pre><%- annotationsHtml %><%= orderedModifiersText(rr.modifiers) %><%= rr.returnType %> <%= rr.name %>(<% _(rr.params).each(function (param, index) { if (index > 0) { %>,&nbsp;<%  } %><%- makeTypeLink(param.type) %> <%= param.name %><% }); %>)<%- throwsHtml %></pre>        
       <br>
       <p><strong>Parameters</strong>:
     
@@ -116,6 +137,12 @@ if (rr.kind === 'method') {
         None</p>
       <% } %>
     
+      <% if (rr.returns) { %>
+        <p>
+          <strong>Returns</strong>: <%= rr.returns %>
+        </p>  
+      <% } %>
+    
       <p>
         <%= rr.description %>    
       </p>
@@ -128,7 +155,7 @@ if (rr.kind === 'method') {
     
     <% } else { %>
     
-      <pre><%= orderedModifiersText(rr.modifiers) %><%= rr.kind %> <%= (rr.kind === 'annotation') ? '@' : '' %><%= rr.qualifiedClass %></pre>
+      <pre><%- annotationsHtml %><%= orderedModifiersText(rr.modifiers) %><%= rr.kind %> <%= (rr.kind === 'annotation') ? '@' : '' %><%= rr.qualifiedClass %></pre>
       <% if (rr.superClass) { %>
         <p>
           <strong>Extends</strong>: <%- makeTypeLink(rr.superClass) %>
