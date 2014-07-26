@@ -68,42 +68,42 @@ function handleResponse(responseText, httpResponse) {
     <![CDATA[
     <html>
       <head></head>
-      <body>
-        <div class="row">
-          <div class="span8">
-            <dl class="dl-horizontal">
-              <dt>
-                Zestimate<sup>&reg;</sup>
-              </dt>
-              <dd>
-                $<%= estimatedValue %>
-                (<%- valueChangePrefix %> from 30 days ago)
-                <br/>
-                <small>Updated <%= estimatedValueUpdated %></small>
-              </dd>
-              <dt>
-                Rent Zestimate<sup>&reg;</sup>
-              </dt>
-              <dd>
-                $<%= rent %> / month
-                (<%- rentChangePrefix %> from 30 days ago)
-                <br/>
-                <small>Updated <%= rentUpdated %></small>
-              </dd>
-            </dl>
-            <p>
-              <a href="<%= detailsLink %>">
-                See more details for <%= streetAddress %>, <%= cityStateZip %> on Zillow
-              </a>
-            </p>
-          </div>
-          <div class="span2">
-            <a href="http://www.zillow.com/"><img src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40_rounded.gif" width="150" height="40" alt="Zillow Real Estate Search" /></a>
-          </div>
+      <body>        
+        <div>
+          <dl class="dl-horizontal">
+            <dt>
+              Zestimate<sup>&reg;</sup>
+            </dt>
+            <dd>
+              $<%= estimatedValue %>
+              (<%- valueChangePrefix %> from 30 days ago)
+              <br/>
+              <small>Updated <%= estimatedValueUpdated %></small>
+            </dd>
+            <dt>
+              Rent Zestimate<sup>&reg;</sup>
+            </dt>
+            <dd>
+              $<%= rent %> / month
+              (<%- rentChangePrefix %> from 30 days ago)
+              <br/>
+              <small>Updated <%= rentUpdated %></small>
+            </dd>
+          </dl>
         </div>
 
         <p>
-          <small>&copy; Zillow, Inc., 2006-2013. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm">Terms of Use</a>.
+          <a href="<%= detailsLink %>">
+            See more details for <%= streetAddress %>, <%= cityStateZip %> on Zillow
+          </a>
+        </p>
+
+        <div>
+          <a href="http://www.zillow.com/"><img src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40_rounded.gif" width="150" height="40" alt="Zillow Real Estate Search" /></a>
+        </div>
+
+        <p>
+          <small>&copy; Zillow, Inc., 2006-2014. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm">Terms of Use</a>.
           <a href="http://www.zillow.com/wikipages/What-is-a-Zestimate/">What&#39;s a Zestimate?</a></small>
         </p>
       </body>

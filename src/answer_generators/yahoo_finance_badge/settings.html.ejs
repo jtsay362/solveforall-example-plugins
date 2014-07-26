@@ -13,36 +13,42 @@ var selectedNewsCount = settings.newsCount || '5';
     <title>Yahoo! Finance Settings</title>
   </head>
   <body>
-    <form>
-      <fieldset>
-        <label>Chart Interval</label>
-        <select name="chartInterval">
-          <% for (var i = 0; i < chartIntervalValues.length; i++) { %>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-xs-2 control-label">Chart Interval</label>
+        <div class="col-xs-2">
+          <select name="chartInterval" class="form-control">
+            <% for (var i = 0; i < chartIntervalValues.length; i++) { %>
+              <option value="<%= chartIntervalValues[i] %>"
+               <% if (chartIntervalValues[i] === selectedChartInterval) { %>
+                 selected
+               <% } %>
 
-            <option value="<%= chartIntervalValues[i] %>"
-             <% if (chartIntervalValues[i] === selectedChartInterval) { %>
-               selected
-             <% } %>
-
-            ><%= chartIntervalLabels[i] %></option>
-          <% } %>
-        </select>
-
-        <label>News Stories</label>
-        <select name="newsCount">
-          <% for (var i = 0; i < newsCountValues.length; i++) { %>
-            <option value="<%= newsCountValues[i] %>"
-              <% if (newsCountValues[i] === selectedNewsCount) { %>
-                selected
-              <% } %>
-            ><%= newsCountValues[i] %></option>
-          <% } %>
-        </select>
-        <br/>
-        <br/>
-        <button type="submit" class="btn btn-primary">
-          <i class="fa fa-check"></i>&nbsp;Save
-        </button>
+              ><%= chartIntervalLabels[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>  
+      <div class="form-group">
+        <label class="col-xs-2 control-label">News Stories</label>
+        <div class="col-xs-2">
+          <select name="newsCount" class="form-control">
+            <% for (var i = 0; i < newsCountValues.length; i++) { %>
+              <option value="<%= newsCountValues[i] %>"
+                <% if (newsCountValues[i] === selectedNewsCount) { %>
+                  selected
+                <% } %>
+              ><%= newsCountValues[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
       </fieldset>
     </form>
   </body>

@@ -18,10 +18,10 @@ var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
   </head>
   <body>
     <form class="form-horizontal">
-      <div class="control-group">
-        <label for="input_source_language_code" class="control-label">Source Language</label>
-        <div class="controls">
-          <select id="input_source_language_code" name="sourceLanguageCode">
+      <div class="form-group">
+        <label for="input_source_language_code" class="col-xs-2 control-label">Source Language</label>
+        <div class="col-xs-2">
+          <select id="input_source_language_code" name="sourceLanguageCode" class="form-control">
             <% for (var i = 0; i < sourceLanguageCodes.length; i++) { %>
               <option value="<%= sourceLanguageCodes[i] %>"
                 <% if (sourceLanguageCodes[i] === selectedSourceLanguageCode) { %>
@@ -33,10 +33,10 @@ var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
         </div>
       </div>
 
-      <div class="control-group">
-        <label for="input_target_language_code" class="control-label">Target Language</label>
-        <div class="controls">
-          <select id="input_target_language_code" name="targetLanguageCode">
+      <div class="form-group">
+        <label for="input_target_language_code" class="col-xs-2 control-label">Target Language</label>
+        <div class="col-xs-2">
+          <select id="input_target_language_code" name="targetLanguageCode" class="form-control">
             <% for (var i = 0; i < targetLanguageCodes.length; i++) { %>
               <option value="<%= targetLanguageCodes[i] %>"
                 <% if (targetLanguageCodes[i] === selectedTargetLanguageCode) { %>
@@ -48,8 +48,8 @@ var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
         </div>
       </div>           
 
-      <div class="control-group">
-        <div class="controls">
+      <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-2">
           <button type="submit" class="btn btn-primary">
             <i class="fa fa-check"></i>&nbsp;Save
           </button>

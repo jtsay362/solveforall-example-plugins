@@ -9,28 +9,38 @@ selectedCallType = settings.callType || 'audio';
     <title>Skype Settings</title>
   </head>
   <body>
-    <form>
-      <fieldset>
-        <label>Default Action</label>
-        <select name="callType">
-          <% for (var i = 0; i < callTypeValues.length; i++) { %>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-xs-2 control-label">Default Action</label>
+        <div class="col-xs-2">
+          <select name="callType" class="form-control">
+            <% for (var i = 0; i < callTypeValues.length; i++) { %>
 
-            <option value="<%= callTypeValues[i] %>"
-             <% if (callTypeValues[i] === selectedCallType) { %>
-               selected
-             <% } %>
+              <option value="<%= callTypeValues[i] %>"
+               <% if (callTypeValues[i] === selectedCallType) { %>
+                 selected
+               <% } %>
 
-            ><%= callTypeValues[i] %></option>
-          <% } %>
-        </select>
-        <p>
-          Note: you can override the default action by including <code>audio</code>, <code>video</code>, or <code>chat</code> in your answer query.
-        </p>        
-        <br/>
-        <button type="submit" class="btn btn-primary">
-          <i class="fa fa-check"></i>&nbsp;Save
-        </button>
-      </fieldset>
+              ><%= callTypeValues[i] %></option>
+            <% } %>
+          </select>          
+        </div>  
+      </div>    
+      
+      <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-10">
+          Note: you can override the default action by including <code>audio</code>, <code>video</code>, 
+          or <code>chat</code> in your answer query.
+        </div>
+      </div>
+      
+      <div class="form-group">  
+        <div class="col-xs-offset-2 col-xs-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>
     </form>
   </body>
 </html>

@@ -22,10 +22,10 @@ var selectedZoomLevel = settings.zoomLevel || '11';
   </head>
   <body>
     <form class="form-horizontal">
-      <div class="control-group">
-        <label for="input_action" class="control-label">View</label>
-        <div class="controls">
-          <select id="input_action" name="action">
+      <div class="form-group">
+        <label for="input_action" class="col-xs-2 control-label">View</label>
+        <div class="col-xs-2">
+          <select id="input_action" name="action" class="form-control">
             <% for (var i = 0; i < actionValues.length; i++) { %>
               <option value="<%= actionValues[i] %>"
                 <% if (actionValues[i] === selectedAction) { %>
@@ -37,10 +37,10 @@ var selectedZoomLevel = settings.zoomLevel || '11';
         </div>
       </div>
       
-      <div class="control-group">
-        <label for="input_map_type" class="control-label">Map Type</label>
-        <div class="controls">
-          <select id="input_map_type" name="mapType">
+      <div class="form-group">
+        <label for="input_map_type" class="col-xs-2 control-label">Map Type</label>
+        <div class="col-xs-2">
+          <select id="input_map_type" name="mapType" class="form-control">
             <% for (var i = 0; i < mapTypeValues.length; i++) { %>
               <option value="<%= mapTypeValues[i] %>"
                 <% if (mapTypeValues[i] === selectedMapType) { %>
@@ -52,18 +52,18 @@ var selectedZoomLevel = settings.zoomLevel || '11';
         </div>
       </div>
 
-      <div class="control-group">
-        <label for="input_zoom_level" class="control-label">Zoom Level</label>
-        <div class="controls">
+      <div class="form-group">
+        <label for="input_zoom_level" class="col-xs-2 control-label">Zoom Level</label>
+        <div class="col-xs-2">
           <input id="input_zoom_level" name="zoomLevel" type="number" min="1" max="16"
-           value="<%= selectedZoomLevel %>" >
+           value="<%= selectedZoomLevel %>"  class="form-control">
         </div>
       </div>
 
-      <div class="control-group">
-        <label for="input_map_type" class="control-label">Layer</label>
-        <div class="controls">
-          <select id="input_layer" name="layer">
+      <div class="form-group">
+        <label for="input_map_type" class="col-xs-2 control-label">Layer</label>
+        <div class="col-xs-2">
+          <select id="input_layer" name="layer"  class="form-control">
             <% for (var i = 0; i < layerValues.length; i++) { %>
               <option value="<%= layerValues[i] %>"
                 <% if (layerValues[i] === selectedLayer) { %>
@@ -75,8 +75,8 @@ var selectedZoomLevel = settings.zoomLevel || '11';
         </div>
       </div>
 
-      <div class="control-group">
-        <div class="controls">
+      <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-2">
           <button type="submit" class="btn btn-primary">
             <i class="fa fa-check"></i>&nbsp;Save
           </button>
