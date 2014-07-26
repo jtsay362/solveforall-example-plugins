@@ -1,5 +1,7 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global _, HostAdapter, hostAdapter */
+var ANY_USAGE_TYPE = "any";
+
 function isNonBlankString(s) {
   'use strict';
   return s && (s.trim().length > 0);
@@ -14,6 +16,8 @@ function generateResults(recognitionResults, q, context) {
     console.info("No physical addresses available");
     return [];
   }
+  
+  var preferredUsageType = context.settings.preferredUsageType || ANY_USAGE_TYPE;
 
   var rrs = recognitionResults['com.solveforall.recognition.location.UsAddress'];
   var destAddressString = q;
@@ -31,8 +35,15 @@ function generateResults(recognitionResults, q, context) {
   }
     
   var startAddress = _(user.physicalAddresses).find(function (address) {
-    return address.country && (address.country.name === 'United States');
+    return (address.country && (address.country.name === 'United States') &&
+      ((address.usageType === preferredUsageType) || (preferredUsageType === ANY_USAGE_TYPE)));
   });
+  
+  if (!startAddress) {
+    startAddress = _(user.physicalAddresses).find(function (address) {
+      return (address.country && (address.country.name === 'United States'));
+    });    
+  }
   
   if (!startAddress) {
     console.info("No US address found");
