@@ -43,7 +43,7 @@ function generateResults(recognitionResults, q, context) {
     query += ' (' + encodeURIComponent(label) + ')';     
   }
 
-  var settings = context.settings || {};
+  var settings = context.settings;
   var uri = 'http://mapq.st/' + encodeURIComponent(settings.action || 'embed') +
     '?q=' + encodeURIComponent(query) + '&zoom=' + 
     encodeURIComponent(settings.zoomLevel || '11') + '&maptype=' + 

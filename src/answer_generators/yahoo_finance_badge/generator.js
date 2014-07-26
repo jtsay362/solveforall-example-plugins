@@ -34,12 +34,8 @@ function generateResults(recognitionResults, q, context) {
   }
 
   var settings = context.settings;
-  var chartInterval = '5d';
-  var newsCount = '5';
-  if (settings) {
-    chartInterval = settings.chartInterval;
-    newsCount = settings.newsCount;
-  }
+  var chartInterval = settings.chartInterval || '5d';
+  var newsCount = settings.newsCount || '5';
 
   var chartFragment = ';chart=' + chartInterval;
 

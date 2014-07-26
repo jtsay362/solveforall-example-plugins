@@ -16,7 +16,7 @@ try {
 
 var hash = md5(address.toLowerCase());
 
-var settings = context.settings || {};
+var settings = context.settings;
 var size = settings.size || '80';
 var defaultAvatar = settings.defaultAvatar || 'mm';
 var rating = settings.rating || 'g';

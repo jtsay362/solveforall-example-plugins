@@ -61,12 +61,7 @@ function generateResults(recognitionResults, q, context) {
     }
 
     if (!callType) {
-      callType = 'audio';
-
-      var settings = context.settings;
-      if (settings) {
-        callType = settings.callType || 'audio';
-      }
+      callType = settings.callType || 'audio';
     }
   }
 

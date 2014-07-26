@@ -1,21 +1,12 @@
 <%
-  var sourceLanguageCode = null;
-  var targetLanguageCode = 'zh-CHT';
-
-  if (context.settings) {
-    if (context.settings.sourceLanguageCode) {
-      sourceLanguageCode = context.settings.sourceLanguageCode;
-    }
-    if (context.settings.targetLanguageCode) {
-      targetLanguageCode = context.settings.targetLanguageCode;
-    }
-  }
+  var sourceLanguageCode = context.settings.sourceLanguageCode;
+  var targetLanguageCode = context.settings.targetLanguageCode || 'zh-CHT';  
 %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>Translation</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
@@ -60,7 +51,7 @@
       <br/><br/><br/>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.0,underscorejs@1.6.0,bootstrap@3.1.1">
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.1,underscorejs@1.6.0,bootstrap@3.2.0">
     </script>
 
     <script src="https://ssl.microsofttranslator.com/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**">

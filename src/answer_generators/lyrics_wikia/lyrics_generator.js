@@ -179,7 +179,7 @@ function generateResults(recognitionResults, q, context) {
     }
   });
   
-  var settings = context.settings || {};
+  var settings = context.settings;
   request.send('makeResponseHandler(' + recognitionLevel.toFixed(4) + ',' + 
                _(settings.showIfNotFound || 'false').toBoolean() + ')');
 
