@@ -25,9 +25,6 @@ function makeChangeHtml(change) {
 function handleResponse(responseText, httpResponse) {
   console.log('got response text = "' + responseText + '"');
 
-  responseText = responseText.replace(/^<\?xml\s+version\s*=\s*"1.0"\s+encoding\s*=\s*"utf-8"\s*\?>/, '');
-  responseText = responseText.replace(/<!--.*-->/, '');
-
   var xml = new XML(responseText);
 
   var code = xml.message.code.text().toString().trim();
