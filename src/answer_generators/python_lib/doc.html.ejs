@@ -9,12 +9,7 @@ if (!rr) {
   rr = results[0];    
 }
 
-var pythonMajorVersion = null;
-if (context.settings && context.settings.pythonVersion) {
-  pythonMajorVersion = context.settings.pythonVersion;  
-}
-pythonMajorVersion = pythonMajorVersion || '3';
- 
+var pythonMajorVersion = context.settings.pythonVersion || '3'; 
 var uri = 'https://docs.python.org/' + pythonMajorVersion + '/library/' + rr.path;
 %>
 <!doctype html>
