@@ -1,0 +1,133 @@
+<%  
+var RECOGNITION_KEYS = [
+  'com.solveforall.recognition.programming.web.css.Property',
+  'com.solveforall.recognition.programming.web.css.Function',
+  'com.solveforall.recognition.programming.web.css.AtRule',
+  'com.solveforall.recognition.programming.web.css.PseudoClass',
+  'com.solveforall.recognition.programming.web.css.PseudoElement',
+  'com.solveforall.recognition.programming.web.css.DataType',
+  'com.solveforall.recognition.programming.web.css.GeneralInfo'
+];
+  
+var rr = null;
+var bestRecognitionKey = null;
+
+_(RECOGNITION_KEYS).each(function (key) {
+  var list = recognitionResults[key];
+  
+  _(list || []).each(function (result) {
+    if (!rr || (result.recognitionLevel > rr.recognitionLevel)) {
+      rr = result;       
+      bestRecognitionKey = key;
+    }    
+  });    
+});
+
+if (!rr) {
+  throw 'No recognition result found!';
+}
+
+var itemName = rr.name;
+var uri = rr.mdnUri || rr.webPlatformUri || rr.w3cUri;
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Documentation for <%= itemName %></title>
+    <meta charset="UTF-8">
+    <% if (uri) { %>
+    <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>" >
+    <% } %>
+  </head>
+  <body>        
+    <h3><%= itemName %></h3>
+    
+    <p>
+    <% if (rr.summary && (rr.summary.length > 0)) { %>       
+      <%= rr.summary %>          
+    <% } else { %>
+      No summary available
+    <% } %>
+    </p>    
+    
+    <% if (bestRecognitionKey === 'com.solveforall.recognition.programming.web.css.Property') {  %>
+           
+      <% var meta = rr.metaProperties;  
+         if (meta && !_(meta).isEmpty()) { %>
+        <h4>Overview</h4>
+        <table class="table table-condensed">
+          <tbody>
+            <% _(_(meta).keys()).each(function (k) { %>
+              <tr>
+                <td><%= k %></td>
+                <td><%= meta[k] %></td>
+              </tr>
+            <% }); %>                                    
+          </tbody>            
+        </table>
+      <% } %>
+    
+      <h4>Syntax</h4>      
+
+      <% if (rr.syntax && (rr.syntax.length > 0)) { %>
+        <pre><%= rr.name %>: <%= rr.syntax %></pre>          
+      <% } else { %>
+        <p>Not available</p>
+      <% } %>
+
+      <h4>Values</h4>
+
+      <% if (rr.values) { %>          
+        <ul>
+          <% _(rr.values).each(function (v) { %>
+          <li>
+            <strong><%= v.name %></strong>
+            <p><%= v.summary || 'No summary available' %></p>  
+          </li>  
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <p>Not available</p>
+      <% } %>
+    <% } %>
+    
+    
+    <h4>Links</h4>
+      
+    <a href="<%= rr.mdnUri %>"><img src="https://developer.cdn.mozilla.net/media/img/favicon.ico" 
+       width="16" height="16">&nbsp;
+      MDN
+    </a>        
+    <% if (rr.webPlatformUri) { %>
+      | <a href="<%= rr.webPlatformUri %>"><img src="http://docs.webplatform.org/favicon.ico" width="16" height="16">&nbsp;
+          WebPlatform.org</a>
+    <% } %>
+    <% if (rr.w3cUri) { %>              
+      | <a href="<%= rr.w3cUri %>"><img src="http://www.w3.org/favicon.ico" 
+         width="16" height="16">&nbsp;
+          W3C</a>
+    <% } %>
+    
+    <br/>
+    
+    <p>
+      <small>
+        <p>
+          Sources  
+        </p>
+        <ul>          
+          <li>
+            <a href="<%= rr.mdnUri %>$history">Mozilla Contributors</a> licensed under
+            <a href="http://creativecommons.org/licenses/by-sa/2.5/">CC-BY-SA 2.5</a>           </li>
+              
+          <% if (rr.webPlatformUri) { %>
+           <li>
+             <a href="<%= rr.webPlatformUri %>">WebPlatform.org</a> and W3C 
+             (<a href="https://creativecommons.org/licenses/by/3.0/legalcode">CC-BY</a>)
+           </li>
+          <% } %>          
+        </ul>        
+      </small>
+    </p>    
+  </body>
+</html>
