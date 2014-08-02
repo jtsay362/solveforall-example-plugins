@@ -61,27 +61,36 @@ function generateResults(recognitionResults, q, context) {
     }
 
     if (!callType) {
-      callType = settings.callType || 'audio';
+      callType = context.settings.callType || 'audio';
     }
   }
 
   var extension = '?call';
-  var summaryHtml = 'Audio call with ';
+  var tooltip = 'Audio call with ';
 
   if (callType === 'video') {
     extension += '&video=true';
-    summaryHtml = 'Video call with ';
+    tooltip = 'Video call with ';
   } else if (callType === 'chat') {
     extension = '?chat';
-    summaryHtml = 'Chat with ';
+    tooltip = 'Chat with ';
   }
 
-  summaryHtml +=  '<strong>' + _(participants).escapeHTML() + '</strong>';
-
+  var userArray = participants.split(';');  
+  if (userArray.length == 1) {
+    tooltip += participants;    
+  } else if (userArray.length == 2) {
+    tooltip += userArray.join(' and ');    
+  } else {
+    var s = userArray.join(', ');
+    var lastCommaIndex = s.lastIndexOf(',');
+    tooltip = s.substr(0, lastCommaIndex) + ', and ' + s.substr(lastCommaIndex + 2);    
+  }
+      
   return [{
     label: 'Skype',
     iconUrl: 'http://www.skype.com/favicon.ico',
-    summaryHtml: summaryHtml,
+    tooltip: tooltip,
     uri: 'skype:' + participants + extension,
     embeddable: false,
     relevance: relevance

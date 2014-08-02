@@ -15,7 +15,7 @@ function generateResults(recognitionResults, q, context) {
     iconUrl: 'http://www.mdbg.net/favicon.ico',
     uri: 'http://www.mdbg.net/chindict/mobile.php?mwddw=' + encodeURIComponent(word) + '&handler=DecomposeWord',
     embeddable: true,    
-    summaryHtml: 'Lookup ' + _(word).escapeHTML() + ' on MDBG'
+    tooltip: 'Lookup ' + word + ' on MDBG'
   }];  
 }
 

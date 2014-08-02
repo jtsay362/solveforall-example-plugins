@@ -1,0 +1,222 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>The simple class name</td>
+    </tr>
+    <tr>
+      <td>qualifiedClass</td>
+      <td>String</td>
+      <td>The qualified class name</td>
+    </tr>    
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>The simple name</td>
+    </tr>
+    <tr>
+      <td>annotations</td>
+      <td>Array</td>
+      <td>An array of annotations</td>
+    </tr>
+    <tr>
+      <td>modifiers</td>
+      <td>Array</td>
+      <td>An array of modifiers ("public", "static", etc.)</td>
+    </tr>    
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td>A description of the class/enum/annotation/method</td>
+    </tr>
+    <tr>
+      <td>since</td>
+      <td>String</td>
+      <td>Which JDK this first appeared in (may not be present)</td>
+    </tr>
+    <tr>
+      <td>path</td>
+      <td>String</td>
+      <td>The path of the documentation, relative to http://docs.oracle.com/javase/[version]/docs/api/</td>
+    </tr>    
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>The kind of symbol. One of:
+        <ul>
+          <li>class</li>
+          <li>enum</li>
+          <li>interface</li>
+          <li>annotation</li>        
+          <li>method</li>
+        </ul>      
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Class Fields</h4>
+<p>
+  For classes, enums, and interfaces, the document also contains the following properties:  
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>superClass</td>
+      <td>String</td>
+      <td>The fully-qualified name of the superclass</td>
+    </tr>
+    <tr>
+      <td>implements</td>
+      <td>Arrays</td>
+      <td>An array of fully-qualified interface names this class or enum implements, or this interface extends</td>
+    </tr>    
+    <tr>
+      <td>methods</td>
+      <td>Array</td>
+      <td>An array containing these properties of methods (see below):
+        <ul>
+          <li>name</li>
+          <li>modifiers</li>
+          <li>params (without the <code>description</code> property)</li>
+          <li>returnType</li>
+          <li>path</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>    
+</table>  
+
+<h4>Class example</h4>
+<pre>{
+  &quot;name&quot; : &quot;Locale&quot;,
+  &quot;qualifiedName&quot; : &quot;java.util.Locale&quot;,
+  &quot;class&quot; : &quot;Locale&quot;,
+  &quot;qualifiedClass&quot; : &quot;java.util.Locale&quot;,
+  &quot;annotations&quot; : [],
+  &quot;modifiers&quot; : [&quot;final&quot;, &quot;public&quot;],
+  &quot;description&quot; : &quot;A Locale object represents a specific geographical, political,\n or cultural region...&quot;,
+  &quot;superClass&quot;:&quot;java.lang.Object&quot;,
+  &quot;implements&quot; : [&quot;java.io.Serializable&quot;,&quot;java.lang.Cloneable&quot;],
+  &quot;since&quot; : &quot;1.1&quot;,
+  &quot;methods&quot; : [ 
+    ...,
+    {  
+      &quot;name&quot; : &quot;getDisplayLanguage&quot;,
+      &quot;qualifiedName&quot; : &quot;java.util.Locale.getDisplayLanguage&quot;,
+      &quot;annotations&quot; : [],
+      &quot;modifiers&quot; : [&quot;public&quot;],
+      &quot;path&quot; : &quot;java/util/Locale.html#getDisplayLanguage(java.util.Locale)&quot;,
+      &quot;params&quot; : [
+        {
+          &quot;type&quot; : &quot;Locale&quot;,
+          &quot;name&quot; : &quot;inLocale&quot;
+        }
+      ],
+      &quot;returnType&quot; : &quot;String&quot;,
+      &quot;description&quot; : &quot;Returns a name for the locale's language ...&quot;
+      &quot;returns&quot; : null
+    },
+    ...
+  ],
+  &quot;kind&quot; : &quot;class&quot;,
+  &quot;path&quot; : &quot;java/util/Locale.html&quot;
+}</pre>
+
+<h4>Methods Fields</h4>
+<p>
+  For methods, the following properties are also available:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>params</td>
+      <td>Array</td>
+      <td>
+        An array of parameter descriptors with the following properties:
+        <ul>
+          <li>name</li>
+          <li>type</li>
+          <li>description (may not be present)</li>        
+        </ul>      
+      </td>
+    </tr>
+    <tr>
+      <td>returnType</td>
+      <td>String</td>
+      <td>The return type of the method</td>
+    </tr>    
+    <tr>
+      <td>throws</td>
+      <td>Array</td>
+      <td>An array of <code>Exception</code> subclass names declared by the method (subclasses of <code>java.lang.RuntimeException</code> are typically not declared)</td>
+    </tr>    
+    <tr>
+      <td>returns</td>
+      <td>String</td>
+      <td>The description of the return value of the method (may not be present)</td>
+    </tr>        
+  </tbody>
+</table>
+
+<h4>Method Example</h4>
+<pre>
+{
+  &quot;name&quot; : &quot;skip&quot;,
+  &quot;class&quot; : &quot;FileInputStream&quot;,
+  &quot;qualifiedClass&quot; : &quot;java.io.FileInputStream&quot;,
+  &quot;qualifiedName&quot; : &quot;java.io.FileInputStream.skip&quot;,
+  &quot;params&quot; : [
+    { 
+      &quot;type&quot; : &quot;long&quot;,
+      &quot;name&quot; : &quot;n&quot;,
+      &quot;description&quot; : &quot;the number of bytes to be skipped.&quot;
+    }
+  ],
+  &quot;annotations&quot; : [],
+  &quot;modifiers&quot; : [&quot;public&quot;]
+  &quot;returnType&quot; : &quot;long&quot;,
+  &quot;throws&quot; : [&quot;IOException&quot;],
+  &quot;description&quot; : &quot;Skips over and discards n bytes of data from the\n input stream...&quot;,
+  &quot;returns&quot; : &quot;the actual number of bytes skipped.&quot;,
+  &quot;path&quot; : &quot;java/io/FileInputStream.html#skip(long)&quot;,
+  &quot;kind&quot; : &quot;method&quot;
+}
+</pre>
+
+<h4>Recognition Keys</h4>
+<p>
+  Classes, enums, interfaces, and annotations will be mapped to the
+  <code>com.solveforall.programming.java.JdkClass</code> recognition key, 
+  while methods will be mapped to the <code>com.solveforall.programming.java.JdkMethod</code>
+  recognition key.
+</p>
