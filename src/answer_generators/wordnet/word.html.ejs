@@ -1,0 +1,112 @@
+<%
+  var word = recognitionResults['com.solveforall.recognition.EnglishWord'][0];
+  
+  if (!word) {
+    throw 'No word found!'; 
+  }
+
+  var DICTIONARY_SITES = [
+    {
+      label: 'Collins',
+      urlPrefix: 'http://www.collinsdictionary.com/dictionary/english/',   
+      iconUrl: 'http://www.collinsdictionary.com/favicon.ico'      
+    },    
+    {
+      label: 'Dictionary.com',
+      urlPrefix: 'http://dictionary.reference.com/browse/',   
+      iconUrl: 'http://dictionary.reference.com/favicon.ico'      
+    },
+    {
+      label: 'Merriam-Webster',
+      urlPrefix: 'http://www.merriam-webster.com/dictionary/',   
+      iconUrl: 'http://www.merriam-webster.com/favicon.ico'      
+    },
+    {
+      label: 'Oxford',
+      urlPrefix: 'http://www.oxforddictionaries.com/us/definition/american_english/',   
+      iconUrl: 'http://www.oxforddictionaries.com/favicon.ico'      
+    },
+    {
+      label: 'The Free Dictionary',
+      urlPrefix: 'http://www.thefreedictionary.com/',   
+      iconUrl: 'http://www.thefreedictionary.com/favicon.ico'                   
+    }
+  ];    
+
+  var THESAURUS_SITES = [
+    {
+      label: 'Collins',
+      urlPrefix: 'http://www.collinsdictionary.com/dictionary/english-thesaurus/',   
+      iconUrl: 'http://www.collinsdictionary.com/favicon.ico'      
+    },    
+    {
+      label: 'Merriam-Webster',
+      urlPrefix: 'http://www.merriam-webster.com/thesaurus/',   
+      iconUrl: 'http://www.merriam-webster.com/favicon.ico'      
+    },
+    {
+      label: 'Oxford',
+      urlPrefix: 'http://www.oxforddictionaries.com/us/definition/american_english-thesaurus/',   
+      iconUrl: 'http://www.oxforddictionaries.com/favicon.ico'      
+    },
+    {
+      label: 'Thesaurus.com',
+      urlPrefix: 'http://thesaurus.com/browse/',   
+      iconUrl: 'http://thesaurus.com/favicon.ico'      
+    }    
+  ];   
+
+  var encodedWord = encodeURIComponent(word.name);
+%>  
+<!doctype html>
+<html>
+  <head>
+    <title><%= word.name %></title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <h3><%= word.name %> <a href="http://www.forvo.com/word/<%= encodedWord %>"><img src="http://www.forvo.com/_presentation/img/ico_play.gif" width="16" height="16"></a></h3>
+        
+    <ol>
+    <% _(word.senses || []).each(function (sense) { %>
+         <li>
+           <i>(<%= sense.partOfSpeech || '' %>)</i> <%= sense.definition %>
+         
+           <% if (sense.synonyms && (sense.synonyms.length > 0)) {%>
+             <p>
+               Synonyms: <%= sense.synonyms.join(', ') %>
+             </p>
+           <% } %>  
+         </li> 
+    <% }); %>      
+    </ol>
+    
+    <h4>Links</h4>
+    
+    <h5>Dictionaries</h5>    
+    <% var index = 0;
+       _(DICTIONARY_SITES).each(function (site) {                  
+         if (index != 0) { %>
+            | 
+      <% } index++; %>
+      <img src="<%= site.iconUrl %>" width="16" height="16">&nbsp;
+      <a href="<%= site.urlPrefix + encodedWord  %>"><%= site.label %></a>            
+    <% }); %>
+
+    <h5>Thesauruses</h5>        
+    <% index = 0;
+       _(THESAURUS_SITES).each(function (site) {                  
+         if (index != 0) { %>
+            | 
+      <% } index++; %>
+      <img src="<%= site.iconUrl %>" width="16" height="16">
+      <a href="<%= site.urlPrefix + encodedWord  %>"><%= site.label %></a>            
+    <% }); %>
+    
+    <br>
+    <br>
+    <p>
+      <small>Content from <a href="http://wordnet.princeton.edu/">WordNet</a></small>
+    </p>
+  </body>
+</html>  
