@@ -1,0 +1,153 @@
+<%
+var DEFAULT_MARKET = 'default';
+
+// https://developer.yahoo.com/boss/search/boss_api_guide/supp_regions_lang.html
+// Use jQuerify to scrape: https://chrome.google.com/webstore/detail/jquerify/gbmifchmngifmadobkcpijhhldeeelkc
+// $('.informaltable tr td:nth-child(1)').map(function () { return $(this).text().trim() });
+var MARKET_LABELS = ["Default", "Argentina - Spanish", "Austria – German", "Australia – English", "Belgium - Dutch", "Brazil – Portuguese", "Bulgaria - Bulgarian", "Canada - English", "Canada - French", "Chile - Spanish", "Colombia - Spanish", "Croatia - Croatian", "Czech Republic", "Denmark – Danish", "Estonia - Estonian", "Finland – Finnish", "France - French", "Germany - German", "Greece - Greek", "Hong Kong – Simplified Chinese", "Hungary - Hungarian", "Indonesia - English", "Indonesia - Indonesian", "India – English", "Ireland - English", "Israel - Hebrew", "Italy - Italian", "Japan – Japanese", "Korea - Korean", "Latvia - Latvian", "Lithuania - Lithuanian", "Malaysia - English", "Malaysia– Malaysian", "Mexico- Spanish", "Netherlands - Dutch", "New Zealand - English", "Norway – Norwegian", "Peru – Spanish", "Philippines – Filipino", "Philippines - English", "Poland - Polish", "Romania - Romanian", "Russia Federation – Russian", "Saudi Arabia - Arabic", "Singapore - English", "Slovakia - Slovak", "Slovenia - Slovenian", "Spain – Catalan", "Spain – Spanish", "Sweden – Swedish", "Switzerland - French", "Switzerland - German", "Switzerland - Italian", "Thailand - Thai", "Taiwan – Traditional Chinese", "Turkey – Turkish", "United Kingdom - English", "United States - English", "United States - Spanish", /* "Venezuela - Spanish", */ "Vietnam – Vietnamese"];
+
+// $('.informaltable tr td:nth-child(2)').map(function () { return $(this).text().trim() });                     
+var MARKET_VALUES = [DEFAULT_MARKET, "es-ar", "de-at", "en-au", "nl-be", "pt-br", "bg-bg", "en-ca", "fr-ca", "es-cl", "es-co", "hr-hr", "cs-cz", "da-dk", "et-ee", "fi-fi", "fr-fr", "de-de", "el-gr", "zh-hant-hk", "hu-hu", "id-en", "id-id", "en-in", "en-ie", "he-il", "it-it", "ja-jp", "ko-kr", "lv-lv", "lt-lt", "en-my", "ms-my", "es-mx", "nl-nl", "en-nz", "no-no", "es-pe", "tl-ph", "en-ph", "pl-pl", "ro-ro", "ru-ru", "ar-xa", "en-sg", "sk-sk", "sl-si", "ca-es", "es-es", "sv-se", "fr-ch", "de-ch", "it-ch", "th-th", "zh-hant-tw", "tr-tr", "en-gb", "en-us", "es-us", /* "es-ve" , */ "vi-vn"]
+
+var FILTER_LABELS = ["Pornography"];
+var FILTER_VALUES = ["porn"];
+
+var ANY_LANGUAGE = 'any';
+var LANGUAGE_LABELS = ['Any', 'Catalan', 'Chinese - Simplified', 'Chinese - Traditional', 'Czech', 'Danish', 'Dutch',
+  'English', 'Filipino',  'Finnish', 'French', 'German', 'Hebrew', 'Hungarian', 'Indonesian', 'Italian', 'Japanese', 'Korean', 
+  'Malaysian', 'Norwegian', 'Portuguese', 'Romanian', 'Russian', 'Spanish', 'Swedish', 'Thai', 'Turkish', 'Vietnamese'];
+                                              
+var LANGUAGE_VALUES = [ANY_LANGUAGE, 'ca', 'zh-hans', 'zh-hant', 'cs', 'da', 'nl', 'en', 'tl', 'fi', 'fr', 'de', 'he', 'hu', 'id', 'it', 'ja', 'ko', 'ms', 'no', 'pt', 'ro', 'ru', 'es', 'sv', 'th', 'tr', 'vi'];
+
+var market = settings.market || DEFAULT_MARKET;
+var webSettings = settings.web || {};
+var webEnabled = !_.has(webSettings, 'enabled') || (webSettings.enabled === 'true');
+var filters = webSettings.filters || ['porn'];
+var language = webSettings.language || ANY_LANGUAGE;
+
+// News options
+var newsSettings = settings.news || {};
+var newsEnabled = !_.has(newsSettings, 'enabled') || (newsSettings.enabled === 'true');
+var minAgeInDays = parseInt(newsSettings.minAgeInDays || '1');
+var maxAgeInDays = parseInt(newsSettings.maxAgeInDays || '30');
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Yahoo! Search Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal" role="form">
+      <fieldset>
+        <legend>Common Options</legend>  
+        <div class="form-group">
+          <label for="input_market" class="col-xs-2 control-label">Content Locale</label>
+          <div class="col-xs-2">
+            <select id="input_market" name="market" class="form-control">
+              <% for (var i = 0; i < MARKET_VALUES.length; i++) { %>
+                <option value="<%= MARKET_VALUES[i] %>"
+                  <% if (MARKET_VALUES[i] === market) { %>
+                    selected
+                  <% } %>
+                ><%= MARKET_LABELS[i] %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+      
+      <fieldset>
+        <legend>Web Search Options</legend>  
+      
+        <div class="form-group">
+          <label for="input_enable_web_search" class="col-xs-2 control-label">Search the Web?</label>
+          <div class="col-xs-9">
+            <label class="checkbox-inline">
+              <input id="input_enable_web_search" type="checkbox" name="web.enabled" value="true"
+                <% if (webEnabled) { %>       
+                checked       
+                <% } %>
+              >              
+            </label>
+          </div>              
+        </div>        
+        
+        <div class="form-group">
+          <label for="input_market" class="col-xs-2 control-label">Language</label>
+          <div class="col-xs-2">
+            <select id="input_language" name="web.language" class="form-control">
+              <% for (var i = 0; i < LANGUAGE_VALUES.length; i++) { %>
+                <option value="<%= LANGUAGE_VALUES[i] %>"
+                  <% if (LANGUAGE_VALUES[i] === language) { %>
+                    selected
+                  <% } %>
+                ><%= LANGUAGE_LABELS[i] %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input_filters" class="col-xs-2 control-label">Filters</label>
+          <div class="col-xs-9">
+            <!-- Ensures filters gets populated with a list; automatically ignored by Solve for All. -->
+            <input type="hidden" name="web.filters[]" value="__IGNOREME__" >
+            <% for (var i = 0; i < FILTER_VALUES.length; i++) { %>          
+              <label class="checkbox-inline">
+                <input type="checkbox" name="web.filters[]" value="<%= FILTER_VALUES[i] %>"
+                 <% if (_(filters).find(function (f) {
+                      return (f === FILTER_VALUES[i]);
+                    })) { %>
+                 checked
+                 <% } %>         
+                > <%= FILTER_LABELS[i] %>
+              </label>
+            <% } %>
+            <p class="help-block">Check to exclude results matching the filter</p>
+          </div>
+        </div>
+      </fieldset>
+      
+      <fieldset>
+        <legend>News Search Options</legend>  
+        
+        <div class="form-group">
+          <label for="input_enable_news" class="col-xs-2 control-label">Search News?</label>
+          <div class="col-xs-9">
+            <label class="checkbox-inline">
+              <input type="checkbox" name="news.enabled" value="true"
+                <% if (newsEnabled) { %>       
+                checked       
+                <% } %>
+              >              
+            </label>
+          </div>              
+        </div>
+        
+        <div class="form-group">
+          <label for="input_min_age" class="col-xs-2 control-label">Minimum Age in Days</label>
+          <div class="col-xs-2">            
+            <input name="news.minAgeInDays" type="number" value="<%= minAgeInDays %>" min="1" max="30"
+             placeholder="1" class="form-control">                        
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label for="input_max_age" class="col-xs-2 control-label">Maximum Age in Days</label>
+          <div class="col-xs-2">            
+            <input name="news.maxAgeInDays" type="number" value="<%= maxAgeInDays %>" min="1" max="30"
+             placeholder="30" class="form-control">            
+          </div>
+        </div>      
+      </fieldset>
+      
+      <div class="form-group">        
+        <div class="col-xs-offset-2 col-xs-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
