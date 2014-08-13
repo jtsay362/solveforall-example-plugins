@@ -1,0 +1,82 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>The name of the property, function, at-rule, pseudo-class, pseudo-element, data type, or general topic</td>
+    </tr>
+    <tr>
+      <td>summary</td>
+      <td>String</td>
+      <td>A brief description of the item</td>
+    </tr>
+    <tr>
+      <td>syntax</td>
+      <td>String</td>
+      <td>Formal syntax, if the item is a property</td>
+    </tr>
+    <tr>
+      <td>metaProperties</td>
+      <td>Object</td>
+      <td>Name/value pairs about the property, if applicable</td>
+    </tr>
+    <tr>
+      <td>values</td>
+      <td>Array of Objects</td>
+      <td>If the item is a property, an array of objects that have the following properties:
+        <ul>
+          <li>name: The name of the value</li>
+          <li>summary: A summary of the usage of the value</li>
+        </ul>
+      </td>
+    </tr>    
+    <tr>
+      <td>mdnUri</td>
+      <td>String</td>
+      <td>URL of documentation on Mozilla Developer Network (not always available)</td>
+    </tr>    
+    <tr>
+      <td>w3cUri</td>
+      <td>String</td>
+      <td>URL of documentation on W3C (not always available)</td>
+    </tr>    
+    <tr>
+      <td>webPlatformUri</td>
+      <td>String</td>
+      <td>URL of documentation on WebPlatform.org (not always available)</td>
+    </tr>    
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;name&quot;: &quot;margin-left&quot;,
+  &quot;summary&quot;: &quot;The margin-left CSS property of an element sets the margin space required on the left side...&quot;,
+  &quot;syntax&quot;: &quot;&lt;length&gt; | &lt;percentage&gt; ...&quot;,
+  &quot;metaProperties&quot;: {
+    &quot;Initial value&quot;: &quot;0&quot;,
+    ...
+  }, 
+  &quot;values&quot;: [
+    {
+      &quot;name&quot;: &quot;length&quot;,
+      &quot;summary&quot;: &quot;Specifies a fixed length ...&quot;
+    },
+    ...
+  ],
+  &quot;mdnUri&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/CSS/margin-left&quot;,
+  &quot;w3cUri&quot;: &quot;http://www.w3.org/wiki/CSS/Properties/margin-left&quot;,
+  &quot;webPlatformUri&quot;: &quot;http://docs.webplatform.org/wiki/css/properties/margin-left&quot;
+}</pre>
