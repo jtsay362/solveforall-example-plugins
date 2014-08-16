@@ -142,6 +142,12 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
+  var zwsid = context.developerSettings['ZWSID'];
+  
+  if (!zwsid || (zwsid.length === 0)) {    
+    throw 'No ZWSID set!'
+  }
+  
   var recognitionResult = recognitionResults['com.solveforall.recognition.location.UsAddress'][0];
 
   var url = 'http://www.zillow.com/webservice/GetSearchResults.htm'
@@ -176,7 +182,7 @@ function generateResults(recognitionResults, q, context) {
 
   var request = hostAdapter.makeWebRequest(url, {
     data: {
-      'zws-id': 'INSERT YOUR ZWS HERE',
+      'zws-id': zwsid,
       address: address,
       citystatezip: cityStateZip,
       rentzestimate: true
