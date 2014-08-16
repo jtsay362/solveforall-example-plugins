@@ -11,7 +11,7 @@ function shouldActivate(q, recognitionResults, context) {
   resultList = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
   
   return _(resultList).any(function (r) {
-    if (r.latitude && r.longitude) {
+    if ((r.recognitionLevel > 0.3) && r.latitude && r.longitude) {
       return true;
     }    
   });
