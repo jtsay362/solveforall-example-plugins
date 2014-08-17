@@ -1,0 +1,37 @@
+<%
+var languageLabels = ['English', 'German', 'French', 'Russian'];
+var languageValues = ['eng', 'ger', 'fre', 'rus'];
+var selectedLanguage = settings.language || 'eng';
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>JMDict Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal" role="form"> 
+      <div class="form-group"> 
+        <label for="input_language" class="col-xs-2 control-label">Target Language</label> 
+        <div class="col-xs-2"> 
+          <select id="input_language" name="language" class="form-control">
+            <% for (var i = 0; i < languageValues.length; i++) { %>
+              <option value="<%= languageValues[i] %>"
+                <% if (languageValues[i] === selectedLanguage) { %>
+                  selected
+                <% } %>
+              ><%= languageLabels[i] %></option>
+            <% } %>                               
+          </select>             
+        </div>
+      </div>
+
+      <div class="form-group">        
+        <div class="col-xs-offset-2 col-xs-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>        
+    </form>  
+  </body>
+</html>  
