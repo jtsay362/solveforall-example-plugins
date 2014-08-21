@@ -65,6 +65,7 @@ function generateResults(recognitionResults, q, context) {
       encodeURIComponent(placeName) + '&units=' + encodeURIComponent(unitsType) + '&font=' +
       encodeURIComponent(font) + '&color=' + encodeURIComponent(color),
     embeddable: true,
+    shouldEmbed: true,
     relevance: relevance,    
     minHeight: 247,    
     preferredHeight: 247,

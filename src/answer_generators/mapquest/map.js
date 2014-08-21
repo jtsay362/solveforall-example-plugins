@@ -59,6 +59,7 @@ function generateResults(recognitionResults, q, context) {
     uri: uri,
     iconUrl: 'http://www.mapquest.com/favicon.ico',    
     embeddable: true,
+    shouldEmbed: true,
     minWidth: 200,
     preferredWidth: 400,
     minHeight: 200,
