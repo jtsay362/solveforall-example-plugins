@@ -1,0 +1,75 @@
+<%
+var UNITS_TYPE_LABELS = ['Fahrenheit and mph', 'Celsius and mph', 'Celsius and km/h', 'Celsius and m/s'];
+var UNITS_TYPE_VALUES = ['us', 'uk', 'ca', 'si'];
+var selectedUnitsType = settings.unitsType || UNITS_TYPE_VALUES[0];
+
+var FONTS = ['Helvetica', 'Georgia'];
+var selectedFont = settings.font || FONTS[0];
+
+var COLORS = [
+'aliceblue','antiquewhite','aqua','aquamarine','azure','beige','bisque','black','blanchedalmond','blue','blueviolet','brown','burlywood','cadetblue','chartreuse','chocolate','coral','cornflowerblue','cornsilk','crimson','cyan','darkblue','darkcyan','darkgoldenrod','darkgray','darkgreen','darkkhaki','darkmagenta','darkolivegreen','darkorange','darkorchid','darkred','darksalmon','darkseagreen','darkslateblue','darkslategray','darkturquoise','darkviolet','deeppink','deepskyblue','dimgray','dodgerblue','firebrick','floralwhite','forestgreen','fuchsia','gainsboro','ghostwhite','gold','goldenrod','gray','green','greenyellow','honeydew','hotpink','indianred ','indigo  ','ivory','khaki','lavender','lavenderblush','lawngreen','lemonchiffon','lightblue','lightcoral','lightcyan','lightgoldenrodyellow','lightgray','lightgreen','lightpink','lightsalmon','lightseagreen','lightskyblue','lightslategray','lightsteelblue','lightyellow','lime','limegreen','linen','magenta','maroon','mediumaquamarine','mediumblue','mediumorchid','mediumpurple','mediumseagreen','mediumslateblue','mediumspringgreen','mediumturquoise','mediumvioletred','midnightblue','mintcream','mistyrose','moccasin','navajowhite','navy','oldlace','olive','olivedrab','orange','orangered','orchid','palegoldenrod','palegreen','paleturquoise','palevioletred','papayawhip','peachpuff','peru','pink','plum','powderblue','purple','red','rosybrown','royalblue','saddlebrown','salmon','sandybrown','seagreen','seashell','sienna','silver','skyblue','slateblue','slategray','snow','springgreen','steelblue','tan','teal','thistle','tomato','turquoise','violet','wheat', /* 'white' */,'whitesmoke','yellow','yellowgreen'
+];
+var selectedColor = settings.color || 'blue';
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Weather Forecast Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label for="input_units_type" class="col-xs-2 control-label">Units</label>
+        <div class="col-xs-2">
+          <select id="input_units_type" name="unitsType" class="form-control">
+            <% for (var i = 0; i < UNITS_TYPE_VALUES.length; i++) { %>
+              <option value="<%= UNITS_TYPE_VALUES[i] %>"
+                <% if (UNITS_TYPE_VALUES[i] === selectedUnitsType) { %>
+                  selected
+                <% } %>
+              ><%= UNITS_TYPE_LABELS[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="input_font" class="col-xs-2 control-label">Font</label>
+        <div class="col-xs-2">
+          <select id="input_font" name="font" class="form-control">
+            <% for (var i = 0; i < FONTS.length; i++) { %>
+              <option value="<%= FONTS[i] %>"
+                <% if (FONTS[i] === selectedFont) { %>
+                  selected
+                <% } %>
+              ><%= FONTS[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input_color" class="col-xs-2 control-label">Color</label>
+        <div class="col-xs-2">
+          <select id="input_color" name="color" class="form-control">
+            <% for (var i = 0; i < COLORS.length; i++) { %>
+              <option value="<%= COLORS[i] %>"
+                <% if (COLORS[i] === selectedColor) { %>
+                  selected
+                <% } %>
+              ><%= COLORS[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
