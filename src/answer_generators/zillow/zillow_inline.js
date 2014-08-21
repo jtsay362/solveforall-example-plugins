@@ -129,6 +129,7 @@ function handleResponse(responseText, httpResponse) {
     contentType: 'text/html',
     serverSideSanitized: true,
     label: 'Zillow',
+    uri: detailsLink,
     iconUrl: 'http://www.zillow.com/favicon.ico',
     summaryHtml: fullAddressHtml,
     relevance: 1.0
