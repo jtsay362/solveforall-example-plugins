@@ -56,8 +56,7 @@ if (showImage) {
 <html>
   <head>
     <title>Wikipedia Infobox</title>
-    <link href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet">    
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">    
     <meta name="com.solveforall.meta.answer.uri" content="http://wikipedia.org/wiki/<%= result.article %>">
     <meta name="com.solveforall.meta.answer.embeddable" content="true">    
   </head>
@@ -65,31 +64,31 @@ if (showImage) {
     <strong><%= result.humanFormattedArticle %></strong>    
     <small>          
       &nbsp;&nbsp;
-      <a href="http://wikipedia.org/wiki/<%= result.article %>" target="_blank">Full article</a></a>
+      <a href="http://wikipedia.org/wiki/<%= result.article %>" target="_top">Full article</a></a>
 
       <% if (result.homePageUri) { %>
-        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_blank">Website</a>            
+        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_top">Website</a>            
       <% } %>
 
       <% if (result.latitude && result.longitude) { %>            
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic" target="_blank">Map</a>           
+        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic" target="_top">Map</a>           
       <% } %>
     </small>            
     
     <p>
       <% if (showImage) { %>                  
-        <span class="pull-left" style="margin-right: 5px">
-          <a href="<%= imageUri %>"  target="_blank">
-            <object data="<%= imageUri %>" type="<%= imageType %>" width="128"
+        <span class="pull-left" style="margin-right: 10px">
+          <a href="<%= imageUri %>"  target="_top">
+            <object data="<%= imageUri %>" type="<%= imageType %>" class="img-rounded" width="150"
               <% if (requiresExplicitHeight) { %>
-              height="128"
+              height="150"
               <% } %>
               >
               <% if (altImageUri) { %>
-                <object data="<%= altImageUri %>" type="<%= imageType %>" width="128"
+                <object data="<%= altImageUri %>" type="<%= imageType %>" class="img-rounded" width="150"
                   <% if (requiresExplicitHeight) { %>
-                  height="128"
+                  height="150"
                   <% } %> 
                 >
                 </object>  
@@ -103,7 +102,5 @@ if (showImage) {
         <%= text %>      
       <% } %>
     </p>
-  
-    <div class="clearfix"></div>      
   </body>
 </html>
