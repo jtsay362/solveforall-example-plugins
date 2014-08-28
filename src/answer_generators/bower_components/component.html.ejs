@@ -1,0 +1,53 @@
+<%  
+function stripTime(s) {
+  s = s || '';
+  var tIndex = s.indexOf('T');
+  if (tIndex < 0) {
+    return s;
+  }
+  return s.substr(0, tIndex);
+}
+  
+var results = recognitionResults['com.solveforall.recognition.programming.web.javascript.BowerComponent'];
+if (!results || (results.length === 0)) {
+  throw "No result found";
+}
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Bower Components</title>  
+    <meta charset="UTF-8">    
+    <meta name="com.solveforall.meta.answer.uri" content="http://bower.io/search/?q=<%= encodeURIComponent(q) %>" >    
+  </head>
+  <body>      
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Stars</th>
+          <th>Updated</th>        
+        </tr>
+      </thead>
+      <tbody>
+        <% _(results).each(function (rr) { %>
+          <tr>
+            <td title="Owner: <%= rr.owner %>">              
+              <a href="<%= rr.website %>" ><big><%= rr.name %></big></a>
+            </td>
+            <td><%= rr.description %></td>            
+            <td title="<%= rr.forks %> forks">
+              <%= rr.stars %> 
+            </td>                  
+            <td title="Created: <%= stripTime(rr.created) %>">            
+              <%= stripTime(rr.updated) %> 
+            </td>                
+          </tr>
+        <% }); %> 
+      </tbody>
+    </table>
+    <p>
+      <small>Data from <a href="http://bower.io/">Bower.io</a>.</small>    
+    </p>
+  </body>
