@@ -69,8 +69,7 @@ function generateResults(recognitionResults, q, context) {
   return [{    
     label: 'Zillow',
     iconUrl: 'http://www.zillow.com/favicon.ico',
-    uri: url,
-    summaryHtml: 'View ' + _(address).escapeHTML() + ' on Zillow',
-    relevance: recognitionResult.recognitionLevel
+    uri: url,    
+    relevance: recognitionResult.recognitionLevel    
   }];
 }
