@@ -34,7 +34,7 @@ if (!results || (results.length === 0)) {
         <% _(results).each(function (rr) { %>
           <tr>
             <td title="Owner: <%= rr.owner %>">              
-              <a href="<%= rr.website %>" ><big><%= rr.name %></big></a>
+              <a href="<%= rr.website %>" ><%= rr.name %></a>
             </td>
             <td><%= rr.description %></td>            
             <td title="<%= rr.forks %> forks">
