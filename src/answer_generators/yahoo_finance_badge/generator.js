@@ -56,8 +56,8 @@ function generateResults(recognitionResults, q, context) {
     embeddable: true,
     shouldEmbed: true,
     relevance: relevance,
-    minHeight: 614,
-    preferredHeight: 614,
-    preferredWidth: 338
+    minHeight: 294,
+    preferredHeight: 294,
+    preferredWidth: 320
   }];
 }
