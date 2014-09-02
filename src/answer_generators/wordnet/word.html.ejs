@@ -52,7 +52,7 @@
     {
       label: 'Thesaurus.com',
       urlPrefix: 'http://thesaurus.com/browse/',   
-      iconUrl: 'http://thesaurus.com/favicon.ico'      
+      iconUrl: 'http://static.sfdict.com/thescloud/favicon.ico'
     }    
   ];   
 
@@ -74,14 +74,12 @@
          
            <% if (sense.synonyms && (sense.synonyms.length > 0)) {%>
              <p>
-               Synonyms: <%= sense.synonyms.join(', ') %>
+               Synonyms: <%= sense.synonyms.join(', ') %>             
              </p>
            <% } %>  
          </li> 
     <% }); %>      
     </ol>
-    
-    <h4>Links</h4>
     
     <h5>Dictionaries</h5>    
     <% var index = 0;
