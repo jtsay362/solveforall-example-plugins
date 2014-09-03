@@ -1,0 +1,38 @@
+<%
+  var recognitionResult = recognitionResults['com.solveforall.recognition.date.DateRange'];
+
+  var date = new Date();
+  if (recognitionResult && (recognitionResult.length > 0)) {
+    var dateRange = recognitionResult[0];
+    var start = dateRange.start;
+
+    if (start) {
+      date = new Date(start.year || parseInt(date.getFullYear()), 
+        (start.month || (date.getMonth() + 1)) - 1, start.dayOfMonth || date.getDate());      
+    }    
+  }  
+%>
+<!DOCTYPE html>
+<html lang="en">
+  <head>    
+    <link href="https://cdn.jsdelivr.net/bootswatch/3.2.0.1/readable/bootstrap.min.css"
+     rel="stylesheet" >
+    <link href="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/bic_calendar/css/bic_calendar.css"
+     rel="stylesheet" >
+  </head>
+  <body>
+    <div class="container">
+      <div class="row" >
+        <div class="col-xs-12" >
+          <div id="calendar"></div>
+        </div>
+      </div>
+    </div>            
+    <div id="data" 
+     data-year="<%= date.getFullYear() %>" data-month="<%= date.getMonth() + 1 %>" data-day="<%= date.getDate() %>">
+    </div>    
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.1,bootstrap@3.2.0"></script>
+    <script src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/bic_calendar/js/bic_calendar.min.js"></script>    
+    <script src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/bic_calendar/js/calendar.js"></script>    
+  </body>
+</html>  
