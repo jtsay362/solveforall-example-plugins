@@ -30,9 +30,9 @@ function generateResults(recognitionResults, q, context) {
   var year = '' + (start.year || now.getFullYear());
 
   return [{
-    label: 'Calendar',
+    label: 'Google Calendar',
     iconUrl: 'http://calendar.google.com/googlecalendar/images/favicon_v2010_8.ico',
-    summaryHtml: 'Google Calendar',
+    tooltip: 'View a date in Google Calendar',
     uri: 'https://www.google.com/calendar/render?tab=mc&date=' + year +
       paddedMonth + paddedDay,
     embeddable: false,
