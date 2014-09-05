@@ -86,12 +86,11 @@ if (showImage) {
               <% } %>
               >
               <% if (altImageUri) { %>
-                <object data="<%= altImageUri %>" type="<%= imageType %>" class="img-rounded" width="150"
+                <img src="<%= altImageUri %>" class="img-rounded" width="150" alt="No image"
                   <% if (requiresExplicitHeight) { %>
                   height="150"
-                  <% } %> 
+                  <% } %>
                 >
-                </object>  
               <% } %>
             </object>
           </a>            
