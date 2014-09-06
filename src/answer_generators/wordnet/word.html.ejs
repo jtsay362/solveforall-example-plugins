@@ -81,28 +81,33 @@
     <% }); %>      
     </ol>
     
-    <h5>Dictionaries</h5>    
-    <% var index = 0;
-       _(DICTIONARY_SITES).each(function (site) {                  
-         if (index != 0) { %>
-            | 
-      <% } index++; %>
-      <img src="<%= site.iconUrl %>" width="16" height="16">&nbsp;
-      <a href="<%= site.urlPrefix + encodedWord  %>"><%= site.label %></a>            
-    <% }); %>
+    <div>
+      Links <span class="content_expander"><i class="fa fa-chevron-down"></i></span>
+      <div class="initially_hidden">
+        <h5>Dictionaries</h5>    
+        <% var index = 0;
+           _(DICTIONARY_SITES).each(function (site) {                  
+             if (index != 0) { %>
+                | 
+          <% } index++; %>
+          <img src="<%= site.iconUrl %>" width="16" height="16">&nbsp;
+          <a href="<%= site.urlPrefix + encodedWord  %>"><%= site.label %></a>            
+        <% }); %>
 
-    <h5>Thesauruses</h5>        
-    <% index = 0;
-       _(THESAURUS_SITES).each(function (site) {                  
-         if (index != 0) { %>
-            | 
-      <% } index++; %>
-      <img src="<%= site.iconUrl %>" width="16" height="16">
-      <a href="<%= site.urlPrefix + encodedWord  %>"><%= site.label %></a>            
-    <% }); %>
-    
-    <br>
-    <br>
+        <h5>Thesauruses</h5>        
+        <% index = 0;
+           _(THESAURUS_SITES).each(function (site) {                  
+             if (index != 0) { %>
+                | 
+          <% } index++; %>
+          <img src="<%= site.iconUrl %>" width="16" height="16">
+          <a href="<%= site.urlPrefix + encodedWord  %>"><%= site.label %></a>            
+        <% }); %>
+
+        <br>
+        <br>
+      </div>
+    </div>      
     <p>
       <small>Content from <a href="http://wordnet.princeton.edu/">WordNet</a></small>
     </p>
