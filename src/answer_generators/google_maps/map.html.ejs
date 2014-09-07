@@ -76,6 +76,9 @@ var settings = context.settings;
 <!DOCTYPE html>
 <html>
 <head>
+  <% if (address) { %>
+    <meta name="com.solveforall.meta.answer.uri" content="https://maps.google.com/maps?q=<%= encodeURIComponent(address) %>">
+  <% } %>
   <title>Google Maps</title>
 
   <style>
@@ -105,9 +108,7 @@ var settings = context.settings;
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
   </script>
-
   <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
-
   <script src="https://googledrive.com/host/0B9oRjsJCVus3SGczand1LThickk/map.js">
   </script>
 </body>
