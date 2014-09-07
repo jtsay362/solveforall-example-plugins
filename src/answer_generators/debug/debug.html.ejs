@@ -14,63 +14,54 @@
 
     <div>
       <h3>Query</h3>
-      <pre><%= q %></pre>
-      <ul>
-        <li>In Javascript Content Recognizers, this is passed as the first argument to <code>recognize()</code>.</li>
-        <li>This is available as <code>q</code> in Inline Javascript Triggers, URI Template Answer Generators, and  Content Template Answer Generators.</li>
-        <li>In External Javascript Triggers, this is passed as the first argument to <code>shouldActivate()</code>.</li>
-        <li>In Javascript Answer Generators, this is passed as the first argument to <code>generateResults()</code>.</li>
-      </ul>
+      <pre><%= q %></pre>      
+      <p>Access <span class="content_expander"><i class="fa fa-chevron-down"></i></span></p>
+      <div class="content_expandable initially_hidden">
+        <ul>
+          <li>In Javascript Content Recognizers, this is passed as the first argument to <code>recognize()</code>.</li>
+          <li>This is available as <code>q</code> in Inline Javascript Triggers, URI Template Answer Generators, and  Content Template Answer Generators.</li>
+          <li>In External Javascript Triggers, this is passed as the first argument to <code>shouldActivate()</code>.</li>
+          <li>In Javascript Answer Generators, this is passed as the first argument to <code>generateResults()</code>.</li>
+        </ul>
+      </div>
     </div>
 
     <div>
-      <h3>All Recognition Results</h3>
-      <pre><%= JSON.stringify(recognitionResults, undefined, 2) %></pre>
-      <ul>
-        <li>In Inline Javascript Triggers, this is available as <code>rr</code>.</li>
-        <li>In External Javascript Triggers, this is passed as the second argument to <code>shouldActivate()</code>.</li>
-        <li>In Content Template Answer Generators, this is available as <code>recognitionResults</code>.</li>
-        <li>In Javascript Answer Generators, this is passed as the second argument to <code>generateResults()</code>.</li>
-        <li>See the <a href="https://solveforall.com/docs/developer/recognition_result_combination">Recognition Result documentation</a>.</li>
-      </ul>
+      <h3>All Recognition Results <span class="content_expander"><i class="fa fa-chevron-down"></i></span></h3>
+      <div class="content_expandable initially_hidden">
+        <pre><%= JSON.stringify(recognitionResults, undefined, 2) %></pre>
+        
+        <p>Access <span class="content_expander"><i class="fa fa-chevron-down"></i></span></p>
+        <div class="content_expandable initially_hidden">
+          <ul>
+            <li>In Inline Javascript Triggers, this is available as <code>rr</code>.</li>
+            <li>In External Javascript Triggers, this is passed as the second argument to <code>shouldActivate()</code>.</li>
+            <li>In Content Template Answer Generators, this is available as <code>recognitionResults</code>.</li>
+            <li>In Javascript Answer Generators, this is passed as the second argument to <code>generateResults()</code>.</li>
+            <li>See the <a href="https://solveforall.com/docs/developer/recognition_result_combination">Recognition Result documentation</a>.</li>
+          </ul>
+        </div>  
+      </div>
     </div>
 
     <div>
-      <h3>Specific Recognition Key</h3>
-      <pre><%= (recognitionKey == null) ? "null" : JSON.stringify(recognitionKey) %></pre>
-      <ul>
-        <li>
-          In Inline Answer Generators, this is available as <code>recognitionKey</code>.
-          It may be <code>null</code> if no required recognition key was found
-          (if the Answer Generator was triggered by an Activation Code).
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <h3>Specific Recognition Result</h3>
-      <pre><%= (recognitionResult == null) ? "null" : JSON.stringify(recognitionResult, undefined, 2) %></pre>
-      <ul>
-        <li>
-          In Inline Answer Generators, this is available as <code>recognitionResult</code>.
-          It may be <code>null</code> if no required recognition key was found
-          (if the Answer Generator was triggered by an Activation Code).
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <h3>Query Context</h3>
-      <pre><%= JSON.stringify(context, undefined, 2) %></pre>
-      <ul>
-        <li>In Javascript Content Recognizers, this is passed as the second argument to <code>recognize()</code>.</li>
-        <li>In Inline Javascript Triggers, this is available as <code>context</code>.</li>
-        <li>In External Javascript Triggers, this is passed as the third argument to <code>shouldActivate()</code>.</li>
-        <li>In URI Template Answer Generators, this is available as <code>c</code>.</li>
-        <li>In Content Template Answer Generators, this is available as <code>context</code>.</li>
-        <li>In Javascript Answer Generators, this is passed as the third argument to <code>generateResults()</code>.</li>
-        <li>See the <a href="https://solveforall.com/docs/developer/query_context">Query Context documentation</a>.</li>
-      </ul>
+      <h3>Query Context <span class="content_expander"><i class="fa fa-chevron-down"></i></span></h3>
+      <div class="content_expandable initially_hidden">
+        <pre><%= JSON.stringify(context, undefined, 2) %></pre>
+        <p>Access <span class="content_expander"><i class="fa fa-chevron-down"></i></span></p>
+        <div class="content_expandable initially_hidden">
+          <ul>
+            <li>In Javascript Content Recognizers, this is passed as the second argument to <code>recognize()</code>.</li>
+            <li>In Inline Javascript Triggers, this is available as <code>context</code>.</li>
+            <li>In External Javascript Triggers, this is passed as the third argument to <code>shouldActivate()</code>.</li>
+            <li>In URI Template Answer Generators, this is available as <code>c</code>.</li>
+            <li>In Content Template Answer Generators, this is available as <code>context</code>.</li>
+            <li>In Javascript Answer Generators, this is passed as the third argument to <code>generateResults()</code>.</li>
+            <li>See the <a href="https://solveforall.com/docs/developer/query_context">Query Context documentation</a>.</li>
+          </ul>
+        </div>
+      </div>
+      
     </div>
 
     <div>
