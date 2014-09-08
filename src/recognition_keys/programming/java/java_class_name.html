@@ -1,0 +1,51 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>recognitionLevel</td>
+      <td>Number</td>
+      <td>The recognition level. 1.0 for classes in known Java packages, 0.5 otherwise.</td>
+    </tr>
+    <tr>
+      <td>packageName</td>
+      <td>String</td>
+      <td>The package name of the Java class</td>
+    </tr>
+    <tr>
+      <td>simpleClassName</td>
+      <td>String</td>
+      <td>The simple name of the Java class (without the package)</td>
+    </tr>
+    <tr>
+      <td>fullyQualifiedClassName</td>
+      <td>String</td>
+      <td>The fully qualified name of the Java class (including the package)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+
+<pre>
+{
+  &quot;com.solveforall.recognition.programming.java.JavaClassName&quot;: [
+    {
+      &quot;recognitionLevel&quot;: 1.0,
+      &quot;packageName&quot;: &quot;java.util&quot;,
+      &quot;simpleClassName&quot;: &quot;Map&quot;,
+      &quot;fullyQualifiedClassName&quot;: &quot;java.util.Map&quot;
+    }
+  ]
+}
+</pre>

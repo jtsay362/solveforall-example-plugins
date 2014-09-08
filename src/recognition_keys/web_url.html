@@ -1,0 +1,56 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+  <tr>
+    <th>Property Name</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>matchedText</td>
+    <td>String</td>
+    <td>The matched URL.</td>
+  </tr>
+  <tr>
+    <td>recognitionLevel</td>
+    <td>Number</td>
+    <td>The recognition level. Always 1.0.</td>
+  </tr>
+  <tr>
+    <td>protocol</td>
+    <td>String</td>
+    <td>The protocol, either <code>http</code> or <code>https</code>.</td>
+  </tr>
+  <tr>
+    <td>host</td>
+    <td>String</td>
+    <td>The hostname.</td>
+  </tr>
+  <tr>
+    <td>path</td>
+    <td>String</td>
+    <td>The path, including a leading <code>/</code>.</td>
+  </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>
+{
+  &quot;com.solveforall.recognition.WebUrl&quot;: [
+    {
+      &quot;matchedText&quot;: &quot;https://solveforall.com/contact&quot;,
+      &quot;recognitionLevel&quot;: 1.0,
+      &quot;protocol&quot;: &quot;https&quot;,
+      &quot;host&quot;: &quot;solveforall.com&quot;,
+      &quot;path&quot;: &quot;/contact&quot;
+    }
+  ]
+}
+</pre>

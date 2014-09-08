@@ -1,0 +1,114 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>matchedText</td>
+      <td>String</td>
+      <td>The matched date or date range.</td>
+    </tr>
+    <tr>
+      <td>recognitionLevel</td>
+      <td>Number</td>
+      <td>The recognition level. Always 0.5.</td>
+    </tr>
+    <tr>
+      <td>start.year</td>
+      <td>Number</td>
+      <td>The year, or if a date range, the starting year.</td>
+    </tr>
+    <tr>
+      <td>start.month</td>
+      <td>Number</td>
+      <td>The month, or if a date range, the starting month.</td>
+    </tr>
+    <tr>
+      <td>start.dayOfMonth</td>
+      <td>Number</td>
+      <td>The day of the month, or if a date range, the starting day of the month.</td>
+    </tr>
+    <tr>
+      <td>start.hour</td>
+      <td>Number</td>
+      <td>The hour, or if a date range, the starting hour. Starts at 0 for midnight, up to 23 for 11:00 pm.</td>
+    </tr>
+    <tr>
+      <td>start.minute</td>
+      <td>Number</td>
+      <td>The minute, or if a date range, the starting minute.</td>
+    </tr>
+    <tr>
+      <td>start.second</td>
+      <td>Number</td>
+      <td>The second, or if a date range, the starting second.</td>
+    </tr>
+    <tr>
+      <td>end.year</td>
+      <td>Number</td>
+      <td>If a date range, the ending year. Not present if only a single date.</td>
+    </tr>
+    <tr>
+      <td>end.month</td>
+      <td>Number</td>
+      <td>If a date range, the ending month. Not present if only a single date.</td>
+    </tr>
+    <tr>
+      <td>end.dayOfMonth</td>
+      <td>Number</td>
+      <td>The day of If a date range, the ending day of the month. Not present if only a single date.</td>
+    </tr>
+    <tr>
+      <td>end.hour</td>
+      <td>Number</td>
+      <td>If a date range, the ending hour. Starts at 0 for midnight, up to 23 for 11:00 pm. Not present if only a single date.</td>
+    </tr>
+    <tr>
+      <td>end.minute</td>
+      <td>Number</td>
+      <td>If a date range, the ending minute. Not present if only a single date.</td>
+    </tr>
+    <tr>
+      <td>end.second</td>
+      <td>Number</td>
+      <td>If a date range, the ending second. Not present if only a single date.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>
+{
+  &quot;com.solveforall.recognition.date.DateRange&quot;: [
+    {
+      &quot;matchedText&quot;: &quot;Jan 5, 2013 11:00 pm to Jan 7, 2013 2:30 am&quot;,
+      &quot;recognitionLevel&quot;: 0,
+      &quot;start&quot;: {
+        &quot;year&quot;: 2013,
+        &quot;month&quot;: 1,
+        &quot;dayOfMonth&quot;: 5,
+        &quot;hour&quot;: 23,
+        &quot;minute&quot;: 0,
+        &quot;second&quot;: null
+      },
+      &quot;end&quot;: {
+        &quot;year&quot;: 2013,
+        &quot;month&quot;: 1,
+        &quot;dayOfMonth&quot;: 7,
+        &quot;hour&quot;: 2,
+        &quot;minute&quot;: 30,
+        &quot;second&quot;: null
+      }
+    }
+  ]
+}
+</pre>

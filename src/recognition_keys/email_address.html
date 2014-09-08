@@ -1,0 +1,50 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>matchedText</td>
+      <td>String</td>
+      <td>The matched email address.</td>
+    </tr>
+    <tr>
+      <td>recognitionLevel</td>
+      <td>Number</td>
+      <td>The recognition level. Always 0.7.</td>
+    </tr>
+    <tr>
+      <td>username</td>
+      <td>String</td>
+      <td>The username (the part before the <code>@</code>).</td>
+    </tr>
+    <tr>
+      <td>domain</td>
+      <td>String</td>
+      <td>The domain of the address (the part after the <code>@</code>. May also include a hostname in front.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>
+{
+  &quot;com.solveforall.recognition.EmailAddress&quot;: [
+    {
+      &quot;matchedText&quot;: &quot;admin@solveforall.com&quot;,
+      &quot;recognitionLevel&quot;: 0.7,
+      &quot;username&quot;: &quot;admin&quot;,
+      &quot;domain&quot;: &quot;solveforall.com&quot;
+    }
+  ]
+}
+</pre>

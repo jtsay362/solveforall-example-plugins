@@ -1,0 +1,63 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>matchedText</td>
+      <td>String</td>
+      <td>The matched XML string</td>
+    </tr>
+    <tr>
+      <td>recognitionLevel</td>
+      <td>Number</td>
+      <td>The recognition level:
+        <ul>
+          <li><code>0.2</code> if the query contains <code>&lt;</code>, <code>&gt;</code>, or <code>/</code> character(s), but pretty far from valid XML</li>
+          <li><code>0.6</code> if the query contains text that is close to valid XML</li>
+          <li><code>1.0</code> if the query contains valid XML</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>isValid</td>
+      <td>boolean</td>
+      <td><code>true</code> if valid XML, <code>false</code> otherwise</td>
+    </tr>
+    <tr>
+      <td>parseErrorMessage</td>
+      <td>String</td>
+      <td>If the XML-like text was not valid, a String indicating the reason for the parsing error, otherwise <code>null</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+
+<pre>
+{
+  &quot;com.solveforall.recognition.programming.Xml&quot;: [
+    {
+      &quot;matchedText&quot;: &quot;&lt;hi a=\&quot;b\&quot;&gt;yo&lt;/hi&gt;&quot;,
+      &quot;recognitionLevel&quot;: 1.0,
+      &quot;parseErrorMessage&quot;: null,
+      &quot;isValid&quot;: true,
+    }
+  ]
+}
+</pre>
+
+<h4>Notes</h4>
+<p>
+  This recognizer does not currently support XML declarations (such as
+  <code>&lt;?xml version=&quot;1.0 encoding=&quot;UTF-8&quot;?&gt;</code>).
+</p>

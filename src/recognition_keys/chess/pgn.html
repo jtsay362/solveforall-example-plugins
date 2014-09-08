@@ -1,0 +1,116 @@
+<h4>Fields</h4>
+<p>
+Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>matchedText</td>
+      <td>String</td>
+      <td>The matched PGN text</td>
+    </tr>
+    <tr>
+      <td>recognitionLevel</td>
+      <td>Number</td>
+      <td>The recognition level:
+        <ul>
+          <li>0.2 if there is only a single ply and no tags</li>
+          <li>0.7 if there is only a single ply and at least one tag</li>
+          <li>1.0 if there are at least two plies</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>numPlies</td>
+      <td>Number</td>
+      <td>The total number of plies (moves) in the game</td>
+    </tr>
+    <tr>
+      <td>date</td>
+      <td>String</td>
+      <td>The date of the game</td>
+    </tr>
+    <tr>
+      <td>site</td>
+      <td>String</td>
+      <td>The name of the site of the game</td>
+    </tr>
+    <tr>
+      <td>event</td>
+      <td>String</td>
+      <td>The name of the event</td>
+    </tr>
+    <tr>
+      <td>round</td>
+      <td>String</td>
+      <td>The name of the round</td>
+    </tr>
+    <tr>
+      <td>comment</td>
+      <td>String</td>
+      <td>Additional comments</td>
+    </tr>
+    <tr>
+      <td>blackPlayerName</td>
+      <td>String</td>
+      <td>The name of the Black player</td>
+    </tr>
+    <tr>
+      <td>blackElo</td>
+      <td>Number</td>
+      <td>The Elo rating of the Black player. 0 if unknown.</td>
+    </tr>
+    <tr>
+      <td>whitePlayerName</td>
+      <td>String</td>
+      <td>The name of the White player</td>
+    </tr>
+    <tr>
+      <td>whiteElo</td>
+      <td>Number</td>
+      <td>The Elo rating of the White player. 0 if unknown.</td>
+    </tr>
+    <tr>
+      <td>gameResult</td>
+      <td>String</td>
+      <td>The result of the game. One of:
+        <ul>
+          <li>1 - 0</li>
+          <li>0 - 1</li>
+          <li>1/2 - 1/2</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>
+{ 
+  &quot;com.solveforall.recognition.chess.Pgn&quot;: [ 
+    {
+      &quot;matchedText&quot;: &quot;[Event \&quot;F/S Return Match\&quot;] [Site \&quot;Belgrade, Serbia Yugoslavia|JUG\&quot;] [Date \&quot;1992.11.04\&quot;] [Round \&quot;29\&quot;] [White \&quot;Fischer, Robert J.\&quot;] [Black \&quot;Spassky, Boris V.\&quot;] [Result \&quot;1/2-1/2\&quot;] 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 {This opening is called the Ruy Lopez.} 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 10. d4 Nbd7 11. c4 c6 12. cxb5 axb5 13. Nc3 Bb7 14. Bg5 b4 15. Nb1 h6 16. Bh4 c5 17. dxe5 Nxe4 18. Bxe7 Qxe7 19. exd6 Qf6 20. Nbd2 Nxd6 21. Nc4 Nxc4 22. Bxc4 Nb6 23. Ne5 Rae8 24. Bxf7+ Rxf7 25. Nxf7 Rxe1+ 26. Qxe1 Kxf7 27. Qe3 Qg5 28. Qxg5 hxg5 29. b3 Ke6 30. a3 Kd6 31. axb4 cxb4 32. Ra5 Nd5 33. f3 Bc8 34. Kf2 Bf5 35. Ra7 g6 36. Ra6+ Kc5 37. Ke1 Nf4 38. g3 Nxh3 39. Kd2 Kb5 40. Rd6 Kc5 41. Ra6 Nf2 42. g4 Bd3 43. Re6 1/2-1/2&quot;,
+      &quot;recognitionLevel&quot;: 1,
+      &quot;date&quot;: &quot;1992.11.04&quot;,
+      &quot;site&quot;: &quot;Belgrade, Serbia Yugoslavia|JUG&quot;,
+      &quot;event&quot;: &quot;F/S Return Match&quot;, 
+      &quot;round&quot;: &quot;29&quot;, 
+      &quot;comment&quot;: null, 
+      &quot;numPlies&quot;: 85,  
+      &quot;blackPlayerName&quot;: &quot;Spassky, Boris V.&quot;, 
+      &quot;blackElo&quot;: 0, 
+      &quot;whitePlayerName&quot;: &quot;Fischer, Robert J.&quot;,
+      &quot;whiteElo&quot;: 0,
+      &quot;gameResult&quot;: &quot;1/2-1/2&quot;
+    } 
+  ] 
+}
+</pre>

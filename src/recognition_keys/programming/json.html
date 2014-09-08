@@ -1,0 +1,45 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>formattedString</td>
+      <td>String</td>
+      <td>The formatted JSON string, with an indentation level of 2 spaces.</td>
+    </tr>
+    <tr>
+      <td>matchedText</td>
+      <td>String</td>
+      <td>The matched JSON string</td>
+    </tr>
+    <tr>
+      <td>recognitionLevel</td>
+      <td>Number</td>
+      <td>The recognition level. Always 1.0.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+
+<pre>
+{
+  &quot;com.solveforall.recognition.programming.Json&quot;: [
+    {
+      &quot;matchedText&quot;: &quot;{\&quot;hi\&quot;: [1, 2, 3], \&quot;ho\&quot;: false }&quot;,
+      &quot;formattedString&quot;: &quot;{\n \&quot;hi\&quot;: [\n 1,\n 2,\n 3\n ],\n \&quot;ho\&quot;: false\n}&quot;}&quot;,
+      &quot;recognitionLevel&quot;: 1.0
+    }
+  ]
+}
+</pre>
