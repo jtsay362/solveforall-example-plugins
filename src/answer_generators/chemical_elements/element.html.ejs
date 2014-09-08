@@ -13,6 +13,7 @@ var isotopes = element.isotopes || [];
 var descriptors = [
   {name: 'number', label: 'Atomic Number'},
   {name: 'group'},
+  {name: 'period'},
   {name: 'series'},
   {name: 'block'},
   {name: 'eleconfig', label: "Ground State Electron Config."},
@@ -25,8 +26,8 @@ var descriptors = [
   //What is this? {name: 'atmrad', label: 'Atomic Radius', unit: ' Å'},
   {name: 'covrad', label: 'Covalent Radius (r<sub>cov</sub>)', unit: ' Å'},
   {name: 'vdwrad', label: 'Van der Waals Radius (r<sub>w</sub>)', unit: ' Å'},
-  {name: 'tmelt', label: 'Melting Temp.', unit: ' K'},
-  {name: 'tboil', label: 'Boiling Temp.', unit: ' K'}  
+  {name: 'tmelt', label: 'Melting Temp.', unit: ' K at 1 atm'},
+  {name: 'tboil', label: 'Boiling Temp.', unit: ' K at 1 atm'}  
 ];
 var groupNames = {  
   '1':  'Alkali metals',
