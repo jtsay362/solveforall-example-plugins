@@ -1,0 +1,158 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>The full name of the element</td>
+    </tr>
+    <tr>
+      <td>symbol</td>
+      <td>String</td>
+      <td>The chemical symbol of the element</td>
+    </tr>    
+    <tr>
+      <td>number</td>
+      <td>Number</td>
+      <td>The atomic number of the element</td>
+    </tr>
+    <tr>
+      <td>group</td>
+      <td>Number</td>
+      <td>The group number of the element in the periodic table</td>
+    </tr>
+    <tr>  
+      <td>period</td>
+      <td>Number</td>
+      <td>The period number of the element in the periodic table</td>
+    </tr>        
+    <tr>
+      <td>series</td>
+      <td>Number</td>
+      <td>The series number of the element in the periodic table</td>
+    </tr>
+    <tr>
+      <td>block</td>
+      <td>String</td>
+      <td>The block of the element in the periodic table</td>
+    </tr>
+    <tr>
+      <td>eleconfig</td>
+      <td>String</td>
+      <td>The ground state electron configuration of the element</td>
+    </tr>
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td>A brief description of the element</td>
+    </tr>
+    <tr>
+      <td>mass</td>
+      <td>Number</td>
+      <td>The relative atomic mass of the element (A<sub>r</sub>)</td>
+    </tr>
+    <tr>
+      <td>density</td>
+      <td>Number</td>
+      <td>The density of the element in g/cm<sub>3</sub> at 295 K</td>
+    </tr>    
+    <tr>
+      <td>oxidation states</td>
+      <td>String</td>
+      <td>The comma-separated oxidation states of the element</td>
+    </tr>    
+    <tr>
+      <td>tmelt</td>
+      <td>Number</td>
+      <td>The melting temperature of the element, in K, at 1 atm</td>
+    </tr>
+    <tr>
+      <td>tboil</td>
+      <td>Number</td>
+      <td>The boiling temperature of the element, in K, at 1 atm</td>
+    </tr>            
+    <tr>
+      <td>eleneg</td>
+      <td>Number</td>
+      <td>The electronegativity of the element, on the Pauling scale</td>
+    </tr>
+    <tr>
+      <td>eleaffin</td>
+      <td>Number</td>
+      <td>The electron affinity of the element, in eV</td>
+    </tr>    
+    <tr>
+      <td>ionenergy</td>
+      <td>Array of Numbers</td>
+      <td>The ionization energies of the element, in eV</td>
+    </tr>                
+    <tr>
+      <td>covrad</td>
+      <td>Number</td>
+      <td>The covalent radius of the element (r<sub>cov</sub>), in angstroms</td>
+    </tr>    
+    <tr>
+      <td>vdwrad</td>
+      <td>Number</td>
+      <td>The Van der Waals radius of the element (r<sub>w</sub>), in angstroms</td>
+    </tr>            
+    <tr>
+      <td>isotopes</td>
+      <td>Array of Objects</td>
+      <td>An array of objects that have the following properties:
+        <ul>
+          <li>massnumber: The mass number of the isotope</li>
+          <li>mass: The atomic mass of the isotope, in atomic mass units</li>
+          <li>abundance: The abundance of the isotope, relative to 1.0</li>
+        </ul>
+      </td>
+    </tr>    
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;name&quot;: &quot;Titanium&quot;,
+  &quot;symbol&quot;: &quot;Ti&quot;,
+  &quot;number&quot;: 22,
+  &quot;group&quot;: 4,
+  &quot;period&quot;: 4,
+  &quot;block&quot;: &quot;d&quot;,
+  &quot;series&quot;: 8,
+  &quot;eleconfig&quot;: &quot;[Ar] 3d2 4s2&quot;,  
+  &quot;description&quot;: &quot;White metallic transition element. Occurs in numerous minerals. Used in strong, light corrosion-resistant alloys. Forms a passive oxide coating when exposed to air. First discovered by Gregor in 1789.&quot;,  
+  &quot;mass&quot;: 47.867,
+  &quot;density&quot;: 4.51,    
+  &quot;tmelt&quot;: 1935,
+  &quot;tboil&quot;: 3560,   
+  &quot;eleneg&quot;: 1.54,
+  &quot;eleaffin&quot;: 0.084,
+  &quot;ionenergy&quot;: [6.8281, 13.58, ... ],      
+  &quot;oxistates&quot;: &quot;4*, 3&quot;,
+  &quot;covrad&quot;: 1.32,
+  &quot;vdwrad&quot;: 0,    
+  &quot;isotopes&quot;: [
+    {
+      &quot;abundance&quot;: 0.7372,
+      &quot;massnumber&quot;: 48,
+      &quot;mass&quot;: 47.9479471
+    },
+    {
+      &quot;abundance&quot;: 0.0541,
+      &quot;massnumber&quot;: 49,
+      &quot;mass&quot;: 48.9478708
+    },
+    ...
+  ]
+}</pre>
