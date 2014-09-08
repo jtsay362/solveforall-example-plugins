@@ -51,7 +51,7 @@ if (element.symbol !== 'H') {
   </head>
   <body>        
     <h3>
-      <%= element.name %> | <%= element.symbol %> | <%= element.number %>
+      <%= element.name %> (<%= element.number %> <%= element.symbol %>)
     </h3>
   
     <p>
@@ -107,5 +107,22 @@ if (element.symbol !== 'H') {
       </table>
     <% } %>
     </div>  
+    
+    <h4>Links <span class="content_expander"><i class="fa fa-chevron-down"></i></span></h4>
+    
+    <div class="content_expandable initially_hidden">
+      <a href="http://www.chemicalelements.com/elements/<%= element.symbol.toLowerCase() %>.html">chemicalelements.com</a> |
+
+      <img src="http://www.chemicool.com/favicon.ico" width="16" height="16" alt="">        
+      <a href="http://www.chemicool.com/elements/<%= element.name.toLowerCase() %>.html">Chemicool</a> |
+      
+      <a href="http://periodictable.com/Elements/<%= _('' + element.number).pad(3, '0') %>/index.html">periodictable.com</a> |
+
+      <img src="http://www.rsc.org/favicon.ico" width="16" height="16" alt="">
+      <a href="http://www.rsc.org/periodic-table/element/<%= element.number %>/<%= element.name.toLowerCase() %>">Royal Chemical Society</a> |
+      
+      <img src="http://www.wolframalpha.com/favicon.ico" width="16" height="16" alt="">
+      <a href="http://www.wolframalpha.com/input/?i=<%= element.name %>">Wolfram Alpha</a>
+    </div>
   </body>
 </html>
