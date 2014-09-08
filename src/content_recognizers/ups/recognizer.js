@@ -64,17 +64,6 @@ function recognize(s, context) {
 
   recognitionLevel = 0.25;
     
-  var code = s.substring(8, 10);
-  
-  if (code == "01") {
-    extraInfo.serviceType = 'Next Day Air';        
-  } else if (code == '02') {
-    extraInfo.serviceType = 'Second Day Air';        
-  } else if (code == '03') {
-    extraInfo.serviceType = 'Ground';    
-  } else {
-    return makeReturnValue();
-  }
 
   extraInfo.invoiceNumber = s.substring(10, 15);
   
@@ -82,6 +71,18 @@ function recognize(s, context) {
     
   var check_digit = calculate_check_digit(s.substring(2, 17));
   extraInfo.validCheckDigit = check_digit;
+
+  var code = s.substring(8, 10);  
+  if (code == "01") {
+    extraInfo.serviceType = 'Next Day Air';        
+  } else if (code == '02') {
+    extraInfo.serviceType = 'Second Day Air';        
+  } else if (code == '03') {
+    extraInfo.serviceType = 'Ground';    
+  } else {
+    extraInfo.serviceType = '(Invalid)';
+    return makeReturnValue();
+  }
   
   if (check_digit !==  s.charAt(17)) {
     return makeReturnValue();
