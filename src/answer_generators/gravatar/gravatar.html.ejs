@@ -28,7 +28,7 @@ var rating = settings.rating || 'g';
 </head>
 
 <body>
-  <img src="https://secure.gravatar.com/avatar/<%= hash %>.jpg?s=<%= size %>&d=<%= encodeURIComponent(defaultAvatar) %>&r=<%= encodeURIComponent(rating) %>" width="<%= size %>" height="<%= size %>">
+  <img src="https://secure.gravatar.com/avatar/<%= hash %>.jpg?s=<%= size %>&d=<%= encodeURIComponent(defaultAvatar) %>&r=<%= encodeURIComponent(rating) %>" class="img-rounded" width="<%= size %>" height="<%= size %>">
   &nbsp;
   <a href="mailto:<%= address %>">
     <%= address %>    
