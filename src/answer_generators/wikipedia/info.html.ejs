@@ -80,19 +80,15 @@ if (showImage) {
       <% if (showImage) { %>                  
         <span class="pull-left" style="margin-right: 10px">
           <a href="<%= imageUri %>"  target="_top">
-            <object data="<%= imageUri %>" type="<%= imageType %>" class="img-rounded" width="150"
+            <img data-img-src-0="<%= imageUri %>" 
+              <% if (altImageUri) { %>
+                data-img-src-1="<%= altImageUri %>"
+              <% } %>
+              type="<%= imageType %>" class="with_fallback img-rounded margin-top_5 margin-right_10" width="150"
               <% if (requiresExplicitHeight) { %>
               height="150"
               <% } %>
-              >
-              <% if (altImageUri) { %>
-                <img src="<%= altImageUri %>" class="img-rounded" width="150" alt=""
-                  <% if (requiresExplicitHeight) { %>
-                  height="150"
-                  <% } %>
-                >
-              <% } %>
-            </object>
+            >                          
           </a>            
         </span>
       <% } %>  
