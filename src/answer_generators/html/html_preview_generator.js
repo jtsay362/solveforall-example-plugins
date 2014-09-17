@@ -18,7 +18,7 @@ function generateResults(recognitionResults, q, context) {
     content: content,
     contentType: 'text/html',
     serverSideSanitized: serverSideSanitized,
-    trusted: true,
+    trusted: serverSideSanitized,
     label: 'HTML Preview',
     iconUrl: '/favicon.ico',    
     relevance: relevance
