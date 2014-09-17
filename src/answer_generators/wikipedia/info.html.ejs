@@ -28,7 +28,6 @@ var settings = context.settings;
 var maxAbstractCharacters = settings.maxAbstractCharacters || 570;
 var showImage = imageUri && (settings.showImage !== 'false');
 
-var imageType = 'image/jpeg';
 var requiresExplicitHeight = false;
 if (showImage) {
   var altImageUri = null;
@@ -39,18 +38,6 @@ if (showImage) {
     altImageUri = imageUri.replace('/en/', '/commons/');
   }
   
-  var lastDotIndex = imageUri.lastIndexOf('.');
-  
-  if (lastDotIndex >= 0) {
-    imageType = 'image/' + imageUri.substring(lastDotIndex + 1);
-    
-    if (imageType === 'image/jpg') {
-      imageType = 'image/jpeg';
-    } else if (imageType === 'image/svg') {
-      requiresExplicitHeight = true;
-      imageType += '+xml';  
-    }
-  }  
 }
 
 var pruned = null;
@@ -64,9 +51,7 @@ if (text && (text.length > maxAbstractCharacters)) {
 <html>
   <head>
     <title>Wikipedia Infobox</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/readable/bootstrap.min.css" rel="stylesheet">    
     <meta name="com.solveforall.meta.answer.uri" content="http://wikipedia.org/wiki/<%= result.article %>">
-    <meta name="com.solveforall.meta.answer.embeddable" content="true">    
   </head>
   <body>    
     <strong><%= result.humanFormattedArticle %></strong>    
@@ -84,7 +69,7 @@ if (text && (text.length > maxAbstractCharacters)) {
       <% } %>
     </small>            
     
-    <p>
+    <p class="text-justify">
       <% if (showImage) { %>                  
         <span class="pull-left" style="margin-right: 10px">
           <a href="<%= imageUri %>"  target="_top">
@@ -92,7 +77,7 @@ if (text && (text.length > maxAbstractCharacters)) {
               <% if (altImageUri) { %>
                 data-img-src-1="<%= altImageUri %>"
               <% } %>
-              type="<%= imageType %>" class="with_fallback img-rounded margin-top_5 margin-right_10" width="150"
+              class="with_fallback img-rounded margin-top_5 margin-right_10" width="150"
               <% if (requiresExplicitHeight) { %>
               height="150"
               <% } %>
@@ -112,9 +97,9 @@ if (text && (text.length > maxAbstractCharacters)) {
       <% } %>
     </p>
     <% if (remaining) { %>
-      <div class="content_expandable initially_hidden">        
+      <p class="text-justify content_expandable initially_hidden">        
         <%= remaining %>
-      </div>
+      </p>
     <% } %>  
   </body>
 </html>
