@@ -25,7 +25,8 @@ if (!result) {
 var label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
 
 var settings = context.settings;
-var maxAbstractCharacters = settings.maxAbstractCharacters || 570;
+var maxAbstractCharacters = settings.maxAbstractCharacters || 
+    (context.isSuggestionQuery ? 10000 : 570);
 var showImage = imageUri && (settings.showImage !== 'false');
 
 var requiresExplicitHeight = false;
