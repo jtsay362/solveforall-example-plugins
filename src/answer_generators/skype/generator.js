@@ -89,7 +89,7 @@ function generateResults(recognitionResults, q, context) {
       
   return [{
     label: 'Skype',
-    iconUrl: 'http://www.skype.com/favicon.ico',
+    iconUrl: 'https://www.skype.com/favicon.ico',
     tooltip: tooltip,
     uri: 'skype:' + participants + extension,
     embeddable: false,
