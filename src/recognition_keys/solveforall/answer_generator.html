@@ -1,0 +1,113 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+  <tr>
+    <th>Property Name</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>recognitionLevel</td>
+    <td>Number</td>
+    <td>The recognition level, between 0.1 and 0.2, depending on how strongly the answer query matches</td>
+  </tr>
+  <tr>
+    <td>id</td>
+    <td>Number (long)</td>
+    <td>The internal ID of the Answer Generator. Used to form URLs.</td>    
+  </tr>  
+    <tr>
+    <td>name</td>
+    <td>String</td>
+    <td>The localized name</td>    
+  </tr>      
+  <tr>
+    <td>iconUrl</td>
+    <td>String</td>
+    <td>The URL of a favicon. May be null.</td>
+  </tr>
+  <tr>
+    <td>providerId</td>
+    <td>Number (long)</td>
+    <td>
+      The internal ID of the Content Provider of the Answer Generator. Used to form URLs.
+      May be null if there is no Content Provider set.
+    </td>
+  </tr>    
+  <tr>
+    <td>providerName</td>
+    <td>String</td>
+    <td>
+      The localized name of the Content Provider of the Answer Generator. 
+      May be null if there is no Content Provider set.
+    </td>
+  </tr>    
+  <tr>
+    <td>categories</td>
+    <td>Array of String</td>
+    <td>An array of category names. May be empty.</td>
+  </tr>
+  <tr>
+    <td>publisherUserId</td>
+    <td>Number (long)</td>
+    <td>
+      The internal ID of the publisher of the Answer Generator. Used to form URLs.
+    </td>
+  </tr>  
+  <tr>
+    <td>created</td>
+    <td>Number (long)</td>
+    <td>The timestamp (number of milliseconds since the epoch) of when the Answer Generator was first created</td>
+  </tr>
+  <tr>
+    <td>updated</td>
+    <td>Number (long)</td>
+    <td>The timestamp (number of milliseconds since the epoch) of when the Answer Generator was last updated</td>
+  </tr>
+  <tr>
+    <td>numUsers</td>
+    <td>Number (long)</td>
+    <td>The number of users who have added the Answer Generator to their Answer Preferences</td>
+  </tr>
+  <tr>
+    <td>meanRating</td>
+    <td>Number (double)</td>
+    <td>The mean rating, on a 0.0 to 5.0 scale, given by users to the Answer Generator</td>
+  </tr>
+  <tr>
+    <td>suggestedActivationCode</td>
+    <td>String</td>
+    <td>The suggested (default) activation code, without the <code>?</code> prefix</td>
+  </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+
+<pre>
+{
+  &quot;com.solveforall.recognition.solveforall.AnswerGenerator&quot;: [
+    {
+      &quot;recognitionLevel&quot;: 0.2,
+      &quot;id&quot;: 137,
+      &quot;name&quot;: &quot;Yelp Search&quot;,
+      &quot;iconUrl&quot;: &quot;https://www.yelp.com/favicon.ico&quot;,
+      &quot;providerId&quot;: 109,
+      &quot;providerName&quot;: &quot;Yelp&quot;,
+      &quot;categories&quot;: [&quot;Location-Based&quot;],
+      &quot;publisherUserId&quot;: 21,
+      &quot;created&quot;: 1412727533762,
+      &quot;updated&quot;: 1413332399233,
+      &quot;numUsers&quot;: 1045,
+      &quot;meanRating&quot;: 4.8,
+      &quot;suggestedActivationCode&quot;: &quot;yelp&quot;
+    }
+  ]
+}
+</pre>
