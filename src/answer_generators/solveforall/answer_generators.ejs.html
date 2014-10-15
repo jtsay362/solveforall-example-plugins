@@ -77,7 +77,8 @@
               <%= g.categories.join(', ') %>
             </td>                      
             <td>
-              <%- makeRatingHtml(g.meanRating) %></%-> (<%= makeNumUsersText(g.numUsers) %>)
+              <%- makeRatingHtml(g.meanRating) %></%-> 
+              <span class="inline-block">(<%= makeNumUsersText(g.numUsers) %>)</span>
             </td>                      
           </tr>
         <% }); %> 
