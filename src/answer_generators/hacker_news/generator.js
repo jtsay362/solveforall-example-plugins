@@ -4,6 +4,12 @@
 var ICON_URL = 'https://news.ycombinator.com/favicon.ico';
 var BASE_RELEVANCE = 0.4;
 
+function hostForUrl(url) {
+  var startIndex = url.indexOf('//') + 2;
+  var endIndex = url.indexOf('/', startIndex);
+  return url.substring(startIndex, endIndex);  
+}
+
 function makeResponseHandler(q, context) {
   'use strict';
 
@@ -35,7 +41,6 @@ function makeResponseHandler(q, context) {
   <body>    
     <h3>Hacker News search results for &quot;<%= q %>&quot;:</h3>
     <ul>
-
       <% _(hits).each(function (hit) {         
           if (hit.url) { %>          
             <li>
@@ -43,6 +48,7 @@ function makeResponseHandler(q, context) {
             <% if (hit.story_text) { %>        
               : <%= _(hit.story_text).prune(100) %>
             <% } %>
+            &nbsp;<small>(<%= hostForUrl(hit.url) %>)</small>
             </li>
       <%  } }); %> 
     </ul>
@@ -54,7 +60,7 @@ function makeResponseHandler(q, context) {
 ]]></s>;
       
       var template = xml.toString();
-      var model = { q: q, hits: hits };
+      var model = { q: q, hits: hits, hostForUrl: hostForUrl };
       var content = ejs.render(template, model); 
       
       return [{
