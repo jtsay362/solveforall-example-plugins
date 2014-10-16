@@ -1,0 +1,104 @@
+<%  
+var results = recognitionResults['com.solveforall.recognition.healthcare.medicare.Procedure'];
+var item = null;
+if (results && (results.length > 0)) {
+  item = results[0];
+}
+
+if (!item) {
+  throw "No item found " + JSON.stringify(recognitionResults);   
+}
+
+var SUMMARY_LABELS = ['min', 'median', 'max'];
+
+var preferredLocality = context.settings.preferredLocality;
+var costs = item.costs;
+var orderedCosts = [];
+
+if (preferredLocality) {
+  orderedCosts.push({ label: preferredLocality, cost: costs[preferredLocality]});  
+}
+
+_(SUMMARY_LABELS).each(function (label) {  
+  orderedCosts.push({ label: label, cost: costs[label]});  
+});
+
+if (!preferredLocality) {
+  var sortedLabels = _(costs).chain().keys().difference(SUMMARY_LABELS).value().sort();  
+  _(sortedLabels).each(function (label) {
+    orderedCosts.push({ label: label, cost: costs[label]});      
+  });
+}
+
+function transformLabel(label) {
+  switch (label) {
+    case 'min': return '60% Floor';
+    case 'max': return '60% National Limitation Amount';
+    case 'median' : return '60% Median';
+    default: return label;          
+  }
+}
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= item.code %></title>
+    <meta charset="UTF-8">    
+  </head>
+  <body>        
+    <h3>Medicare Reimbursed Costs</h3>
+  
+    <p>
+      <small>
+      CPT copyright 2012 American Medical Association. All rights reserved.
+      CPT is a registered trademark of the American Medical Association.      
+      </small>
+    </p>    
+    
+    <p>
+      <strong>HCPCS / CPT code</strong>: <%= item.code %>
+      <br/>
+      <strong>Procedure</strong>: <%= item.description %>
+    </p>
+              
+    <table class="table table-striped table-hover table-condensed">
+      <thead>
+        <td>Locality</td>
+        <td>Reimbursement</td>        
+      </thead>
+      <tbody>
+        <% _(orderedCosts).each(function (x) { %>  
+          <tr>
+            <td>
+              <%= transformLabel(x.label) %>
+            </td>
+            <td>          
+              $<%= (x.cost || 0).toFixed(2) %>          
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    
+    <div>
+      <span class="label label-info">Note</span>        
+        <% if (preferredLocality) { %>
+          Your preferred locality is <%= preferredLocality %>. 
+          You can change this in the settings for this Answer Generator.
+        <% } else { %>
+          You haven't set a preferred locality, so all costs for all localities are displayed above. 
+          You can set your preferred locality in the settings for this Answer Generator.
+        <% } %>        
+      </span>    
+    </div>
+  
+    <br>
+  
+    <p>
+      <small>
+        Source: 
+        <a href="http://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/ClinicalLabFeeSched/clinlab.html">Medicare Clinical Lab Fee Schedule</a> 
+      </small>      
+    </p>    
+  </body>
+</html>

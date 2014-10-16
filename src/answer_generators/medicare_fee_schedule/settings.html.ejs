@@ -1,0 +1,50 @@
+<%
+var LOCALITIES_AND_ABBREVIATIONS = ["Alabama","AL","Alaska","AK","American Samoa",
+"AS","Arizona","AZ","Arkansas","AR","California (Northern)","CA (North)",
+"California (Southern)","CA (South)",                                     
+"Colorado","CO","Connecticut","CT","Delaware","DE","District Of Columbia","DC",                                "Florida","FL","Georgia","GA","Guam","GU","Hawaii","HI","Idaho","ID","Illinois","IL","Indiana","IN","Iowa","IA","Kansas","KS","Kentucky","KY","Louisiana","LA","Maine","ME","Marshall Islands","MH","Maryland","MD","Massachusetts","MA","Michigan","MI","Minnesota","MN","Mississippi","MS",
+"Missouri","MO","Missouri (General American)","MO (General American)",
+"Montana","MT","Nebraska","NE","Nevada","NV","New Hampshire","NH","New Jersey","NJ","New Mexico","NM",
+"New York (West)","NY (West)","New York (Empire)","NY (Empire)","New York (GHI)","NY (GHI)",
+"North Carolina","NC","North Dakota","ND","Ohio","OH","Oklahoma","OK","Oregon","OR","Palau","PW","Pennsylvania","PA","Puerto Rico","PR","Rhode Island","RI","South Carolina","SC","South Dakota","SD","Tennessee","TN","Texas","TX","Utah","UT","Vermont","VT","Virginia","VA","Washington","WA","West Virginia","WV","Wisconsin","WI","Wyoming","WY"];
+
+var preferredLocality = settings.preferredLocality;
+%>  
+
+<!doctype html>
+<html>
+  <head>
+    <title>Medicare Fee Schedule Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label class="col-xs-4 col-sm-2 control-label">Preferred Locality</label>        
+        <div class="col-xs-6 col-sm-4">
+          <select id="input_preferred_locality" name="preferredLocality" class="form-control">
+            <option value="" 
+              <% if (!preferredLocality) { %>
+              selected
+              <% } %>
+            >None (Show all localities)</option>  
+            <% for (var i = 0; i < LOCALITIES_AND_ABBREVIATIONS.length; i += 2) { %>
+              <option value="<%= LOCALITIES_AND_ABBREVIATIONS[i + 1] %>"
+                <% if (LOCALITIES_AND_ABBREVIATIONS[i + 1] === preferredLocality) { %>
+                  selected
+                <% } %>
+              ><%= LOCALITIES_AND_ABBREVIATIONS[i] %></option>
+            <% } %>          
+          </select>
+        </div>        
+      </div>    
+
+      <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-2">
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-check"></i>&nbsp;Save
+          </button>
+        </div>          
+      </div>      
+    </form>
+  </body>
+</html>
