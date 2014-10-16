@@ -20,11 +20,14 @@ var settings = context.settings;
 var size = settings.size || '80';
 var defaultAvatar = settings.defaultAvatar || 'mm';
 var rating = settings.rating || 'g';
+var url = 'https://secure.gravatar.com/' + hash;
 %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Gravatar</title>
+  <title>Gravatar</title>   
+  <meta name="com.solveforall.meta.answer.uri" content="<%= url %>" >      
+  </head>
 </head>
 
 <body>
@@ -34,6 +37,6 @@ var rating = settings.rating || 'g';
     <%= address %>    
   </a>
   &nbsp;/&nbsp;
-  <a href="https://secure.gravatar.com/<%= hash %>">Gravatar profile</a>
+  <a href="<%= url %>">Gravatar profile</a>
 </body>
 </html>
