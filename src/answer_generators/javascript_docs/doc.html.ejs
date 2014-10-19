@@ -137,12 +137,9 @@ function makeMemberDescriptionHtml() {
            var params = r.constructor.params;
       %>
         <div>
-          <strong>Constructor:</strong>
-
-          <p>
-            <code>new <%= r.qualifiedName %>(<%= params.map(function (param) { return param.name }).join(', ') %>)</code>
-          </p>
-
+          <strong>Constructor</strong>:
+          <pre>new <%= r.qualifiedName %>(<%= params.map(function (param) { return param.name }).join(', ') %>)</pre>
+          
           <% if (params.length > 0) { %>
             <ul>        
               <% _(params).each(function (param) { %>
@@ -165,9 +162,9 @@ function makeMemberDescriptionHtml() {
           
       <%- makeLabelHtml(r) %>
     
-      <% if (r.syntax) { %>
-        <p>
-          <strong>Syntax</strong>: <code><%= r.syntax %></code>
+      <% if (r.syntax) { %>        
+          <strong>Syntax</strong>: 
+          <pre><%= r.syntax %></pre>
         </p>  
       <% } %>
       
