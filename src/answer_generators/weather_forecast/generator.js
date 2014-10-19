@@ -59,7 +59,7 @@ function generateResults(recognitionResults, q, context) {
   
   return [{
     label: 'Weather',
-    iconUrl: 'http://forecast.io/favicon.ico',
+    iconUrl: 'https://forecast.io/favicon.ico',
     tooltip: 'View the weather for ' + placeName,    
     uri: 'https://forecast.io/embed/#lat=' + latString + '&lon=' + lngString + '&name=' + 
       encodeURIComponent(placeName) + '&units=' + encodeURIComponent(unitsType) + '&font=' +
