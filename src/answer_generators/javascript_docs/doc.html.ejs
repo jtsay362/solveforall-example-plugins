@@ -1,0 +1,204 @@
+<%  
+var KIND_CLASS =  'Class';
+var KIND_CLASS_METHOD =  'ClassMethod';
+var KIND_CLASS_PROPERTY =  'ClassProperty';
+var KIND_GLOBAL_PROPERTY = 'GlobalProperty';
+var KIND_GLOBAL_FUNCTION =  'GlobalFunction';
+var KIND_METHOD = 'Method';
+var KIND_PROPERTY = 'Property';
+
+var bestResult = null;  
+var bestKind = null;
+_([KIND_CLASS, KIND_GLOBAL_FUNCTION, KIND_GLOBAL_PROPERTY, KIND_METHOD, KIND_PROPERTY, 
+ KIND_CLASS_METHOD, KIND_CLASS_PROPERTY]).each(function (kind) {
+  var results = recognitionResults['com.solveforall.recognition.programming.web.javascript.globals.' + kind];  
+  if (results && (results.length > 0)) {
+    var result = results[0];    
+    if (!bestResult || (result.recognitionLevel > bestResult.recognitionLevel)) {
+      bestResult = result;
+      bestKind = kind;      
+    }
+  }
+});
+
+if (!bestResult) {
+  throw 'No result found';   
+}
+
+var r = bestResult;
+
+function makeLabelHtml(obj) {
+  var labelHtml = '';
+
+  if (obj.ecma6 || obj.deprecated || obj.nonStandard) {  
+    var labelClass = '';
+    var labelText = '';
+    if (obj.ecma6) {
+      labelClass = 'info';
+      labelText = 'ECMAScript 6 only';
+    } else if (obj.deprecated) {
+      labelClass = 'warning';
+      labelText = 'Deprecated';
+    } else {
+      labelClass = 'danger';
+      labelText = 'Non-standard';    
+    }    
+
+    labelHtml = '<div class="inline-block"><span class="label label-' + labelClass + '">' + labelText + '</span></div>';
+  }
+  
+  return labelHtml;
+}
+
+function makeClassSectionHtml(name, members, prefix, isFunction) {
+  var html = '';    
+  if (members && (members.length > 0)) {
+    html += '<div><strong>' + _(name).escapeHTML() + 
+      ' <span class="content_expander"><i class="fa fa-chevron-down"></i></span></strong>';
+    html += '<div class="content_expandable initially_hidden"><ul>';
+    _(members).each(function (p) { 
+      var name = prefix + p.simpleName;
+      
+      if (isFunction) {
+        name += '()';
+      }      
+      html += '<li>';
+      
+      if (p.url) {
+        html += '<a href="' + _(p.url).escapeHTML() + '">';        
+      }
+      html += '<code>' + _(name).escapeHTML() + '</code>';
+      if (p.url) {
+        html += '</a>'; 
+      }      
+      
+      html += makeLabelHtml(p);
+      html += ': ' + p.summaryHtml +  '</li>';
+    });
+    html += '</ul></div></div>';
+  }
+  return html;
+}
+
+function makeMemberDescriptionHtml() {    
+  var d = null;
+  switch (bestKind) {
+    case KIND_CLASS_METHOD: d = 'Class method'; break;    
+    case KIND_CLASS_PROPERTY: d= 'Class property'; break;      
+    case KIND_GLOBAL_PROPERTY: d = 'Global object property'; break;
+    case KIND_GLOBAL_FUNCTION: d = 'Global function'; break;      
+    case KIND_METHOD: d = 'Instance method'; break;
+    case KIND_PROPERTY: d = 'Instance property'; break;
+    default: throw 'Bad kind';              
+  }
+  
+  if (r.class) {
+    d += ' of <a href="';
+    var lastSlashIndex = r.url.lastIndexOf('/');
+    d += _(r.url.substring(0, lastSlashIndex)).escapeHTML();
+    d += '">';
+    d += _(r.class).escapeHTML();
+    d += '</a>';    
+  }
+  
+  return d;
+}
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= r.qualifiedName %></title>
+    <meta charset="UTF-8">
+    <meta name="com.solveforall.meta.answer.label" content="Javascript Global Object - <%= r.qualifiedName %>" >
+    <% if (r.url) { %>
+      <meta name="com.solveforall.meta.answer.uri" content="<%= r.url %>" >
+    <% } %>
+  </head>
+  <body>    
+    <% if (bestKind === KIND_CLASS) { %>
+      <h2 class="inline-block">
+        Class <code><%= r.qualifiedName %></code>
+      </h2>
+    
+      <%- makeLabelHtml(r) %>
+    
+      <% if (r.summaryHtml) { %>
+      <div>
+        <strong>Summary</strong>: <%- r.summaryHtml %>
+      </div>
+      <% } %>
+    
+      <% if (r.descriptionHtml) { %>
+      <div>
+        <strong>Description</strong>: <%- r.descriptionHtml %>
+      <% } %>
+        
+      <% if (r.constructor && r.constructor.params) { 
+           var params = r.constructor.params;
+      %>
+        <div>
+          <strong>Constructor:</strong>
+
+          <p>
+            <code>new <%= r.qualifiedName %>(<%= params.map(function (param) { return param.name }).join(', ') %>)</code>
+          </p>
+
+          <% if (params.length > 0) { %>
+            <ul>        
+              <% _(params).each(function (param) { %>
+                <li>      
+                  <code><%= param.name %></code>: <%- param.descriptionHtml %>
+                </li>
+              <% }); %>
+            </ul>    
+          <% } %>
+        </div>
+      <% } %>
+    
+      <%- makeClassSectionHtml('Class Properties', r.classProps, r.class + '.', false) %> 
+      <%- makeClassSectionHtml('Class Methods', r.classMethods, r.class + '.', true) %> 
+      <%- makeClassSectionHtml('Instance Properties', r.props, r.class + '.prototype.', false) %> 
+      <%- makeClassSectionHtml('Instance Methods', r.methods, r.class + '.prototype.', true) %>     
+    <% } else { %>
+      <h2 class="inline-block"><code><%= r.qualifiedName %></code></h2>
+      <span class="inline-block">- <%- makeMemberDescriptionHtml() %></span>
+          
+      <%- makeLabelHtml(r) %>
+    
+      <% if (r.syntax) { %>
+        <p>
+          <strong>Syntax</strong>: <code><%= r.syntax %></code>
+        </p>  
+      <% } %>
+      
+      <% if (r.parametersHtml) { %>
+        <p>
+          <strong>Parameters</strong>: <%- r.parametersHtml %></div>    
+        </p>
+      <% } %>    
+    
+      <% if (r.returnValueDescriptionHtml) { %>
+        <p>
+        <strong>Returns</strong>: <%- r.returnValueDescriptionHtml %>
+        </p>
+      <% } %>    
+      
+      <% if (r.errorsThrownHtml) { %>
+        <p>
+          <strong>Errors thrown</strong>: <%- r.errorsThrownHtml %>
+        </p>
+      <% } %>    
+    
+      <% if (r.summaryHtml) { %>
+        <p><strong>Summary</strong>: <%- r.summaryHtml %></p>
+      <% } %>
+    
+      <% if (r.descriptionHtml) { %>
+        <p><strong>Description</strong>: <%- r.descriptionHtml %></p>
+      <% } %>    
+    <% } %>
+    <p>
+      <small>Source: <a href="<%= bestResult.url %>">Mozilla Developer Network</a></small>
+    </p>
+  </body>
+</html>
