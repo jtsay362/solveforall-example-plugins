@@ -163,9 +163,10 @@ function makeMemberDescriptionHtml() {
       <%- makeLabelHtml(r) %>
     
       <% if (r.syntax) { %>        
+        <p>
           <strong>Syntax</strong>: 
-          <pre><%= r.syntax %></pre>
         </p>  
+        <pre><%= r.syntax %></pre>
       <% } %>
       
       <% if (r.parametersHtml) { %>
@@ -176,7 +177,7 @@ function makeMemberDescriptionHtml() {
     
       <% if (r.returnValueDescriptionHtml) { %>
         <p>
-        <strong>Returns</strong>: <%- r.returnValueDescriptionHtml %>
+          <strong>Returns</strong>: <%- r.returnValueDescriptionHtml %>
         </p>
       <% } %>    
       
