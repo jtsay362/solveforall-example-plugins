@@ -22,20 +22,29 @@ try {
     }    
     #links {
       margin-top: 10px; 
-      width: 350px;  
+      width: 360px;  
     }
+    #links .provider {
+      display: inline-block;  
+    }    
     #links img {
       vertical-align: middle; 
     }
   </style>  
   <script type="text/javascript" src="https://www.barchart.com/widget.js?uid=6d7d106fbdc9f9c64f179b6cbd86fd88&widgetType=singlequote&widgetWidth=300&primaryPrice=last&fontColor%5Blinks%5D=004376&font=1&symbox=1&symbol=<%= symbol %>&fields%5B%5D=name&fields%5B%5D=symbol&fields%5B%5D=last&fields%5B%5D=change&fields%5B%5D=pctchange&fields%5B%5D=displaytime&displayChars="></script>
   <div id="links">
-    <img src="https://secure.marketwatch.com/favicon.ico" width="16" height="16" alt="">
-    <a href="http://www.marketwatch.com/investing/stock/<%= symbol %>" target="_top">MarketWatch</a> |
-    <img src="https://www.morningstar.com/favicon.ico" width="16" height="16" alt="">
-    <a href="http://quote.morningstar.com/stock/s.aspx?t=<%= symbol %>" target="_top">Morningstar</a> |
-    <img src="http://finance.yahoo.com/favicon.ico" width="16" height="16" alt="">
-    <a href="http://finance.yahoo.com/q?s=<%= symbol %>" target="_top">Yahoo! Finance</a>     
+    <span class="provider">
+      <img src="https://secure.marketwatch.com/favicon.ico" width="16" height="16" alt="">
+      <a href="http://www.marketwatch.com/investing/stock/<%= symbol %>" target="_top">MarketWatch</a>
+    </span> |
+    <span class="provider">
+      <img src="https://www.morningstar.com/favicon.ico" width="16" height="16" alt="">
+      <a href="http://quote.morningstar.com/stock/s.aspx?t=<%= symbol %>" target="_top">Morningstar</a>
+    </span> |
+    <span class="provider">
+      <img src="http://finance.yahoo.com/favicon.ico" width="16" height="16" alt="">      
+      <a href="http://finance.yahoo.com/q?s=<%= symbol %>" target="_top">Yahoo! Finance</a>     
+    </span>
   </div>  
   </body>
 </html>  
