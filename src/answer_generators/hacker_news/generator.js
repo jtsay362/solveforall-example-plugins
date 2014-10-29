@@ -6,7 +6,17 @@ var BASE_RELEVANCE = 0.4;
 
 function hostForUrl(url) {
   var startIndex = url.indexOf('//') + 2;
-  var endIndex = url.indexOf('/', startIndex);
+  var endIndex = url.indexOf('/', startIndex);  
+  var endIndex2 = url.indexOf('?', startIndex);
+    
+  if (endIndex < 0) {
+    endIndex = endIndex2;    
+  
+    if (endIndex < 0) {
+      return url.substring(startIndex);
+    }    
+  } 
+  
   return url.substring(startIndex, endIndex);  
 }
 
