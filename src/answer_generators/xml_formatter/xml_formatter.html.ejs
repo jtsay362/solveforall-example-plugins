@@ -29,15 +29,15 @@
   </head>
   <body>
     <% if (formatted) { %>
-    <div><em>Valid XML</em></div>
-    <div>
+    <div><i class="fa fa-check"></i> <em style="color: green">Valid XML</em></div>
+    <div style="margin-top: 15px">
       <pre>
 <%= formatted %>
 </pre>
     </div>
     <% } else { %>
-    <div><em>Invalid XML</em></div>
-    <div>
+    <div><i class="fa fa-times-circle"></i> <em style="color: red">Invalid XML</em></div>
+    <div style="margin-top: 15px">
       <pre>
 <%= matchedText %>
 </pre>
