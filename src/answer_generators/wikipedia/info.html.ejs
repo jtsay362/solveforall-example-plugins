@@ -37,8 +37,7 @@ if (showImage) {
     altImageUri = imageUri.replace('/commons/', '/en/');
   } else if (imageUri.indexOf('/en/') > 0) { 
     altImageUri = imageUri.replace('/en/', '/commons/');
-  }
-  
+  }  
 }
 
 var pruned = null;
@@ -53,6 +52,12 @@ if (text && (text.length > maxAbstractCharacters)) {
   <head>
     <title>Wikipedia Infobox</title>
     <meta name="com.solveforall.meta.answer.uri" content="http://wikipedia.org/wiki/<%= result.article %>">
+    <style>
+    img.with_fallback {
+      margin-top: 5px;
+      margin-right: 10px;      
+    }    
+    </style>
   </head>
   <body>    
     <strong><%= result.humanFormattedArticle %></strong>    
@@ -72,13 +77,13 @@ if (text && (text.length > maxAbstractCharacters)) {
     
     <p class="text-justify">
       <% if (showImage) { %>                  
-        <span class="pull-left" style="margin-right: 10px">
+        <span class="pull-left">
           <a href="<%= imageUri %>"  target="_top">
             <img data-img-src-0="<%= imageUri %>" 
               <% if (altImageUri) { %>
                 data-img-src-1="<%= altImageUri %>"
               <% } %>
-              class="with_fallback img-rounded margin-top_5 margin-right_10" width="150"
+              class="with_fallback img-rounded" width="150"
               <% if (requiresExplicitHeight) { %>
               height="150"
               <% } %>
