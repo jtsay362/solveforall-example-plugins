@@ -6,6 +6,17 @@ try {
   console.log('Recognition result not found, falling back to query');
   symbol = _(q).words()[0].toUpperCase();  
 }
+
+if (symbol.length > 5) {
+  throw 'Symbol too long'; 
+}
+
+for (var i = 0; i < symbol.length; i++) {
+  var c = symbol.charAt(i);
+  if ((c < 'A') || (c > 'Z')) {
+    throw 'Invalid symbol ' + symbol;     
+  }  
+}
 %>
 <!doctype html>
 <html>
@@ -22,7 +33,7 @@ try {
     }    
     #links {
       margin-top: 10px; 
-      width: 360px;  
+      width: 360px;
     }
     #links .provider {
       display: inline-block;  
