@@ -1,0 +1,109 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qualifiedName</td>
+      <td>String</td>
+      <td>The name of the method, qualified by the class name</td>
+    </tr>
+    <tr>
+      <td>simpleName</td>
+      <td>String</td>
+      <td>The simple name of the method</td>
+    </tr>        
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>The name of the class the method belongs to</td>
+    </tr>    
+    <tr>
+      <td>syntax</td>
+      <td>String</td>
+      <td>Syntax on how to call the method</td>
+    </tr>
+    <tr>
+      <td>parametersHtml</td>
+      <td>String</td>
+      <td>A description of the parameters, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>returnValueDescriptionHtml</td>
+      <td>String</td>
+      <td>A description of the return value, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>errorsThrownHtml</td>
+      <td>String</td>
+      <td>A description of the errors thrown, in HTML format</td>
+    </tr>        
+    <tr>      
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the method, in HTML format</td>
+    </tr>
+    <tr>
+      <td>descriptionHtml</td>
+      <td>String</td>
+      <td>A description of the method, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>deprecated</td>
+      <td>Boolean</td>
+      <td>True if the method is deprecated</td>
+    </tr>
+    <tr>
+      <td>ecma6</td>
+      <td>Boolean</td>
+      <td>True if the method is only available in ECMAScript 6</td>
+    </tr>
+    <tr>
+      <td>nonStandard</td>
+      <td>Boolean</td>
+      <td>True if the method is non-standard</td>
+    </tr>
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always <code>&quot;ClassMethod&quot;</code></td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>String</td>
+      <td>A URL pointing to the original documentation on Mozilla Developer Network</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;com.solveforall.recognition.programming.web.javascript.globals.ClassMethod&quot; : [
+    {
+      &quot;qualifiedName&quot;: &quot;Map.keys&quot;,
+      &quot;simpleName&quot;: &quot;keys&quot;,      
+      &quot;class&quot;: &quot;Map&quot;,
+      &quot;syntax&quot;: &quot;myMap.keys()&quot;,
+      &quot;parametersHtml&quot;: null,
+      &quot;returnValueDescriptionHtml&quot;: null,
+      &quot;errorsThrownHtml&quot;: null,
+      &quot;summaryHtml&quot;: &quot;The &lt;code&gt;&lt;strong&gt;keys()&lt;/strong&gt;&lt;/code&gt; method returns a new &lt;code&gt;&lt;strong&gt;Iterator&lt;/strong&gt;&lt;/code&gt; object that contains the keys for each element in the &lt;code&gt;Map&lt;/code&gt; object in insertion order.&quot;,
+      &quot;descriptionHtml&quot;: null,
+      &quot;deprecated&quot;: false,
+      &quot;ecma6&quot;: true,
+      &quot;nonStandard&quot;: false,
+      &quot;kind&quot;: &quot;Method&quot;,
+      &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/keys&quot;,      
+      &quot;recognitionLevel&quot;: 0.2601544
+    }  
+  ]
+}</pre>

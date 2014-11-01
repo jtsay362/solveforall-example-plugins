@@ -1,0 +1,204 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qualifiedName</td>
+      <td>String</td>
+      <td>The name of the class</td>
+    </tr>
+    <tr>
+      <td>simpleName</td>
+      <td>String</td>
+      <td>The name of the class</td>
+    </tr>        
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>The name of the class</td>
+    </tr>    
+    <tr>
+      <td>constructor</td>
+      <td>Object</td>
+      <td>If the class has a constructor, an object with the property <code>params</code>, that is an array of objects with the following properties:
+        <ul>
+          <li>name: The name of the constructor parameter</li>
+          <li>descriptionHtml: The description of the constructor parameter, in HTML format</li>
+        </ul>      
+      </td>
+    </tr>
+    <tr>
+      <td>classProps</td>
+      <td>Array</td>
+      <td>An array of objects, describing the class properties, with the following keys:
+        <ul>
+          <li>simpleName</li>
+          <li>summaryHtml</li>
+          <li>deprecated</li>
+          <li>ecma6</li>
+          <li>nonStandard</li>
+          <li>url</li>
+        </ul>      
+        See the documentation for com.solveforall.recognition.programming.web.javascript.globals.ClassProperty for more details. 
+      </td>      
+    </tr>    
+    <tr>
+      <td>classMethods</td>
+      <td>Array</td>
+      <td>An array of objects, describing the class methods, with the following keys:
+        <ul>
+          <li>simpleName</li>
+          <li>summaryHtml</li>
+          <li>syntax</li>
+          <li>parametersHtml</li>          
+          <li>deprecated</li>
+          <li>ecma6</li>
+          <li>nonStandard</li>
+          <li>url</li>
+        </ul>      
+        See the documentation for com.solveforall.recognition.programming.web.javascript.globals.ClassMethod for more details. 
+      </td>      
+    </tr>
+    <tr>
+      <td>props</td>
+      <td>Array</td>
+      <td>An array of objects, describing the instance properties, with the following keys:
+        <ul>
+          <li>simpleName</li>
+          <li>summaryHtml</li>
+          <li>deprecated</li>
+          <li>ecma6</li>
+          <li>nonStandard</li>
+          <li>url</li>
+        </ul>      
+        See the documentation for com.solveforall.recognition.programming.web.javascript.globals.Property for more details. 
+      </td>      
+    </tr>        
+    <tr>
+      <td>methods</td>
+      <td>Array</td>
+      <td>An array of objects, describing the instance methods, with the following keys:
+        <ul>
+          <li>simpleName</li>
+          <li>summaryHtml</li>
+          <li>syntax</li>
+          <li>parametersHtml</li>          
+          <li>deprecated</li>
+          <li>ecma6</li>
+          <li>nonStandard</li>
+          <li>url</li>
+        </ul>      
+        See the documentation for com.solveforall.recognition.programming.web.javascript.globals.Method for more details. 
+      </td>      
+    </tr>
+    <tr>      
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the class, in HTML format</td>
+    </tr>
+    <tr>
+      <td>descriptionHtml</td>
+      <td>String</td>
+      <td>A description of the class, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>deprecated</td>
+      <td>Boolean</td>
+      <td>True if the class is deprecated</td>
+    </tr>
+    <tr>
+      <td>ecma6</td>
+      <td>Boolean</td>
+      <td>True if the class is only available in ECMAScript 6</td>
+    </tr>
+    <tr>
+      <td>nonStandard</td>
+      <td>Boolean</td>
+      <td>True if the class is non-standard</td>
+    </tr>
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always <code>&quot;Class&quot;</code></td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>String</td>
+      <td>A URL pointing to the original documentation on Mozilla Developer Network</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;com.solveforall.recognition.programming.web.javascript.globals.Class&quot;: [
+    {
+      &quot;simpleName&quot;: &quot;Date&quot;,
+      &quot;qualifiedName&quot;: &quot;Date&quot;,
+      &quot;class&quot;: &quot;Date&quot;,
+      &quot;summaryHtml&quot;: &quot;Creates a JavaScript &lt;strong&gt;&lt;code&gt;Date&lt;/code&gt;&lt;/strong&gt; ...&quot;,      
+      &quot;descriptionHtml&quot;: &quot;\n &lt;li&gt;If no arguments are provided, the constructor ...&quot;,
+      &quot;constructor&quot;: {
+        &quot;params&quot;: [
+          {
+            &quot;name&quot;: &quot;value&quot;,
+            &quot;descriptionHtml&quot;: &quot;Integer value representing the number of milliseconds since 1 January 1970 00:00:00 UTC (Unix Epoch).&quot;
+          }
+        ]
+      },
+      &quot;classProps&quot;: [
+        {
+          &quot;simpleName&quot;: &quot;prototype&quot;,
+          &quot;summaryHtml&quot;: &quot;Allows the addition of properties to a JavaScript &lt;code&gt;Date&lt;/code&gt; object.&quot;,
+          &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/prototype&quot;,
+          &quot;ecma6&quot;: false,
+          &quot;nonStandard&quot;: false,
+          &quot;deprecated&quot;: false
+        }
+      ],      
+      &quot;props&quot;: [],
+      &quot;methods&quot;: [
+        {
+          &quot;simpleName&quot;: &quot;getDate&quot;,
+          &quot;summaryHtml&quot;: &quot;Returns the day of the month (1-31) for the specified date according to local time.&quot;,
+          &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDate&quot;,
+          &quot;ecma6&quot;: false,
+          &quot;nonStandard&quot;: false,
+          &quot;deprecated&quot;: false,
+          &quot;syntax&quot;: &quot;dateObj.getDate()&quot;,
+          &quot;parametersHtml&quot;: &quot;None.&quot;
+        },
+        ...
+      ],      
+      &quot;deprecated&quot;: false,      
+      &quot;ecma6&quot;: false,
+      &quot;nonStandard&quot;: false,                  
+      &quot;kind&quot;: &quot;Class&quot;,
+      &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date&quot;,
+      &quot;classMethods&quot;: [
+        {
+          &quot;simpleName&quot;: &quot;now&quot;,
+          &quot;summaryHtml&quot;: &quot;Returns the numeric value corresponding to the current time ...&quot;,
+          &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now&quot;,
+          &quot;ecma6&quot;: false,
+          &quot;nonStandard&quot;: false,
+          &quot;deprecated&quot;: false,
+          &quot;syntax&quot;: &quot;var timeInMs = Date.now();&quot;,
+          &quot;parametersHtml&quot;: &quot;None.&quot;
+        },
+        ...
+      ],
+      &quot;recognitionLevel&quot;: 0.90945876            
+    }
+  ]
+}</pre>

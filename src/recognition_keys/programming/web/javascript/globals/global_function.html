@@ -1,0 +1,109 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qualifiedName</td>
+      <td>String</td>
+      <td>The name of the function</td>
+    </tr>
+    <tr>
+      <td>simpleName</td>
+      <td>String</td>
+      <td>The name of the function</td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>Always <code>null</code></td>
+    </tr>            
+    <tr>
+      <td>syntax</td>
+      <td>String</td>
+      <td>Syntax on how to call the function</td>
+    </tr>
+    <tr>
+      <td>parametersHtml</td>
+      <td>String</td>
+      <td>A description of the parameters, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>returnValueDescriptionHtml</td>
+      <td>String</td>
+      <td>A description of the return value, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>errorsThrownHtml</td>
+      <td>String</td>
+      <td>A description of the errors thrown, in HTML format</td>
+    </tr>        
+    <tr>      
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the function, in HTML format</td>
+    </tr>
+    <tr>
+      <td>descriptionHtml</td>
+      <td>String</td>
+      <td>A description of the function, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>deprecated</td>
+      <td>Boolean</td>
+      <td>True if the function is deprecated</td>
+    </tr>
+    <tr>
+      <td>ecma6</td>
+      <td>Boolean</td>
+      <td>True if the function is only available in ECMAScript 6</td>
+    </tr>
+    <tr>
+      <td>nonStandard</td>
+      <td>Boolean</td>
+      <td>True if the function is non-standard</td>
+    </tr>
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always <code>GlobalFunction</code></td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>String</td>
+      <td>A URL pointing to the original documentation on Mozilla Developer Network</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;com.solveforall.recognition.programming.web.javascript.globals.GlobalFunction&quot;: [
+    {      
+      &quot;simpleName&quot;: &quot;parseFloat&quot;,
+      &quot;qualifiedName&quot;: &quot;parseFloat&quot;,      
+      &quot;class&quot;: null,
+      &quot;syntax&quot;: &quot;parseFloat(string)&quot;,      
+      &quot;parametersHtml&quot;: &quot;&lt;dt&gt;\n  &lt;code&gt;string&lt;/code&gt;\n&lt;/dt&gt;\n &lt;dd&gt;\n  A string that represents the value you want to parse.&lt;/dd&gt;&quot;,      
+      &quot;returnValueDescriptionHtml&quot;: null,
+      &quot;errorsThrownHtml&quot;: null,
+      &quot;summaryHtml&quot;: &quot;The &lt;code&gt;&lt;strong&gt;parseFloat()&lt;/strong&gt;&lt;/code&gt; function parses a string argument and returns a floating point number.&quot;,
+      &quot;descriptionHtml&quot;: &quot;&lt;code&gt;parseFloat&lt;/code&gt; is a top-level function and is not associated with any object.&quot;,      
+      &quot;deprecated&quot;: false,
+      &quot;ecma6&quot;: false,
+      &quot;nonStandard&quot;: false,
+      &quot;kind&quot;: &quot;GlobalFunction&quot;,
+      &quot;recognitionLevel&quot;: 1,
+      &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseFloat&quot;
+    }
+  ]
+}</pre>

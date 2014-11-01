@@ -1,0 +1,109 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qualifiedName</td>
+      <td>String</td>
+      <td>The name of the method, qualified by the class name</td>
+    </tr>
+    <tr>
+      <td>simpleName</td>
+      <td>String</td>
+      <td>The qualified name of the method</td>
+    </tr>        
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>The name of the class the method belongs to</td>
+    </tr>    
+    <tr>
+      <td>syntax</td>
+      <td>String</td>
+      <td>Syntax on how to call the method</td>
+    </tr>
+    <tr>
+      <td>parametersHtml</td>
+      <td>String</td>
+      <td>A description of the parameters, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>returnValueDescriptionHtml</td>
+      <td>String</td>
+      <td>A description of the return value, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>errorsThrownHtml</td>
+      <td>String</td>
+      <td>A description of the errors thrown, in HTML format</td>
+    </tr>        
+    <tr>      
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the method, in HTML format</td>
+    </tr>
+    <tr>
+      <td>descriptionHtml</td>
+      <td>String</td>
+      <td>A description of the method, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>deprecated</td>
+      <td>Boolean</td>
+      <td>True if the method is deprecated</td>
+    </tr>
+    <tr>
+      <td>ecma6</td>
+      <td>Boolean</td>
+      <td>True if the method is only available in ECMAScript 6</td>
+    </tr>
+    <tr>
+      <td>nonStandard</td>
+      <td>Boolean</td>
+      <td>True if the method is non-standard</td>
+    </tr>
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always <code>&quot;Method&quot;</code></td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>String</td>
+      <td>A URL pointing to the original documentation on Mozilla Developer Network</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;com.solveforall.recognition.programming.web.javascript.globals.Method&quot;: [
+    {      
+      &quot;qualifiedName&quot;: &quot;Array.join&quot;,
+      &quot;simpleName&quot;: &quot;join&quot;,
+      &quot;class&quot;: &quot;Array&quot;,
+      &quot;syntax&quot;: &quot;str = arr.join([separator = ','])&quot;,
+      &quot;parametersHtml&quot;: &quot;&lt;dt&gt;&lt;code&gt;separator&lt;/code&gt;&lt;/dt&gt;\n &lt;dd&gt;Optional. Specifies a string to separate each element of the array. The separator is converted to a string if necessary. If omitted, the array elements are separated with a comma.&lt;/dd&gt;&quot;,
+      &quot;returnValueDescriptionHtml&quot;: null,
+      &quot;errorsThrownHtml&quot;: null,
+      &quot;summaryHtml&quot;: &quot;The &lt;code&gt;&lt;strong&gt;join()&lt;/strong&gt;&lt;/code&gt; method joins all elements of an array into a string.&quot;,
+      &quot;descriptionHtml&quot;: &quot;The string conversions of all array elements are joined into one string.&quot;,
+      &quot;deprecated&quot;: false,
+      &quot;ecma6&quot;: false,
+      &quot;nonStandard&quot;: false,
+      &quot;kind&quot;: &quot;Method&quot;,
+      &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join&quot;,
+      &quot;recognitionLevel&quot;: 0.85518116      
+    }
+  ]
+}</pre>

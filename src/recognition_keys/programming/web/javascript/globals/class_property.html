@@ -1,0 +1,84 @@
+<h4>Fields</h4>
+<p>
+  Each recognition result has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qualifiedName</td>
+      <td>String</td>
+      <td>The name of the property, qualified by the class name</td>
+    </tr>
+    <tr>
+      <td>simpleName</td>
+      <td>String</td>
+      <td>The simple name of the property</td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>The name of the class the property belongs to</td>
+    </tr>            
+    <tr>      
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the property, in HTML format</td>
+    </tr>
+    <tr>
+      <td>descriptionHtml</td>
+      <td>String</td>
+      <td>A description of the property, in HTML format</td>
+    </tr>    
+    <tr>
+      <td>deprecated</td>
+      <td>Boolean</td>
+      <td>True if the property is deprecated</td>
+    </tr>
+    <tr>
+      <td>ecma6</td>
+      <td>Boolean</td>
+      <td>True if the property is only available in ECMAScript 6</td>
+    </tr>
+    <tr>
+      <td>nonStandard</td>
+      <td>Boolean</td>
+      <td>True if the property is non-standard</td>
+    </tr>
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always <code>&quot;ClassProperty&quot;</code></td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>String</td>
+      <td>A URL pointing to the original documentation on Mozilla Developer Network</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;com.solveforall.recognition.programming.web.javascript.globals.ClassProperty&quot;: [
+    {
+      &quot;simpleName&quot;: &quot;PI&quot;,
+      &quot;qualifiedName&quot;: &quot;Math.PI&quot;,
+      &quot;class&quot;: &quot;Math&quot;,      
+      &quot;summaryHtml&quot;: &quot;The &lt;code&gt;&lt;strong&gt;Math.PI&lt;/strong&gt;&lt;/code&gt; property represents the ratio of the circumference of a circle to its diameter, approximately 3.14159:&quot;,
+      &quot;descriptionHtml&quot;: &quot;Because &lt;code&gt;PI&lt;/code&gt; is a static property of &lt;code&gt;Math&lt;/code&gt;, you always use it as &lt;code&gt;Math.PI&lt;/code&gt;, rather than as a property of a &lt;code&gt;Math&lt;/code&gt; object you created (&lt;code&gt;Math&lt;/code&gt; is not a constructor).&quot;,
+      &quot;deprecated&quot;: false,
+      &quot;ecma6&quot;: false,
+      &quot;nonStandard&quot;: false,      
+      &quot;kind&quot;: &quot;ClassProperty&quot;,
+      &quot;url&quot;: &quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/PI&quot;
+    }
+  ]
+}</pre>
