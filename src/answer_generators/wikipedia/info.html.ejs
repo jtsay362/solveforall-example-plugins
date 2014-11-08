@@ -43,7 +43,9 @@ if (showImage) {
 var pruned = null;
 var remaining = null;
 if (text && (text.length > maxAbstractCharacters)) {  
-  pruned = _(text).prune(maxAbstractCharacters, '');
+  var x = text.substring(0, maxAbstractCharacters);
+  var chopped = _(x).strRightBack('.');
+  pruned = x.substring(0, x.length - chopped.length);  
   remaining = text.substring(pruned.length);  
 }
 %>    
