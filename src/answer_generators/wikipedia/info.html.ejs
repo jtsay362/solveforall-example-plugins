@@ -45,8 +45,15 @@ var remaining = null;
 if (text && (text.length > maxAbstractCharacters)) {  
   var x = text.substring(0, maxAbstractCharacters);
   var chopped = _(x).strRightBack('.');
+
   pruned = x.substring(0, x.length - chopped.length);  
-  remaining = text.substring(pruned.length);  
+  
+  // Avoid just a short sentence that is hidden.
+  if (x.length - pruned.length < 100) {    
+    pruned = null;
+  } else {
+    remaining = text.substring(pruned.length);  
+  }    
 }
 %>    
 <!doctype html>
