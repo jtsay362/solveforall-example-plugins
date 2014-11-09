@@ -26,7 +26,7 @@ var label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', '
 
 var settings = context.settings;
 var maxAbstractCharacters = settings.maxAbstractCharacters || 
-    (context.isSuggestionQuery ? 10000 : 570);
+  (context.isSuggestionQuery ? 10000 : 570);
 var showImage = imageUri && (settings.showImage !== 'false');
 
 var requiresExplicitHeight = false;
@@ -49,7 +49,7 @@ if (text && (text.length > maxAbstractCharacters)) {
   pruned = x.substring(0, x.length - chopped.length);  
   
   // Avoid just a short sentence that is hidden.
-  if (x.length - pruned.length < 100) {    
+  if (text.length - pruned.length < 100) {    
     pruned = null;
   } else {
     remaining = text.substring(pruned.length);  
@@ -92,9 +92,9 @@ if (text && (text.length > maxAbstractCharacters)) {
               <% if (altImageUri) { %>
                 data-img-src-1="<%= altImageUri %>"
               <% } %>
-              class="with_fallback img-rounded" width="150"
+              class="with_fallback img-rounded" width="200"
               <% if (requiresExplicitHeight) { %>
-              height="150"
+              height="200"
               <% } %>
             >                          
           </a>            
