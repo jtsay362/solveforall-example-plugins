@@ -18,11 +18,10 @@ function makeRatingHtml(rating) {
   var fractionRating = rating - intRating;
   if (fractionRating >= 0.5) {
     s += '<img src="' + IMAGE_URL_BASE + 'star-half.png" width="16" height="16" alt="">';
+    s += 1;
   }
 
-  i += 1;
-
-  for (; i <= 5; i++) {
+  for (; i < 5; i++) {
     s += '<img src="' + IMAGE_URL_BASE + 'star-off.png" width="16" height="16" alt="">';                                  
   }
 
