@@ -24,6 +24,12 @@ if (!bestResult) {
 
 var r = bestResult;
 
+var version = context.settings.version || '2.1.5';
+
+function substituteVersion(s) {
+  return s.replace('${VERSION}', version, 'gm');
+}
+
 function makeClassSectionHtml(simpleKind, members, parent) {
   var html = '';    
   if (members && (members.length > 0)) {
@@ -51,7 +57,7 @@ function makeClassSectionHtml(simpleKind, members, parent) {
         html += '</a>'; 
       }      
 
-      html += ': ' + p.summaryHtml +  '</li>';
+      html += ': ' + substituteVersion(p.summaryHtml) +  '</li>';
     });
     html += '</ul></div></div>';
   }
@@ -78,6 +84,12 @@ function makeMemberDescriptionHtml() {
   
   return d;
 }
+
+var uri = null;
+if (r.uri) {
+  uri = substituteVersion(r.uri);
+}
+
 %>
 <!doctype html>
 <html>
@@ -85,8 +97,8 @@ function makeMemberDescriptionHtml() {
     <title><%= r.fullName %></title>
     <meta charset="UTF-8">
     <meta name="com.solveforall.meta.answer.label" content="Ruby Doc - <%= r.fullName %>" >
-    <% if (r.url) { %>
-      <meta name="com.solveforall.meta.answer.uri" content="<%= r.url %>" >
+    <% if (uri) { %>
+      <meta name="com.solveforall.meta.answer.uri" content="<%= uri  %>" >
     <% } %>
     <style>
       .section_header {
@@ -97,12 +109,19 @@ function makeMemberDescriptionHtml() {
   <body>    
     <% if ((bestKind === KIND_MODULE) || (bestKind === KIND_CLASS)) { %>
       <h2 class="inline-block">
-        <%= simpleKind(bestKind) %>  <code><%= r.fullName %></code>
+        <%= simpleKind(bestKind) %>
+        <% if (uri) { %>
+          <a href="<%= uri %>">
+        <% } %>
+        <code><%= r.fullName %></code>
+        <% if (uri) { %>
+          </a>
+        <% } %>
       </h2>
 
       <% if (r.summaryHtml) { %>
         <div>
-          <%- r.summaryHtml %>
+          <%- substituteVersion(r.summaryHtml) %>
         </div>
       <% } %>
 
@@ -119,7 +138,15 @@ function makeMemberDescriptionHtml() {
       <%- makeClassSectionHtml('Methods', r.methods, r.parent) %>
       <%- makeClassSectionHtml('Constants', r.constants, r.parent) %>
     <% } else { %>
-      <h2 class="inline-block"><code><%= r.fullName %></code></h2>
+      <h2 class="inline-block">
+        <% if (uri) { %>
+          <a href="<%= uri %>">
+        <% } %>
+          <code><%= r.fullName %></code>
+        <% if (uri) { %>
+          </a>
+        <% } %>
+      </h2>
       <span class="inline-block">- <%- makeMemberDescriptionHtml() %></span>
 
       <% if (r.params) { %>
@@ -132,7 +159,7 @@ function makeMemberDescriptionHtml() {
 
       <% if (r.summaryHtml) { %>
         <div>
-          <%- r.summaryHtml %>
+          <%- substituteVersion(r.summaryHtml) %>
         </div>
       <% } %>
     <% } %>
