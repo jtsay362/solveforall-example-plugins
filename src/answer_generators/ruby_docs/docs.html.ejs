@@ -1,0 +1,141 @@
+<%  
+var KIND_MODULE =  'Module';
+var KIND_CLASS =  'Class';
+var KIND_ATTRIBUTE =  'Attribute';
+var KIND_METHOD =  'Method';
+var KIND_CONSTANT =  'Constant';
+
+var bestResult = null;  
+var bestKind = null;
+_([KIND_MODULE, KIND_CLASS, KIND_ATTRIBUTE, KIND_METHOD, KIND_CONSTANT]).each(function (kind) {
+  var results = recognitionResults['com.solveforall.recognition.programming.ruby.' + kind];  
+  if (results && (results.length > 0)) {
+    var result = results[0];    
+    if (!bestResult || (result.recognitionLevel > bestResult.recognitionLevel)) {
+      bestResult = result;
+      bestKind = kind;      
+    }
+  }
+});
+
+if (!bestResult) {
+  throw 'No result found';   
+}
+
+var r = bestResult;
+
+function makeClassSectionHtml(simpleKind, members, parent) {
+  var html = '';    
+  if (members && (members.length > 0)) {
+    html += '<div><h3 class="section_header">' + _(simpleKind).escapeHTML() +
+      ' <span class="content_expander"><i class="fa fa-chevron-down"></i></span></h3>';
+    html += '<div class="content_expandable initially_hidden"><ul>';
+    _(members).each(function (p) {
+      var name = p.name;
+
+      if (parent) {
+        name = parent + '::' + name;
+      }
+      
+      if (p.params) {
+        name += p.params;
+      } 
+           
+      html += '<li>';
+      
+      if (p.url) {
+        html += '<a href="' + _(p.url).escapeHTML() + '">';        
+      }
+      html += '<code>' + _(name).escapeHTML() + '</code>';
+      if (p.url) {
+        html += '</a>'; 
+      }      
+
+      html += ': ' + p.summaryHtml +  '</li>';
+    });
+    html += '</ul></div></div>';
+  }
+  return html;
+}
+
+function simpleKind(kind) {
+  return kind.substr(kind.lastIndexOf('.') + 1);
+}
+
+function makeMemberDescriptionHtml() {    
+  var d = simpleKind(bestKind);
+
+  if (r.parent) {
+    /*
+    d += ' of <a href="';
+    var lastSlashIndex = r.url.lastIndexOf('/');
+    d += _(r.url.substring(0, lastSlashIndex)).escapeHTML();
+    d += '">'; */
+    d += ' of ';
+    d += _(r.parent).escapeHTML();
+    //d += '</a>';
+  }
+  
+  return d;
+}
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= r.fullName %></title>
+    <meta charset="UTF-8">
+    <meta name="com.solveforall.meta.answer.label" content="Ruby Doc - <%= r.fullName %>" >
+    <% if (r.url) { %>
+      <meta name="com.solveforall.meta.answer.uri" content="<%= r.url %>" >
+    <% } %>
+    <style>
+      .section_header {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>    
+    <% if ((bestKind === KIND_MODULE) || (bestKind === KIND_CLASS)) { %>
+      <h2 class="inline-block">
+        <%= simpleKind(bestKind) %>  <code><%= r.fullName %></code>
+      </h2>
+
+      <% if (r.summaryHtml) { %>
+        <div>
+          <%- r.summaryHtml %>
+        </div>
+      <% } %>
+
+      <% if (r.includes && (r.includes.length > 0)) { %>
+        <h3>Includes</h3>
+        <p>
+          <code><%- _(r.includes).map(function (include) {
+            return _(include).escapeHTML();
+          }).join('</code>, <code>') %></code>
+        </p>
+      <% } %>
+
+      <%- makeClassSectionHtml('Attributes', r.attributes, r.parent) %>
+      <%- makeClassSectionHtml('Methods', r.methods, r.parent) %>
+      <%- makeClassSectionHtml('Constants', r.constants, r.parent) %>
+    <% } else { %>
+      <h2 class="inline-block"><code><%= r.fullName %></code></h2>
+      <span class="inline-block">- <%- makeMemberDescriptionHtml() %></span>
+
+      <% if (r.params) { %>
+        <p>
+          <code>
+            <%= r.name + r.params %>
+          </code>
+        </p>
+      <% } %>
+
+      <% if (r.summaryHtml) { %>
+        <div>
+          <%- r.summaryHtml %>
+        </div>
+      <% } %>
+    <% } %>
+
+  </body>
+</html>
