@@ -26,8 +26,30 @@ var r = bestResult;
 
 var version = context.settings.version || '2.1.5';
 
+var MAX_MEMBER_LENGTH = 300;
+var MAX_WHOLE_LENGTH = 800;
+
 function substituteVersion(s) {
   return s.replace('${VERSION}', version, 'gm');
+}
+
+function truncateHtml(html, maxLength) {
+  var originalLength = html.length;
+  if (originalLength <= maxLength) {
+    return html;     
+  }
+    
+  for (var i = maxLength; i < originalLength - 1; i++) {
+    // Look for <p> or <pre>
+    if ((html[i] === '<') && (html[i + 1] === 'p')) {
+      return '<div>' + html.substr(0, i) +
+        '<span class="content_expander"><i>More ...</i> <i class="fa fa-chevron-down"></i></span></div>' +
+        '<div class="content_expandable initially_hidden">' +
+        html.substring(i, originalLength); + '</div>';
+    }    
+  }
+  
+  return html;
 }
 
 function makeClassSectionHtml(simpleKind, members, parent) {
@@ -57,7 +79,7 @@ function makeClassSectionHtml(simpleKind, members, parent) {
         html += '</a>'; 
       }      
 
-      html += ': ' + substituteVersion(p.summaryHtml) +  '</li>';
+      html += ' ' + substituteVersion(truncateHtml(p.summaryHtml, MAX_MEMBER_LENGTH)) +  '</li>';
     });
     html += '</ul></div></div>';
   }
@@ -101,8 +123,14 @@ if (r.uri) {
       <meta name="com.solveforall.meta.answer.uri" content="<%= uri  %>" >
     <% } %>
     <style>
+      h2 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
       .section_header {
         display: inline-block;
+        margin-top: 10px;
+        margin-bottom: 10px;
       }
     </style>
   </head>
@@ -126,8 +154,8 @@ if (r.uri) {
       <% } %>
 
       <% if (r.includes && (r.includes.length > 0)) { %>
-        <h3>Includes</h3>
         <p>
+          <b>Includes</b>:        
           <code><%- _(r.includes).map(function (include) {
             return _(include).escapeHTML();
           }).join('</code>, <code>') %></code>
@@ -159,7 +187,7 @@ if (r.uri) {
 
       <% if (r.summaryHtml) { %>
         <div>
-          <%- substituteVersion(r.summaryHtml) %>
+          <%- substituteVersion(truncateHtml(r.summaryHtml, MAX_WHOLE_LENGTH)) %>
         </div>
       <% } %>
     <% } %>
