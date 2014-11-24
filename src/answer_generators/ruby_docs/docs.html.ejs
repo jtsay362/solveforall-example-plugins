@@ -27,7 +27,7 @@ var r = bestResult;
 var version = context.settings.version || '2.1.5';
 
 var MAX_MEMBER_LENGTH = 300;
-var MAX_WHOLE_LENGTH = 800;
+var MAX_TOP_LEVEL_LENGTH = 800;
 
 function substituteVersion(s) {
   return s.replace('${VERSION}', version, 'gm');
@@ -149,7 +149,7 @@ if (r.uri) {
 
       <% if (r.summaryHtml) { %>
         <div>
-          <%- substituteVersion(r.summaryHtml) %>
+          <%- substituteVersion(truncateHtml(r.summaryHtml, MAX_TOP_LEVEL_LENGTH)) %>
         </div>
       <% } %>
 
@@ -187,7 +187,7 @@ if (r.uri) {
 
       <% if (r.summaryHtml) { %>
         <div>
-          <%- substituteVersion(truncateHtml(r.summaryHtml, MAX_WHOLE_LENGTH)) %>
+          <%- substituteVersion(truncateHtml(r.summaryHtml, MAX_TOP_LEVEL_LENGTH)) %>
         </div>
       <% } %>
     <% } %>
