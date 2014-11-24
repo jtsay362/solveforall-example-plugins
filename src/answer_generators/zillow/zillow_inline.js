@@ -1,10 +1,5 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global _, HostAdapter, hostAdapter, XML */
-function isNonBlankString(s) {
-  'use strict';
-  return s && (s.trim().length > 0);
-}
-
 function makeChangeHtml(change) {
   var changeString = _.numberFormat(Math.abs(change));
 
@@ -96,7 +91,10 @@ function handleResponse(responseText, httpResponse) {
         </p>
 
         <div>
-          <a href="http://www.zillow.com/"><img src="http://www.zillow.com/widgets/GetVersionedResource.htm?path=/static/logos/Zillowlogo_150x40_rounded.gif" width="150" height="40" alt="Zillow Real Estate Search" /></a>
+          <a href="http://www.zillow.com/">
+            <img src="https://solveforall.com/resources/images/zillow_150x38.png"
+             width="150" height="38" alt="Zillow Real Estate Search">
+          </a>
         </div>
 
         <p>
@@ -145,7 +143,7 @@ function generateResults(recognitionResults, q, context) {
 
   var zwsid = context.developerSettings['ZWSID'];
   
-  if (!zwsid || (zwsid.length === 0)) {    
+  if (!zwsid) {    
     throw 'No ZWSID set!'
   }
   
@@ -155,12 +153,12 @@ function generateResults(recognitionResults, q, context) {
 
   var address = recognitionResult.streetAddress;
 
-  if (!isNonBlankString(address)) {
+  if (!address) {
     console.info('No address found');
     return [];
   }
 
-  if (isNonBlankString(recognitionResult.secondaryUnit)) {
+  if (recognitionResult.secondaryUnit) {
     address += ' ' + recognitionResult.secondaryUnit;
   }
 
@@ -170,8 +168,7 @@ function generateResults(recognitionResults, q, context) {
 
   if (recognitionResult.zipCode && (recognitionResult.zipCode >= 5)) {
     cityStateZip = recognitionResult.zipCode;
-  } else if (isNonBlankString(recognitionResult.city) &&
-             isNonBlankString(recognitionResult.stateAbbreviation)) {
+  } else if (recognitionResult.city && recognitionResult.stateAbbreviation) {
     cityStateZip = recognitionResult.city + ', ' +
       recognitionResult.stateAbbreviation;
   } else {
