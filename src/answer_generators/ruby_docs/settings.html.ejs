@@ -1,0 +1,38 @@
+<% var VERSIONS =  [
+     '1.8.6', '1.8.7', 
+     '1.9.2', '1.9.3', 
+     '2.0.0', 
+     '2.1.0', '2.1.1', '2.1.1', '2.1.2', '2.1.3', '2.1.4', '2.1.5'
+   ];
+   var selectedVersion = settings.version || VERSIONS[VERSIONS.length - 1]; %>
+<!doctype html>
+<html>
+  <head>
+    <title>Ruby Inline Docs Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="version_input" class="col-xs-2 control-label">Ruby Version</label>
+        <div class="col-xs-2">
+          <select name="version" class="form-control">
+            <% for (var i = 0; i < VERSIONS.length; i++) { %>
+                <option
+                <% if (selectedVersion === VERSIONS[i]) { %>
+                     selected="selected"
+                <% } %>
+                >
+                <%= VERSIONS[i] %>
+                </option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-offset-2 col-xs-2">
+          <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Save</button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>
