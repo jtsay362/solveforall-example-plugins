@@ -33,6 +33,11 @@ function substituteVersion(s) {
   return s.replace('${VERSION}', version, 'gm');
 }
 
+var uri = null;
+if (r.uri) {
+  uri = substituteVersion(r.uri);
+}
+
 function truncateHtml(html, maxLength) {
   var originalLength = html.length;
   if (originalLength <= maxLength) {
@@ -94,24 +99,25 @@ function makeMemberDescriptionHtml() {
   var d = simpleKind(bestKind);
 
   if (r.parent) {
-    /*
-    d += ' of <a href="';
-    var lastSlashIndex = r.url.lastIndexOf('/');
-    d += _(r.url.substring(0, lastSlashIndex)).escapeHTML();
-    d += '">'; */
     d += ' of ';
+
+    var parentUri = null;
+
+    var hashIndex = uri.indexOf('#');
+    if (hashIndex > 0) {
+      parentUri = uri.substr(0, hashIndex);     
+      d += '<a href="' + _(parentUri).escapeHTML() + '">';      
+    }
+    
     d += _(r.parent).escapeHTML();
-    //d += '</a>';
+    
+    if (parentUri) {
+      d += '</a>';
+    }
   }
   
   return d;
 }
-
-var uri = null;
-if (r.uri) {
-  uri = substituteVersion(r.uri);
-}
-
 %>
 <!doctype html>
 <html>
