@@ -60,10 +60,16 @@ function truncateHtml(html, maxLength) {
 function makeClassSectionHtml(simpleKind, members, parent) {
   var html = '';    
   if (members && (members.length > 0)) {
-    html += '<div><h3 class="section_header">' + _(simpleKind).escapeHTML() +
-      ' <span class="content_expander"><i class="fa fa-chevron-down"></i></span></h3>';
+    html += '<div><h4 class="section_header">' + _(simpleKind).escapeHTML() +
+      ' <span class="content_expander"><i class="fa fa-chevron-down"></i></span></h4>';
     html += '<div class="content_expandable initially_hidden"><ul>';
     _(members).each(function (p) {
+      html += '<li>';
+
+      if (p.uri) {
+        html += '<a href="' + _(substituteVersion(p.uri)).escapeHTML() + '">';        
+      }
+      
       var name = p.name;
 
       if (parent) {
@@ -72,15 +78,11 @@ function makeClassSectionHtml(simpleKind, members, parent) {
       
       if (p.params) {
         name += p.params;
-      } 
-           
-      html += '<li>';
+      }                  
       
-      if (p.url) {
-        html += '<a href="' + _(p.url).escapeHTML() + '">';        
-      }
       html += '<code>' + _(name).escapeHTML() + '</code>';
-      if (p.url) {
+      
+      if (p.uri) {
         html += '</a>'; 
       }      
 
@@ -133,11 +135,14 @@ function makeMemberDescriptionHtml() {
         margin-top: 10px;
         margin-bottom: 10px;
       }
-      .section_header {
+      li {
+        margin-top: 6px; 
+      }            
+      .section_header {        
         display: inline-block;
         margin-top: 10px;
         margin-bottom: 10px;
-      }
+      }      
     </style>
   </head>
   <body>    
@@ -159,13 +164,28 @@ function makeMemberDescriptionHtml() {
         </div>
       <% } %>
 
-      <% if (r.includes && (r.includes.length > 0)) { %>
-        <p>
-          <b>Includes</b>:        
-          <code><%- _(r.includes).map(function (include) {
-            return _(include).escapeHTML();
+      <% if (r.superClass) { %>
+        <div>
+          <h4 class="section_header">Superclass</h4>: <code><%= r.superClass %></code>          
+        </div>      
+      <% } %>
+    
+      <% if (r.extends && (r.extends.length > 0)) { %>        
+        <div>
+          <h4 class="section_header">Extends</h4>:        
+          <code><%- _(r.extends).map(function (x) {
+            return _(x).escapeHTML();
           }).join('</code>, <code>') %></code>
-        </p>
+        </div>
+      <% } %>
+    
+      <% if (r.includes && (r.includes.length > 0)) { %>
+        <div>
+        <h4 class="section_header">Includes</h4>:                
+        <code><%- _(r.includes).map(function (include) {
+          return _(include).escapeHTML();
+        }).join('</code>, <code>') %></code>
+        </div>
       <% } %>
 
       <%- makeClassSectionHtml('Attributes', r.attributes, r.parent) %>
