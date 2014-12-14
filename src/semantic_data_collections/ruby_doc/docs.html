@@ -1,0 +1,266 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>
+        The simple name. Can be searched by <code>rawName</code>
+        (not analyzed) or <code>name</code> (analyzed).
+      </td>
+    </tr>
+    <tr>
+      <td>fullName</td>
+      <td>String</td>
+      <td>The fully qualified name. Can be searched by <code>rawFullName</code> (not analyzed) or <code>fullName</code> (analyzed).
+      </td>
+    </tr>
+    <tr>
+      <td>fullNameTokens</td>
+      <td>Array of Strings</td>
+      <td>An array of tokens in the full name. Can be searched by 
+          <code>rawFullNameTokens</code> (not analyzed) or <code>fullNameTokens</code> (analyzed).
+      </td>
+    </tr>    
+    <tr>
+      <td>project</td>
+      <td>String</td>
+      <td>The name of the project / library</td>
+    </tr>      
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>The kind of symbol. One of:
+        <ul>
+          <li><code>&quot;module&quot;</code></li>
+          <li><code>&quot;class&quot;</code></li>            
+          <li><code>&quot;method&quot;</code></li>
+          <li><code>&quot;attribute&quot;</code></li>
+          <li><code>&quot;constant&quot;</code></li>
+        </ul>      
+      </td>
+    </tr>
+    <tr>
+      <td>parent</td>
+      <td>String</td>
+      <td>The fully qualified name of the parent context of the code object (either a module or a class)</td>
+    </tr>
+        
+    <tr>
+      <td>uri</td>
+      <td>String</td>
+      <td>The path of the documentation, which may contain the string <code>${VERSION}</code> as a placeholder for the version of the library</td>
+    </tr>
+    <tr>
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the code object, in HTML format</td>
+    </tr>
+    <tr>
+      <td>visibility</td>
+      <td>String</td>
+      <td><code>&quot;public&quot;</code> if the code object is externally visible</td>
+    </tr>  
+  </tbody>
+</table>
+
+<p>Context kinds (classes and modules) also have the following fields:</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>extends</td>
+      <td>Array of Strings</td>
+      <td>
+        An array of contexts this context extends.
+      </td>
+    </tr>
+    <tr>
+      <td>includes</td>
+      <td>Array of Strings</td>
+      <td>        
+        An array of contexts this context includes.
+      </td>
+    </tr>
+    <tr>
+      <td>methods</td>
+      <td>Array of Objects</td>
+      <td>        
+        An array of objects representing each method. Each object has the following properties:
+        <ul>
+          <li>name: The simple name  of the method</li>  
+          <li>summaryHtml: A brief summary of the method</li>  
+          <li>visibility: <code>public</code> if the method is externally visible</li>  
+          <li>params: A comma separated list of parameters</li>    
+          <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>
+        </ul>            
+      </td>
+    </tr>  
+    <tr>
+      <td>attributes</td>
+      <td>Array of Objects</td>
+      <td>        
+        An array of objects representing each attribute. Each object has the following properties:
+        <ul>
+          <li>name: The simple name  of the attribute</li>  
+          <li>summaryHtml: A brief summary of the attribute</li>  
+          <li>visibility: <code>public</code> if the attribute is externally visible</li>  
+          <li>uri: The URI pointing to the documentation of the attribute. May also contain the <code>${VERSION}</code> placeholder.</li>  
+        </ul>            
+      </td>
+    </tr>        
+    <tr>
+      <td>constants</td>
+      <td>Array of Objects</td>
+      <td>        
+        An array of objects representing each constant. Each object has the following properties:
+        <ul>
+          <li>name: The simple name  of the constant</li>  
+          <li>summaryHtml: A brief summary of the constant</li>  
+          <li>value: The value of the constant</li>
+          <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>              
+        </ul>            
+      </td>
+    </tr>          
+  </tbody>
+</table>
+
+<p>Classes also have the following field:</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>superClass</td>
+      <td>String</td>
+      <td>
+        The fully-qualfied name of the superclass (parent class) of the class
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Methods also have the following field:</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>params</td>
+      <td>String</td>
+      <td>
+        The parameters for the method, separated by commas
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Constants also have the following field:</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>value</td>
+      <td>String</td>
+      <td>
+        The value of the constant
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h4>Examples</h4>
+
+<h5>A class</h5>
+<pre>
+{
+  &quot;name&quot;: &quot;Hash&quot;,
+  &quot;fullName&quot;: &quot;Hash&quot;,
+  &quot;project&quot;: &quot;ruby&quot;,
+  &quot;kind&quot;: &quot;class&quot;,
+  &quot;fullNameTokens&quot;: [
+    &quot;Hash&quot;
+  ],
+  &quot;parent&quot;: null,
+  &quot;includes&quot;: [
+    &quot;Enumerable&quot;
+  ],  
+  &quot;extends&quot;: [],
+  &quot;superClass&quot;: &quot;Object&quot;,  
+  &quot;visibility&quot;: &quot;public&quot;,  
+  &quot;summaryHtml&quot;: &quot;&lt;p&gt;A &lt;a href=\&quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html\&quot;&gt;Hash&lt;/a&gt; is a dictionary-like collection of unique\nkeys and their values...&quot;,  
+  &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html&quot;,
+  
+  &quot;methods&quot;: [
+    ...
+    {
+      &quot;name&quot;: &quot;fetch&quot;,
+      &quot;summaryHtml&quot;: &quot;&lt;p&gt;Returns a value from the hash for the given key. If the key can&amp;#39;t be\nfound, there are several options: ...&quot;,
+      &quot;params&quot;: &quot;(key) {| key | block }   -&gt; obj&quot;,
+      &quot;visibility&quot;: &quot;public&quot;,
+      &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html#method-i-fetch&quot;
+    },
+    ...
+  ],    
+  &quot;attributes&quot;: [],      
+  &quot;constants&quot;: []
+}
+</pre>
+
+<h5>A method</h5>
+
+<pre>
+{
+  &quot;name&quot;: &quot;keys&quot;,
+  &quot;fullName&quot;: &quot;Hash#keys&quot;,
+  &quot;project&quot;: &quot;ruby&quot;,
+  &quot;kind&quot;: &quot;method&quot;,
+  &quot;fullNameTokens&quot;: [
+    &quot;Hash&quot;,
+    &quot;keys&quot;
+  ],
+  &quot;parent&quot;: &quot;Hash&quot;,
+  &quot;visibility&quot;: &quot;public&quot;,  
+  &quot;summaryHtml&quot;: &quot;&lt;p&gt;Returns a new array populated with the keys from this hash...&quot;,  
+  &quot;params&quot;: &quot;    -&gt; array&quot;,
+  &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html#method-i-keys&quot;
+}
+</pre>

@@ -1,0 +1,94 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>
+        The simple name. Can be searched by <code>rawName</code>
+        (not analyzed) or <code>name</code> (analyzed).
+      </td>
+    </tr>
+    <tr>
+      <td>fullName</td>
+      <td>String</td>
+      <td>The fully qualified name. Can be searched by <code>rawFullName</code> (not analyzed) or <code>fullName</code> (analyzed).
+      </td>
+    </tr>
+    <tr>
+      <td>fullNameTokens</td>
+      <td>Array of Strings</td>
+      <td>An array of tokens in the full name. Can be searched by 
+          <code>rawFullNameTokens</code> (not analyzed) or <code>fullNameTokens</code> (analyzed).
+      </td>
+    </tr>    
+    <tr>
+      <td>project</td>
+      <td>String</td>
+      <td>The name of the project / library</td>
+    </tr>      
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always <code>&quot;constant&quot;</code></ul>      
+      </td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td>String</td>
+      <td>
+        The value of the constant
+      </td>
+    </tr>
+    <tr>
+      <td>uri</td>
+      <td>String</td>
+      <td>The path of the documentation, which may contain the string <code>${VERSION}</code> as a placeholder for the version of the library</td>
+    </tr>
+    <tr>
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the attribute, in HTML format</td>
+    </tr>
+    <tr>
+      <td>visibility</td>
+      <td>String</td>
+      <td><code>&quot;public&quot;</code> if the constant is externally visible</td>
+    </tr>  
+  </tbody>
+</table>
+
+<h4>Example</h4>
+
+<pre>
+{
+  &quot;com.solveforall.recognition.programming.ruby.Constant&quot;: [
+    {
+      &quot;name&quot;: &quot;STDOUT&quot;,
+      &quot;fullName&quot;: &quot;Object::STDOUT&quot;,
+      &quot;fullNameTokens&quot;: [
+        &quot;Object&quot;,
+        &quot;STDOUT&quot;
+      ],
+      &quot;parent&quot;: &quot;Object&quot;,
+      &quot;project&quot;: &quot;ruby&quot;,
+      &quot;kind&quot;: &quot;constant&quot;,          
+      &quot;summaryHtml&quot;: &quot;&lt;p&gt;Holds the original stdout&lt;/p&gt;&quot;,
+      &quot;value&quot;: &quot;rb_stdout&quot;,
+      &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Object.html#STDOUT&quot;
+    },
+    ...
+  ]
+}
+</pre>

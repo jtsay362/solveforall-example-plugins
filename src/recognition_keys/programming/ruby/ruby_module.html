@@ -1,0 +1,164 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>
+        The simple name. Can be searched by <code>rawName</code>
+        (not analyzed) or <code>name</code> (analyzed).
+      </td>
+    </tr>
+    <tr>
+      <td>fullName</td>
+      <td>String</td>
+      <td>The fully qualified name. Can be searched by <code>rawFullName</code> (not analyzed) or <code>fullName</code> (analyzed).
+      </td>
+    </tr>
+    <tr>
+      <td>fullNameTokens</td>
+      <td>Array of Strings</td>
+      <td>An array of tokens in the full name. Can be searched by 
+          <code>rawFullNameTokens</code> (not analyzed) or <code>fullNameTokens</code> (analyzed).
+      </td>
+    </tr>    
+    <tr>
+      <td>project</td>
+      <td>String</td>
+      <td>The name of the project / library</td>
+    </tr>      
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always <code>&quot;module&quot;</code></td>
+    </tr>
+    <tr>
+      <td>parent</td>
+      <td>String</td>
+      <td>The fully qualified name of the parent context of the module (either a module or a class)</td>
+    </tr>        
+    <tr>
+      <td>extends</td>
+      <td>Array of Strings</td>
+      <td>
+        An array of contexts this module extends.
+      </td>
+    </tr>
+    <tr>
+      <td>includes</td>
+      <td>Array of Strings</td>
+      <td>        
+        An array of contexts this module includes.
+      </td>
+    </tr>
+    <tr>
+      <td>methods</td>
+      <td>Array of Objects</td>
+      <td>        
+        An array of objects representing each method. Each object has the following properties:
+        <ul>
+          <li>name: The simple name  of the method</li>  
+          <li>summaryHtml: A brief summary of the method</li>  
+          <li>visibility: <code>public</code> if the method is externally visible</li>  
+          <li>params: A comma separated list of parameters</li>    
+          <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>
+        </ul>            
+      </td>
+    </tr>  
+    <tr>
+      <td>attributes</td>
+      <td>Array of Objects</td>
+      <td>        
+        An array of objects representing each attribute. Each object has the following properties:
+        <ul>
+          <li>name: The simple name  of the attribute</li>  
+          <li>summaryHtml: A brief summary of the attribute</li>  
+          <li>visibility: <code>public</code> if the attribute is externally visible</li>  
+          <li>uri: The URI pointing to the documentation of the attribute. May also contain the <code>${VERSION}</code> placeholder.</li>  
+        </ul>            
+      </td>
+    </tr>        
+    <tr>
+      <td>constants</td>
+      <td>Array of Objects</td>
+      <td>        
+        An array of objects representing each constant. Each object has the following properties:
+        <ul>
+          <li>name: The simple name  of the constant</li>  
+          <li>summaryHtml: A brief summary of the constant</li>  
+          <li>value: The value of the constant</li>
+          <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>              
+        </ul>            
+      </td>
+    </tr>                
+    <tr>
+      <td>uri</td>
+      <td>String</td>
+      <td>The path of the documentation, which may contain the string <code>${VERSION}</code> as a placeholder for the version of the library</td>
+    </tr>
+    <tr>
+      <td>summaryHtml</td>
+      <td>String</td>
+      <td>A summary of the module, in HTML format</td>
+    </tr>
+    <tr>
+      <td>visibility</td>
+      <td>String</td>
+      <td><code>&quot;public&quot;</code> if the module is externally visible</td>
+    </tr>  
+  </tbody>
+</table>
+
+<h4>Example</h4>
+
+<pre>
+{
+  &quot;com.solveforall.recognition.programming.ruby.Module&quot;: [
+    {
+      &quot;name&quot;: &quot;Kernel&quot;,
+      &quot;fullName&quot;: &quot;Kernel&quot;,
+      &quot;fullNameTokens&quot;: [
+        &quot;Kernel&quot;
+      ],      
+      &quot;project&quot;: &quot;ruby&quot;,
+      &quot;kind&quot;: &quot;module&quot;,
+      &quot;parent&quot;: null,
+      &quot;includes&quot;: [],
+      &quot;extends&quot;: [],
+      &quot;visibility&quot;: &quot;public&quot;,
+      &quot;summaryHtml&quot;: null,
+      &quot;methods&quot;: [
+        {
+          &quot;name&quot;: &quot;Array&quot;,
+          &quot;summaryHtml&quot;: &quot;&lt;p&gt;Returns &lt;code&gt;arg&lt;/code&gt; as an Array...&quot;,
+          &quot;params&quot;: &quot;(arg)    -&gt; array&quot;,
+          &quot;visibility&quot;: &quot;public&quot;,
+          &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Kernel.html#method-i-Array&quot;
+        },
+        ...
+      ],
+      &quot;attributes&quot;: [],      
+      &quot;constants&quot;: [
+        {
+          &quot;name&quot;: &quot;RUBYGEMS_ACTIVATION_MONITOR&quot;,
+          &quot;summaryHtml&quot;: &quot;&quot;,
+          &quot;value&quot;: &quot;Monitor.new # :nodoc:&quot;,
+          &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Kernel.html#RUBYGEMS_ACTIVATION_MONITOR&quot;
+        }
+      ],      
+      &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Kernel.html&quot;
+    }
+  ]
+}
+</pre>
