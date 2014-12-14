@@ -46,20 +46,20 @@
     <tr>
       <td>parent</td>
       <td>String</td>
-      <td>The fully qualified name of the parent context of the module (either a module or a class)</td>
+      <td>The fully qualified name of the parent module of the module. <code>null</code> for top-level modules.</td>
     </tr>        
     <tr>
       <td>extends</td>
       <td>Array of Strings</td>
       <td>
-        An array of contexts this module extends.
+        An array of fully-qualfied names of contexts this module extends
       </td>
     </tr>
     <tr>
       <td>includes</td>
       <td>Array of Strings</td>
       <td>        
-        An array of contexts this module includes.
+        An array of fully-qualfied names of contexts this module includes
       </td>
     </tr>
     <tr>
@@ -69,8 +69,8 @@
         An array of objects representing each method. Each object has the following properties:
         <ul>
           <li>name: The simple name  of the method</li>  
-          <li>summaryHtml: A brief summary of the method</li>  
-          <li>visibility: <code>public</code> if the method is externally visible</li>  
+          <li>summaryHtml: A brief summary of the method, in HTML format</li>  
+          <li>visibility: <code>&quot;public&quot;</code> if the method is externally visible</li>  
           <li>params: A comma separated list of parameters</li>    
           <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>
         </ul>            
@@ -82,9 +82,9 @@
       <td>        
         An array of objects representing each attribute. Each object has the following properties:
         <ul>
-          <li>name: The simple name  of the attribute</li>  
-          <li>summaryHtml: A brief summary of the attribute</li>  
-          <li>visibility: <code>public</code> if the attribute is externally visible</li>  
+          <li>name: The simple name of the attribute</li>  
+          <li>summaryHtml: A brief summary of the attribute, in HTML format</li>  
+          <li>visibility: <code>&quot;public&quot;</code> if the attribute is externally visible</li>  
           <li>uri: The URI pointing to the documentation of the attribute. May also contain the <code>${VERSION}</code> placeholder.</li>  
         </ul>            
       </td>
@@ -95,8 +95,8 @@
       <td>        
         An array of objects representing each constant. Each object has the following properties:
         <ul>
-          <li>name: The simple name  of the constant</li>  
-          <li>summaryHtml: A brief summary of the constant</li>  
+          <li>name: The simple name of the constant</li>  
+          <li>summaryHtml: A brief summary of the constant, in HTML format</li>  
           <li>value: The value of the constant</li>
           <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>              
         </ul>            

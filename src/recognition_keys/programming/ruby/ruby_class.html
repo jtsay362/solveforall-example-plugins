@@ -41,33 +41,25 @@
     <tr>
       <td>kind</td>
       <td>String</td>
-      <td>The kind of symbol. One of:
-        <ul>
-          <li>module</li>
-          <li>class</li>            
-          <li>method</li>
-          <li>attribute</li>
-          <li>constant</li>
-        </ul>      
-      </td>
+      <td>Always <code>&quot;class&quot;</code></td>
     </tr>
     <tr>
       <td>parent</td>
       <td>String</td>
-      <td>The fully qualified name of the parent context of the class (either a module or a class)</td>
+      <td>The fully qualified name of the parent context of the class (either a module or a class). <code>null</code> for top-level classes.</td>
     </tr>        
     <tr>
       <td>extends</td>
       <td>Array of Strings</td>
       <td>
-        An array of contexts this class extends.
+        An array of fully-qualfied names of contexts this class extends
       </td>
     </tr>
     <tr>
       <td>includes</td>
       <td>Array of Strings</td>
       <td>        
-        An array of contexts this class includes.
+        An array of fully-qualfied names of contexts this class includes
       </td>
     </tr>
     <tr>
@@ -83,9 +75,9 @@
       <td>        
         An array of objects representing each method. Each object has the following properties:
         <ul>
-          <li>name: The simple name  of the method</li>  
-          <li>summaryHtml: A brief summary of the method</li>  
-          <li>visibility: <code>public</code> if the method is externally visible</li>  
+          <li>name: The simple name of the method</li>  
+          <li>summaryHtml: A brief summary of the method, in HTML format</li>  
+          <li>visibility: <code>&quot;public&quot;</code> if the method is externally visible</li>  
           <li>params: A comma separated list of parameters</li>    
           <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>
         </ul>            
@@ -97,9 +89,9 @@
       <td>        
         An array of objects representing each attribute. Each object has the following properties:
         <ul>
-          <li>name: The simple name  of the attribute</li>  
-          <li>summaryHtml: A brief summary of the attribute</li>  
-          <li>visibility: <code>public</code> if the attribute is externally visible</li>  
+          <li>name: The simple name of the attribute</li>  
+          <li>summaryHtml: A brief summary of the attribute, in HTML format</li>  
+          <li>visibility: <code>&quot;public&quot;</code> if the attribute is externally visible</li>  
           <li>uri: The URI pointing to the documentation of the attribute. May also contain the <code>${VERSION}</code> placeholder.</li>  
         </ul>            
       </td>
@@ -110,8 +102,8 @@
       <td>        
         An array of objects representing each constant. Each object has the following properties:
         <ul>
-          <li>name: The simple name  of the constant</li>  
-          <li>summaryHtml: A brief summary of the constant</li>  
+          <li>name: The simple name of the constant</li>  
+          <li>summaryHtml: A brief summary of the constant, in HTML format</li>  
           <li>value: The value of the constant</li>
           <li>uri: The URI pointing to the documentation of the method. May also contain the <code>${VERSION}</code> placeholder.</li>              
         </ul>            
@@ -153,35 +145,41 @@
 
 <pre>
 {
-  &quot;name&quot;: &quot;Hash&quot;,
-  &quot;fullName&quot;: &quot;Hash&quot;,
-  &quot;project&quot;: &quot;ruby&quot;,
-  &quot;kind&quot;: &quot;class&quot;,
-  &quot;fullNameTokens&quot;: [
-    &quot;Hash&quot;
-  ],
-  &quot;parent&quot;: null,
-  &quot;includes&quot;: [
-    &quot;Enumerable&quot;
-  ],  
-  &quot;extends&quot;: [],
-  &quot;superClass&quot;: &quot;Object&quot;,  
-  &quot;visibility&quot;: &quot;public&quot;,  
-  &quot;summaryHtml&quot;: &quot;&lt;p&gt;A &lt;a href=\&quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html\&quot;&gt;Hash&lt;/a&gt; is a dictionary-like collection of unique\nkeys and their values...&quot;,  
-  &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html&quot;,
-  
-  &quot;methods&quot;: [
-    ...
+  &quot;com.solveforall.recognition.programming.ruby.Class&quot;: [
+
     {
-      &quot;name&quot;: &quot;fetch&quot;,
-      &quot;summaryHtml&quot;: &quot;&lt;p&gt;Returns a value from the hash for the given key. If the key can&amp;#39;t be\nfound, there are several options: ...&quot;,
-      &quot;params&quot;: &quot;(key) {| key | block }   -&gt; obj&quot;,
-      &quot;visibility&quot;: &quot;public&quot;,
-      &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html#method-i-fetch&quot;
-    },
+      &quot;name&quot;: &quot;Hash&quot;,
+      &quot;fullName&quot;: &quot;Hash&quot;,
+      &quot;project&quot;: &quot;ruby&quot;,
+      &quot;kind&quot;: &quot;class&quot;,
+      &quot;fullNameTokens&quot;: [
+        &quot;Hash&quot;
+      ],
+      &quot;parent&quot;: null,
+      &quot;includes&quot;: [
+        &quot;Enumerable&quot;
+      ],  
+      &quot;extends&quot;: [],
+      &quot;superClass&quot;: &quot;Object&quot;,  
+      &quot;visibility&quot;: &quot;public&quot;,  
+      &quot;summaryHtml&quot;: &quot;&lt;p&gt;A &lt;a href=\&quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html\&quot;&gt;Hash&lt;/a&gt; is a dictionary-like collection of unique\nkeys and their values...&quot;,  
+      &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html&quot;,
+
+      &quot;methods&quot;: [
+        ...
+        {
+          &quot;name&quot;: &quot;fetch&quot;,
+          &quot;summaryHtml&quot;: &quot;&lt;p&gt;Returns a value from the hash for the given key. If the key can&amp;#39;t be\nfound, there are several options: ...&quot;,
+          &quot;params&quot;: &quot;(key) {| key | block }   -&gt; obj&quot;,
+          &quot;visibility&quot;: &quot;public&quot;,
+          &quot;uri&quot;: &quot;http://www.ruby-doc.org/core-${VERSION}/Hash.html#method-i-fetch&quot;
+        },
+        ...
+      ],    
+      &quot;attributes&quot;: [],      
+      &quot;constants&quot;: []
+    }, 
     ...
-  ],    
-  &quot;attributes&quot;: [],      
-  &quot;constants&quot;: []
+  ]
 }
 </pre>
