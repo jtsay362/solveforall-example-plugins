@@ -90,17 +90,31 @@
     <tr>
       <td>implements</td>
       <td>Arrays</td>
-      <td>An array of fully-qualified interface names this class or enum implements, or this interface extends</td>
+      <td>An array of interface names this class or enum implements, or this interface extends</td>
+    </tr>    
+    <tr>
+      <td>constructors</td>
+      <td>Array</td>
+      <td>An array containing these properties of constructors:
+        <ul>
+          <li>modifiers</li>
+          <li>params (without the <code>description</code> property)</li>
+          <li>description</li>
+          <li>path</li>
+        </ul>
+      </td>
     </tr>    
     <tr>
       <td>methods</td>
       <td>Array</td>
-      <td>An array containing these properties of methods (see below):
+      <td>An array containing these properties of methods:
         <ul>
           <li>name</li>
           <li>modifiers</li>
           <li>params (without the <code>description</code> property)</li>
           <li>returnType</li>
+          <li>description</li>
+          <li>returns</li>
           <li>path</li>
         </ul>
       </td>
@@ -120,14 +134,37 @@
   &quot;superClass&quot;:&quot;java.lang.Object&quot;,
   &quot;implements&quot; : [&quot;java.io.Serializable&quot;,&quot;java.lang.Cloneable&quot;],
   &quot;since&quot; : &quot;1.1&quot;,
+  &quot;constructors&quot;: [
+    {
+      &quot;name&quot;: &quot;Locale&quot;,
+      &quot;modifiers&quot;: [
+        &quot;public&quot;
+      ],
+      &quot;params&quot;: [
+        {
+          &quot;type&quot;: &quot;String&quot;,
+          &quot;name&quot;: &quot;language&quot;
+        },
+        {
+          &quot;type&quot;: &quot;String&quot;,
+          &quot;name&quot;: &quot;country&quot;
+        },
+        {
+          &quot;type&quot;: &quot;String&quot;,
+          &quot;name&quot;: &quot;variant&quot;
+        }
+      ],
+      &quot;description&quot;: &quot;Construct a locale from language, country and variant...&quot;,
+      &quot;path&quot;: &quot;java/util/Locale.html#Locale(java.lang.String, java.lang.String, java.lang.String)&quot;      
+    },
+  ],  
   &quot;methods&quot; : [ 
     ...,
     {  
       &quot;name&quot; : &quot;getDisplayLanguage&quot;,
       &quot;qualifiedName&quot; : &quot;java.util.Locale.getDisplayLanguage&quot;,
       &quot;annotations&quot; : [],
-      &quot;modifiers&quot; : [&quot;public&quot;],
-      &quot;path&quot; : &quot;java/util/Locale.html#getDisplayLanguage(java.util.Locale)&quot;,
+      &quot;modifiers&quot; : [&quot;public&quot;],      
       &quot;params&quot; : [
         {
           &quot;type&quot; : &quot;Locale&quot;,
@@ -135,8 +172,9 @@
         }
       ],
       &quot;returnType&quot; : &quot;String&quot;,
-      &quot;description&quot; : &quot;Returns a name for the locale's language ...&quot;
-      &quot;returns&quot; : null
+      &quot;description&quot; : &quot;Returns a name for the locale's language ...&quot;,
+      &quot;returns&quot; : null,
+      &quot;path&quot; : &quot;java/util/Locale.html#getDisplayLanguage(java.util.Locale)&quot;
     },
     ...
   ],
@@ -203,7 +241,7 @@
     }
   ],
   &quot;annotations&quot; : [],
-  &quot;modifiers&quot; : [&quot;public&quot;]
+  &quot;modifiers&quot; : [&quot;public&quot;],
   &quot;returnType&quot; : &quot;long&quot;,
   &quot;throws&quot; : [&quot;IOException&quot;],
   &quot;description&quot; : &quot;Skips over and discards n bytes of data from the\n input stream...&quot;,
