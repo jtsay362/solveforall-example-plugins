@@ -9,8 +9,28 @@ if (!rr) {
   rr = results[0];    
 }
 
+var MAX_SUMMARY_LENGTH = 800;
 var pythonMajorVersion = context.settings.pythonVersion || '3'; 
 var uri = 'https://docs.python.org/' + pythonMajorVersion + '/library/' + rr.path;
+
+function truncateHtml(html, maxLength) {
+  var originalLength = html.length;
+  if (originalLength <= maxLength) {
+    return html;     
+  }
+    
+  for (var i = maxLength; i < originalLength - 1; i++) {
+    // Look for <p> or <pre>
+    if ((html[i] === '<') && (html[i + 1] === 'p')) {
+      return '<div>' + html.substr(0, i) +
+        '<span class="content_expander"><i>More ...</i> <i class="fa fa-chevron-down"></i></span></div>' +
+        '<div class="content_expandable initially_hidden">' +
+        html.substring(i, originalLength); + '</div>';
+    }    
+  }
+  
+  return html;
+}
 %>
 <!doctype html>
 <html>
@@ -22,9 +42,9 @@ var uri = 'https://docs.python.org/' + pythonMajorVersion + '/library/' + rr.pat
   </head>
   <body>
     <pre><%= rr.name %>(<%= rr.params.join(', ') %>)</pre>
-    <p>
-      <%= rr.summary %>    
-    </p>
+    
+    <%- truncateHtml(rr.summaryHtml, MAX_SUMMARY_LENGTH) %>    
+    
     <p>      
       <a href="<%= uri %>">View on docs.python.org</a>
     </p>
