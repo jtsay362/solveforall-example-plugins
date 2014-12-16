@@ -169,12 +169,6 @@ if (rr.kind === 'method') {
       <p>
         <%= rr.description %>    
       </p>
-      <% if (rr.since) { %>
-        <p>
-          <strong>Since</strong>: <%= rr.since %>  
-        </p>
-      <% } %>
-
       <% if (rr.kind !== 'annotation') { 
         _(['constructor', 'method']).each(function (invokableKind) {
           var invokables = rr[invokableKind + 's'];                    
@@ -206,6 +200,11 @@ if (rr.kind === 'method') {
         });      
       }
     } %>
+    <% if (rr.since) { %>
+      <p>
+        <strong>Since</strong>: <%= rr.since %>  
+      </p>
+    <% } %>  
     <p>
       <small>      
         View full docs at <a href="<%= uri %>">docs.oracle.org</a>
