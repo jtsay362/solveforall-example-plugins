@@ -1,0 +1,117 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>The simple name of the enclosing class</td>
+    </tr>
+    <tr>
+      <td>qualifiedClass</td>
+      <td>String</td>
+      <td>The qualified of the enclosing class</td>
+    </tr>    
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>The simple name</td>
+    </tr>
+    <tr>
+      <td>annotations</td>
+      <td>Array</td>
+      <td>An array of annotations</td>
+    </tr>
+    <tr>
+      <td>modifiers</td>
+      <td>Array</td>
+      <td>An array of modifiers ("public", "static", etc.)</td>
+    </tr>    
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td>A description of the method</td>
+    </tr>
+    <tr>
+      <td>since</td>
+      <td>String</td>
+      <td>Which JDK this first appeared in (may not be present)</td>
+    </tr>
+    <tr>
+      <td>path</td>
+      <td>String</td>
+      <td>The path of the documentation, relative to http://docs.oracle.com/javase/[version]/docs/api/</td>
+    </tr>    
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>Always &quot;method&quot;</td>
+    </tr>
+    <tr>
+      <td>params</td>
+      <td>Array</td>
+      <td>
+        An array of parameter descriptors with the following properties:
+        <ul>
+          <li>name</li>
+          <li>type</li>
+          <li>description (may not be present)</li>        
+        </ul>      
+      </td>
+    </tr>
+    <tr>
+      <td>returnType</td>
+      <td>String</td>
+      <td>The return type of the method</td>
+    </tr>    
+    <tr>
+      <td>throws</td>
+      <td>Array</td>
+      <td>An array of <code>Exception</code> subclass names declared by the method (subclasses of <code>java.lang.RuntimeException</code> are typically not declared)</td>
+    </tr>    
+    <tr>
+      <td>returns</td>
+      <td>String</td>
+      <td>The description of the return value of the method (may not be present)</td>
+    </tr>        
+  </tbody>
+</table>
+
+<h4>Example</h4>
+<pre>{
+  &quot;com.solveforall.recognition.programming.java.JdkMethod&quot; : [
+    {
+      &quot;name&quot; : &quot;skip&quot;,
+      &quot;class&quot; : &quot;FileInputStream&quot;,
+      &quot;qualifiedClass&quot; : &quot;java.io.FileInputStream&quot;,
+      &quot;qualifiedName&quot; : &quot;java.io.FileInputStream.skip&quot;,
+      &quot;params&quot; : [
+        { 
+          &quot;type&quot; : &quot;long&quot;,
+          &quot;name&quot; : &quot;n&quot;,
+          &quot;description&quot; : &quot;the number of bytes to be skipped.&quot;
+        }
+      ],
+      &quot;annotations&quot; : [],
+      &quot;modifiers&quot; : [&quot;public&quot;],
+      &quot;returnType&quot; : &quot;long&quot;,
+      &quot;throws&quot; : [&quot;IOException&quot;],
+      &quot;description&quot; : &quot;Skips over and discards n bytes of data from the\n input stream...&quot;,
+      &quot;returns&quot; : &quot;the actual number of bytes skipped.&quot;,
+      &quot;path&quot; : &quot;java/io/FileInputStream.html#skip(long)&quot;,
+      &quot;kind&quot; : &quot;method&quot;
+    },
+    ...
+  ]
+}
+</pre>

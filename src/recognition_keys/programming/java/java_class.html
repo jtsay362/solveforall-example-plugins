@@ -1,0 +1,172 @@
+<h4>Fields</h4>
+<p>
+  Each document has the following fields:
+</p>
+
+<table class="table table-striped table-condensed">
+  <thead>
+    <tr>
+      <th>Property Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td>String</td>
+      <td>The simple class name</td>
+    </tr>
+    <tr>
+      <td>qualifiedClass</td>
+      <td>String</td>
+      <td>The qualified class name</td>
+    </tr>    
+    <tr>
+      <td>name</td>
+      <td>String</td>
+      <td>The simple name</td>
+    </tr>
+    <tr>
+      <td>annotations</td>
+      <td>Array</td>
+      <td>An array of annotations</td>
+    </tr>
+    <tr>
+      <td>modifiers</td>
+      <td>Array</td>
+      <td>An array of modifiers ("public", "static", etc.)</td>
+    </tr>    
+    <tr>
+      <td>description</td>
+      <td>String</td>
+      <td>A description of the class/interface/enum/annotation</td>
+    </tr>
+    <tr>
+      <td>since</td>
+      <td>String</td>
+      <td>Which JDK this first appeared in (may not be present)</td>
+    </tr>
+    <tr>
+      <td>path</td>
+      <td>String</td>
+      <td>The path of the documentation, relative to http://docs.oracle.com/javase/[version]/docs/api/</td>
+    </tr>    
+    <tr>
+      <td>kind</td>
+      <td>String</td>
+      <td>The kind of symbol. One of:
+        <ul>
+          <li>&quot;class&quot;</li>
+          <li>&quot;enum&quot;</li>
+          <li>&quot;interface&quot;</li>
+          <li>&quot;annotation&quot;</li>        
+        </ul>      
+      </td>
+    </tr>
+    <tr>
+      <td>superClass</td>
+      <td>String</td>
+      <td>The fully-qualified name of the superclass</td>
+    </tr>
+    <tr>
+      <td>implements</td>
+      <td>Arrays</td>
+      <td>An array of interface names this class or enum implements, or this interface extends</td>
+    </tr>    
+    <tr>
+      <td>constructors</td>
+      <td>Array</td>
+      <td>An array containing these properties of constructors:
+        <ul>
+          <li>modifiers</li>
+          <li>params (without the <code>description</code> property)</li>
+          <li>description</li>
+          <li>path</li>
+        </ul>
+      </td>
+    </tr>    
+    <tr>
+      <td>methods</td>
+      <td>Array</td>
+      <td>An array containing these properties of methods:
+        <ul>
+          <li>name</li>
+          <li>modifiers</li>
+          <li>params (without the <code>description</code> property)</li>
+          <li>returnType</li>
+          <li>description</li>
+          <li>returns</li>
+          <li>path</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>    
+</table>  
+
+<h4>Example</h4>
+<pre>{
+  &quot;com.solveforall.recognition.programming.java.JdkClass&quot; : [
+    {
+      &quot;name&quot; : &quot;Locale&quot;,
+      &quot;qualifiedName&quot; : &quot;java.util.Locale&quot;,
+      &quot;class&quot; : &quot;Locale&quot;,
+      &quot;qualifiedClass&quot; : &quot;java.util.Locale&quot;,
+      &quot;annotations&quot; : [],
+      &quot;modifiers&quot; : [&quot;final&quot;, &quot;public&quot;],
+      &quot;description&quot; : &quot;A Locale object represents a specific geographical, political,\n or cultural region...&quot;,
+      &quot;superClass&quot;:&quot;java.lang.Object&quot;,
+      &quot;implements&quot; : [&quot;java.io.Serializable&quot;,&quot;java.lang.Cloneable&quot;],
+      &quot;since&quot; : &quot;1.1&quot;,
+      &quot;constructors&quot;: [
+        {
+          &quot;name&quot;: &quot;Locale&quot;,
+          &quot;modifiers&quot;: [
+            &quot;public&quot;
+          ],
+          &quot;params&quot;: [
+            {
+              &quot;type&quot;: &quot;String&quot;,
+              &quot;name&quot;: &quot;language&quot;
+            },
+            {
+              &quot;type&quot;: &quot;String&quot;,
+              &quot;name&quot;: &quot;country&quot;
+            },
+            {
+              &quot;type&quot;: &quot;String&quot;,
+              &quot;name&quot;: &quot;variant&quot;
+            }
+          ],
+          &quot;description&quot;: &quot;Construct a locale from language, country and variant...&quot;,
+          &quot;path&quot;: &quot;java/util/Locale.html#Locale(java.lang.String, java.lang.String, java.lang.String)&quot;      
+        },
+      ],  
+      &quot;methods&quot; : [ 
+        ...,
+        {  
+          &quot;name&quot; : &quot;getDisplayLanguage&quot;,
+          &quot;qualifiedName&quot; : &quot;java.util.Locale.getDisplayLanguage&quot;,
+          &quot;annotations&quot; : [],
+          &quot;modifiers&quot; : [&quot;public&quot;],      
+          &quot;params&quot; : [
+            {
+              &quot;type&quot; : &quot;Locale&quot;,
+              &quot;name&quot; : &quot;inLocale&quot;
+            }
+          ],
+          &quot;returnType&quot; : &quot;String&quot;,
+          &quot;description&quot; : &quot;Returns a name for the locale's language ...&quot;,
+          &quot;returns&quot; : null,
+          &quot;path&quot; : &quot;java/util/Locale.html#getDisplayLanguage(java.util.Locale)&quot;
+        },
+        ...
+      ],
+      &quot;kind&quot; : &quot;class&quot;,
+      &quot;path&quot; : &quot;java/util/Locale.html&quot;
+    },
+    ...
+  ]
+}  
+</pre>
+
