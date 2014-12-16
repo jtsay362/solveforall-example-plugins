@@ -175,34 +175,37 @@ if (rr.kind === 'method') {
         </p>
       <% } %>
 
-      <% if (rr.kind !== 'annotation') { %>
-        <% if (rr.methods && (rr.methods.length > 0)) { %>
-          <strong>Methods</strong>:<span class="content_expander"><i class="fa fa-chevron-down"></i></span>
-          <div class="content_expandable initially_hidden">          
-            <ul>
-              <% _(rr.methods).each(function (m) { %>
-                <li>
-                  <a href="<%= apiRootUri + m.path %>">
-                    <code>
-                    <%= orderedModifiersText(m.modifiers) %><%= m.returnType %> <%= m.name %>(<% _(m.params).each(function (param, index) { 
-                        if (index > 0) {
-                    %>,&nbsp;<%  } %><%- makeTypeLink(param.type) %> <%= param.name %>                
-                    <% }); %>
-                    )
-                    </code>
-                  </a>  
-                  <br/>
-                  <%= m.description %>
-                </li>
-              <% }); %>    
-            </ul>
-          </div>
-          <br/><br/>
-        <% } else { %>
-          <p>No methods</p>
-        <% } %>    
-      <% } %>
-    <% } %>
+      <% if (rr.kind !== 'annotation') { 
+        _(['constructor', 'method']).each(function (invokableKind) {
+          var invokables = rr[invokableKind + 's'];                    
+          if (invokables && (invokables.length > 0) && 
+              ((invokableKind === 'method') || (rr.kind === 'class'))) { %>
+            <strong><%= _(invokableKind).capitalize() %>s</strong>:
+            <span class="content_expander"><i class="fa fa-chevron-down"></i></span>
+            <div class="content_expandable initially_hidden">          
+              <ul>
+                <% _(invokables).each(function (m) { %>
+                  <li>
+                    <a href="<%= apiRootUri + m.path %>">
+                      <code>
+                      <%= orderedModifiersText(m.modifiers) %><%= m.returnType || '' %> <%= m.name %>(<% _(m.params).each(function (param, index) { 
+                          if (index > 0) {
+                      %>,&nbsp;<%  } %><%- makeTypeLink(param.type) %> <%= param.name %><% }); %>)
+                      </code>
+                    </a>  
+                    <br/>
+                    <%= m.description %>
+                  </li>
+                <% }); %>    
+              </ul>
+            </div>
+            <br/><br/>
+          <% } else { %>
+            <p>No <%= invokableKind %>s</p>
+          <% }
+        });      
+      }
+    } %>
     <p>
       <small>      
         View full docs at <a href="<%= uri %>">docs.oracle.org</a>
