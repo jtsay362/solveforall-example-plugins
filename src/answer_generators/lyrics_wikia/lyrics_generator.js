@@ -2,14 +2,20 @@
 /*global _, HostAdapter, hostAdapter, ejs */
 
 var ARTIST_KEYS = ['org.dbpedia.ontology.Band', 'org.dbpedia.ontology.MusicalArtist', 'org.dbpedia.ontology.Artist'];
-var SONG_KEYS = ['org.dbpedia.ontology.Single', 'org.dbpedia.ontology.MusicalWork', 'org.dbpedia.ontology.Album'];
+var ARTIST_KEY_WEIGHTS = [1, 1, 0.5];
 
-function findBestResult(keys, recognitionResults) {
+var SONG_KEYS = ['org.dbpedia.ontology.Single', 'org.dbpedia.ontology.MusicalWork', 'org.dbpedia.ontology.Album'];
+var SONG_KEY_WEIGHTS = [1, 1, 0.1];
+
+function findBestResult(keys, weights, recognitionResults) {
   var currentBestResult = null;
+  var currentBestScore = -1;
   
   console.log('entering findBestResult');
   
-  _(keys).each(function (key) {
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var weight = weights[i];  
     console.log('findBestResult: checking key ' + key);    
     
     var rrList = recognitionResults[key]; 
@@ -18,11 +24,19 @@ function findBestResult(keys, recognitionResults) {
     }
 
     _(rrList).each(function (rr) {
-       if (!currentBestResult || (rr.recognitionLevel > currentBestResult.recognitionLevel)) {
-          currentBestResult = rr;        
-       }    
+      var score = rr.recognitionLevel;
+      // Dis-prefer albums since it is unlikely to get lyrics
+      if (rr.wikipediaArticleName.toLowerCase().indexOf('album') > 0) {
+        score *= 0.1; 
+      } else {
+        score *= weight;
+      }
+      if (!currentBestResult || (score > currentBestScore)) {
+        currentBestResult = rr;        
+        currentBestScore = score;
+      }    
     });    
-  });
+  }
 
   console.log('Best result = ' + currentBestResult.wikipediaArticleName);
   
@@ -107,8 +121,8 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  var artistResult = findBestResult(ARTIST_KEYS, recognitionResults);
-  var songResult = findBestResult(SONG_KEYS, recognitionResults);
+  var artistResult = findBestResult(ARTIST_KEYS, ARTIST_KEY_WEIGHTS, recognitionResults);
+  var songResult = findBestResult(SONG_KEYS, SONG_KEY_WEIGHTS, recognitionResults);
 
   var artist = null;
   var recognitionLevel = 0.0;
