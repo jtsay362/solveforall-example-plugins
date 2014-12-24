@@ -139,7 +139,7 @@ function makeResponseHandler(q, key, bestName, bestResult) {
         
           <p>
             <small>
-              API access from <a href="http://netflixroulette.net/">Netflix Roulette</a>,
+              API access from <a href="http://netflixroulette.net/">Flix Roulette</a>,
               using data from <a href="http://www.netflix.com">Netflix</a>.
             </small>
           </p>
