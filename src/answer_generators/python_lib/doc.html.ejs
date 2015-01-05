@@ -9,9 +9,14 @@ if (!rr) {
   rr = results[0];    
 }
 
+var KIND_MODULE = 'module';
+var KIND_CLASS = 'class';
 var MAX_SUMMARY_LENGTH = 800;
+var MAX_MEMBER_SUMMARY_LENGTH = 300;
 var pythonMajorVersion = context.settings.pythonVersion || '3'; 
-var uri = 'https://docs.python.org/' + pythonMajorVersion + '/library/' + rr.path;
+
+var DOC_LINK_BASE = 'https://docs.python.org/' + pythonMajorVersion + '/library/';
+var uri = DOC_LINK_BASE + rr.path;
 
 function truncateHtml(html, maxLength) {
   var originalLength = html.length;
@@ -31,6 +36,15 @@ function truncateHtml(html, maxLength) {
   
   return html;
 }
+
+var kind = rr.kind;
+var memberKinds = [];
+
+if (kind === KIND_MODULE) {
+  memberKinds = ['classes', 'functions', 'exceptions', 'constants']; 
+} else if (kind === KIND_CLASS) {
+  memberKinds = ['methods', 'classMethods', 'attributes']; 
+}
 %>
 <!doctype html>
 <html>
@@ -41,12 +55,55 @@ function truncateHtml(html, maxLength) {
     <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>" >
   </head>
   <body>
-    <pre><%= rr.name %>(<%= rr.params.join(', ') %>)</pre>
-    
+    <p>
+    <h2><%= _(rr.kind).capitalize() %> <a href="<%= uri %>"></a><code><%= rr.simpleName %></code></a></h2>
+    <% if (rr.enclosingModule || rr.enclosingClass) { %>       
+      <% if (rr.enclosingClass) { %>
+      in class <code><%= rr.enclosingClass %></code>
+      <% } %>
+      <% if (rr.enclosingModule) { %>
+      in module 
+      <a href="<%= DOC_LINK_BASE + encodeURIComponent(rr.enclosingModule) %>.html">
+        <code><%= rr.enclosingModule %></code>
+      </a>
+      <% } %>
+    <% } %>              
+    </p>    
+    <% if (kind !== KIND_MODULE) { %>
+      <pre><%= rr.name + (rr.params ? ('(' + rr.params.join(', ') + ')') : '') %></pre>
+    <% } %>
+        
     <%- truncateHtml(rr.summaryHtml, MAX_SUMMARY_LENGTH) %>    
+        
+    <% _(memberKinds).each(function (memberKind) { 
+         if (rr[memberKind] && (rr[memberKind].length > 0)) { %>
+         <h4>
+           <%= _(memberKind).capitalize() %> 
+           <span class="content_expander"><i class="fa fa-chevron-down"></i></span>
+         </h4>
+         <div class="content_expandable initially_hidden">
+           <ul>
+           <% _(rr[memberKind]).each(function (member) { %>
+             <li>
+               <% if (member.path) { %>
+                 <a href="<%= DOC_LINK_BASE + member.path %>">
+               <% } %>     
+                 <%= member.simpleName %>
+               <% if (member.path) { %>
+                 </a>
+               <% } %>
+               
+               <pre><%= member.simpleName + (member.params ? ('(' + member.params.join(', ') + ')') : '') %></pre>        
+               <%- truncateHtml(member.summaryHtml, MAX_MEMBER_SUMMARY_LENGTH) %>
+             </li>
+           <% }); %>
+           </ul>
+         </div>
+      <% } %>
+    <% }); %>
     
-    <p>      
-      <a href="<%= uri %>">View on docs.python.org</a>
+    <p style="margin-top: 11px">      
+      <small><a href="<%= uri %>">View on docs.python.org</a></small>
     </p>
   </body>
 </html>
