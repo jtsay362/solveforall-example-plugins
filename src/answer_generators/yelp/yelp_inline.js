@@ -17,10 +17,15 @@ function makeResponseHandler(q) {
       <html>
         <head>
           <style> 
+            .business_title {
+              font-size: large;
+            }
             .text_container {
-              margin-left: 12px;
+              margin-right: 12px;
               margin-top: 8px;
               margin-bottom: 8px;
+              width: calc(100% - 166px);
+              max-width: 600px;
             }
             .num_results_label {
               margin-top: 8px;
@@ -28,6 +33,16 @@ function makeResponseHandler(q) {
             .business_container {
               margin-bottom: 12px;
             }
+            .snippet_container {
+              margin-top: 8px;
+            }
+            .snippet_image, .deal_image {
+              margin: 6px;
+            }
+            .snippet_text, .deal_text {              
+              width: calc(100% - 48px);
+              max-width: 400px;
+            }            
           </style>
         </head>
         <body>          
@@ -42,23 +57,19 @@ function makeResponseHandler(q) {
           <div>
           <% _(response.businesses).each(function (b) { %>            
             <div class="business_container">
-              <div class="pull-left">
-                <a href="<%= b.url %>">
-                  <img class="img-thumbnail" src="<%= b.image_url %>" width="150" height="150">
-                </a>
-              </div>
               <div class="text_container pull-left">
                 <div>
-                  <span><a href="<%= b.url %>"><%= b.name %></a></span>
+                  <span><a href="<%= b.url %>" class="business_title"><%= b.name %></a></span>
                   <% if (b.is_closed) { %>
                     <span class="label label-danger">CLOSED</span>                                      
                   <% } %>                  
                 </div>
                 <div>
                   <span><img src="<%= b.rating_img_url %>"></span>
-                  <span>(<%= _('review').pluralize(b.review_count, true) %>)</span>                
+                  <span><small><%= _('review').pluralize(b.review_count, true) %></small></span>     
                 </div>
                 <div>
+                  <address>
                   <% var addresses = b.location.display_address || [];
                      while (addresses.length > 3) {
                        addresses[0] = addresses[0] + ', ' + addresses[1];
@@ -67,24 +78,74 @@ function makeResponseHandler(q) {
                     _(addresses).each(function (a) { %>
                     <%= a %><br/>        
                     <% }); %>
+                  </address>                      
                 </div>
                 <div>
                   <%= b.display_phone || '(No phone number available)' %>
-                </div>
+                </div>                
               </div>      
+              <div class="pull-right">
+                <a href="<%= b.url %>">
+                  <img class="img-thumbnail" src="<%= b.image_url %>" width="150" height="150">
+                </a>
+              </div>                    
               <div class="clear"></div> 
+              <% if (b.snippet_text) { %>    
+                <div class="snippet_container">
+                  <% if (b.snippet_image_url) { %>
+                    <div class="snippet_image pull-left">  
+                      <img src="<%= b.snippet_image_url %>" width="32" height="32">
+                    </div>    
+                  <% } %>
+                  <div class="snippet_text pull-left">  
+                    <i>&ldquo;<%= b.snippet_text %>&rdquo;</i>
+                  </div>
+                  <div class="clear"></div>
+                </div>      
+              <% } %>                  
               <% if (b.deals && (b.deals.length > 0)) { %>
                 <div class="deals_container">                  
-                  <h4><%= _('deal').pluralize(b.deals.length, true) %> available:</h4>
+                  <h4>
+                    <%= _('deal').pluralize(b.deals.length, true) %> available:
+                    <span class="content_expander"><i class="fa fa-chevron-down"></i></span>
+                  </h4>
+                  <div class="content_expandable initially_hidden">
                   <% _(b.deals).each(function (deal) { %>
                     <div class="deal">
                       <p>
                         <a href="<%= deal.url %>"><b><%= deal.title %></b></a>
                       </p>
-                      <p>
-                        <%- deal.what_you_get %>    
-                      </p>
-
+                      <div>
+                        <% if (deal.image_url) { %>  
+                        <div class="deal_image pull-left">
+                          <a href="<%= deal.url %>"> 
+                            <img src="<%= deal.image_url %>" width="32" height="32">
+                          </a>    
+                        </div>  
+                        <% } %>  
+                        <div class="deal_text pull-left">
+                          <%- deal.what_you_get %>    
+                        </div>
+                        <div class="clear"></div>
+                      </div>
+                      <% if (deal.options && (deal.options.length > 0)) { %>
+                        <div class="deal_options">
+                          <b>Options</b>:
+                          <ul>
+                          <% _(deal.options).each(function (option) { %> 
+                            <li>
+                              <a href="<%= option.purchase_url %>">
+                                <%= option.title %>                              
+                              </a>
+                              <% if (option.remaining_count) { %>
+                                <span class="label label-warning"><%= option.remaining_count %> left</span>
+                              <% } %>
+                            </li>
+                          <% }); %>
+                          </ul>  
+                        </div>  
+                      <% } %>  
+                        
                       <% _(['important', 'additional']).each(function (restrictionType) { 
                            var restrictions = deal[restrictionType + '_restrictions']; 
                            if (restrictions && (restrictions.length > 0)) { %>
@@ -100,6 +161,7 @@ function makeResponseHandler(q) {
                          }); %>                     
                     </div>     
                   <% }); %>
+                  </div>
                 </div>                  
               <% } %>  
             </div>  
@@ -216,8 +278,7 @@ function generateResults(recognitionResults, q, context) {
   var tokenKey = yelpSettings.token;
   var tokenSecret = yelpSettings.tokenSecret;
   
-  if (!(consumerKey && consumerSecret && tokenKey && tokenSecret)) {
-    console.log('dev settings = ' + JSON.stringify(context.developerSettings));
+  if (!(consumerKey && consumerSecret && tokenKey && tokenSecret)) {  
     throw 'Missing secret!';
   }
   
