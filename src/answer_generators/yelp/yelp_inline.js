@@ -12,6 +12,7 @@ function makeResponseHandler(q) {
       return [];
     }
     
+    var DISCARDED_PHONE_PREFIX_REGEX = /^\s*\+?1\-?\s*/;
     var contentTemplateXml = <heredoc>
       <![CDATA[
       <html>
@@ -81,7 +82,8 @@ function makeResponseHandler(q) {
                   </address>                      
                 </div>
                 <div>
-                  <%= b.display_phone || '(No phone number available)' %>
+                  <%= b.display_phone ? b.display_phone.replace(DISCARDED_PHONE_PREFIX_REGEX, '') : 
+                      '(No phone number available)' %>
                 </div>                
               </div>      
               <div class="pull-right">
@@ -176,7 +178,8 @@ function makeResponseHandler(q) {
     var contentTemplate = contentTemplateXml.toString();
 
     var model = {
-      response: response
+      response: response,
+      DISCARDED_PHONE_PREFIX_REGEX: DISCARDED_PHONE_PREFIX_REGEX      
     };
 
     return [{
