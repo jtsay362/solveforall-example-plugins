@@ -1,5 +1,17 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /* global _, HostAdapter, hostAdapter, ejs, URI, OAuth */
+
+function mapUrl(business) {
+  var location = business.location;
+  var uri = URI('http://www.mapquest.com/')
+  return uri.addQuery('le', 't').
+    addQuery('q', 'addr: ' + location.address.join(',') + ' city: ' + location.city +
+             ' state: ' + location.state_code + ' postalCode: ' + 
+             location.postal_code + ' country: ' + location.country_code + ' (' +
+             business.name + ')').
+    addQuery('maptype', 'map').addQuery('vs', 'embed').toString();      
+}
+
 function makeResponseHandler(q) {
   return function (responseText, httpResponse) {
     console.log('got response text = "' + responseText + '"');
@@ -63,7 +75,7 @@ function makeResponseHandler(q) {
                   <span><a href="<%= b.url %>" class="business_title"><%= b.name %></a></span>
                   <% if (b.is_closed) { %>
                     <span class="label label-danger">CLOSED</span>                                      
-                  <% } %>                  
+                  <% } %>                          
                 </div>
                 <div>
                   <span><img src="<%= b.rating_img_url %>"></span>
@@ -76,9 +88,20 @@ function makeResponseHandler(q) {
                        addresses[0] = addresses[0] + ', ' + addresses[1];
                        addresses.splice(1, 1); 
                      }        
-                    _(addresses).each(function (a) { %>
-                    <%= a %><br/>        
-                    <% }); %>
+                     var firstLine = true;  
+                     _(addresses).each(function (a) { %>
+                       <%= a %>
+                       <% if (firstLine) { 
+                            if (b.distance) { %>
+                              (<%= (b.distance * 0.000621371).toFixed(1) %> mi.)
+                         <% } %>
+                            <a href="<%= mapUrl(b) %>" target="_blank" title="View map">
+                              <i class="fa fa-map-marker fa-lg"></i>
+                            </a>        
+                       <%   firstLine = false;                          
+                          } %>                               
+                       <br/>        
+                     <% }); %>
                   </address>                      
                 </div>
                 <div>
@@ -179,7 +202,8 @@ function makeResponseHandler(q) {
 
     var model = {
       response: response,
-      DISCARDED_PHONE_PREFIX_REGEX: DISCARDED_PHONE_PREFIX_REGEX      
+      DISCARDED_PHONE_PREFIX_REGEX: DISCARDED_PHONE_PREFIX_REGEX,
+      mapUrl: mapUrl
     };
 
     return [{
@@ -216,15 +240,15 @@ function generateResults(recognitionResults, q, context) {
   var queryAddressSpecificEnough = false;  
   
   if (queryAddresses && (queryAddresses.length > 0)) {
-    var recognitionResult = [0];
+    var recognitionResult = queryAddresses[0];
 
     var cityStateZip = null;
 
     if (recognitionResult.zipCode && (recognitionResult.zipCode >= 5)) {
       cityStateZip = recognitionResult.zipCode;
       queryAddressSpecificEnough = true;
-    } else if (recognitionResult.city && recognitionResult.stateAbbreviation) {
-      cityStateZip = recognitionResult.city + ',' + recognitionResult.stateAbbreviation;
+    } else if (recognitionResult.city && recognitionResult.regionAbbreviation) {
+      cityStateZip = recognitionResult.city + ',' + recognitionResult.regionAbbreviation;
       queryAddressSpecificEnough = true;
     } else {
       console.info('No city/state/zip found');      
@@ -301,7 +325,7 @@ function generateResults(recognitionResults, q, context) {
     secret: tokenSecret
   };
   
-  var uri = new URI('http://api.yelp.com/v2/search');
+  var uri = URI('http://api.yelp.com/v2/search');
   uri.addQuery('term', q);
   
   if (location) {
