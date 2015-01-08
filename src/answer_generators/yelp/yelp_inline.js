@@ -276,6 +276,11 @@ function generateResults(recognitionResults, q, context) {
     }
   }
   
+  var userLocation = context.location;
+  if (!location && !ll && userLocation && userLocation.lat) {
+    ll = userLocation.lat.toFixed(4) + ',' + userLocation.lng.toFixed(4);    
+  }  
+  
   if (!location && !ll && context.user && context.user.physicalAddresses && 
       (context.user.physicalAddresses.length > 0)) {
     // FIXME: use setting to pick best one
