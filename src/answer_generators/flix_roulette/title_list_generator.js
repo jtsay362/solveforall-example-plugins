@@ -195,7 +195,8 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
   
-  var articles = recognitionResults['com.solveforall.recognition.WikipediaArticle'];                                    
+  var articles = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
+  var people = recognitionResults['org.dbpedia.ontology.Person'] || [];
   
   if (articles.length === 0) {
     console.info('No Wikipedia article references found');
@@ -216,9 +217,16 @@ function generateResults(recognitionResults, q, context) {
         });
         
         if (article) {
-          bestName = article.title;
-          bestKey = key;
-          bestResult = rr;         
+          // Ensure the agent is a person. Otherwise Netflix itself matches!
+          var person = _(people).find(function (p) {
+            return (p.wikipediaArticleName === rr.wikipediaArticleName);
+          });
+          
+          if (person) {
+            bestName = article.title;
+            bestKey = key;
+            bestResult = rr;         
+          }
         }
       }      
     });        
@@ -230,6 +238,7 @@ function generateResults(recognitionResults, q, context) {
     parameterName = 'actor';
     parameterValue = bestName;
   } else {
+    // TODO: Detect forced activation, and when that happens send the query    
     console.log('No actors/directors found');
     return [];
   }
