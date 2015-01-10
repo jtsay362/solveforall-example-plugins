@@ -1,0 +1,34 @@
+<%  
+var r =  recognitionResults['com.solveforall.recognition.programming.web.javascript.libs.underscorejs.Function'][0];
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= r.name %></title>
+    <meta charset="UTF-8">
+    <meta name="com.solveforall.meta.answer.label" content="Undescore.js - <%= r.name %>()" >    
+    <meta name="com.solveforall.meta.answer.uri" content="http://underscorejs.org/#<%= r.name %>" >
+  </head>
+  <body>    
+    <h2 class="inline-block"><code><%= r.name %></code></h2>
+    
+    <% if (r.aliases && (r.aliases.length > 0)) { %>
+        <i>
+          Alias<%- (r.aliases.length === 1) ? '' : 'es' %>:         
+          <%- _(r.aliases).map(function (alias) {
+                 return '<b>' + alias + '</b>';
+              }).join(', ') %>
+        </i>
+    <% } %>
+    
+    <pre><%= r.syntax %></pre>
+      
+    <p>
+      <%- r.descriptionHtml %>
+    </p>        
+    
+    <% if (r.exampleUsage) { %>
+      <pre><%= r.exampleUsage %></pre>  
+    <% } %>
+  </body>
+</html>
