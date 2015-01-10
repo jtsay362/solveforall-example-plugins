@@ -1,0 +1,64 @@
+<%
+var name = null;
+try { 
+  var recognitionResult = recognitionResults['com.solveforall.recognition.programming.web.FontAwesomeIcon'][0];
+  name = recognitionResult.name;  
+} catch (e) {
+  throw e;
+}
+
+var url = 'https://fortawesome.github.io/Font-Awesome/icon/' + name.substring(3) + '/';
+
+var modifiers = '';
+
+var firstSpinIndex = q.indexOf('spin');
+if (firstSpinIndex >= 0) {
+  if (name === 'fa-spinner') {
+    if (q.lastIndexOf('spin') !== firstSpinIndex) {
+      modifiers += ' fa-spin'; 
+    }    
+  } else {
+    modifiers += ' fa-spin';    
+  }  
+}
+
+var m = /rotate\W+(90|180|270)/.exec(q);
+
+if (m) {
+  modifiers += ' fa-rotate-' + m[1]; 
+}
+
+m = /flip\W+(h|v)/.exec(q);
+
+if (m) {
+  if (m[1] === 'h') {
+    modifiers += ' fa-flip-horizontal';     
+  } else {
+    modifiers += ' fa-flip-vertical';
+  }
+}
+
+if (q.indexOf('border') >= 0) {
+  modifiers += ' fa-border';
+}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Font Awesome</title>   
+  <meta name="com.solveforall.meta.answer.uri" content="<%= url %>" >      
+  </head>
+</head>
+
+<body>
+  <div style="margin-left: 0.5em; font-size: 48px; line-height: 1.5em;">
+    <i class="fa <%= name + modifiers %>"></i> 
+    <%= name + modifiers %>
+  </div>    
+  <div>
+    <a href="https://fortawesome.github.io/Font-Awesome/icons/">
+      <small>See all icons available in Font Awesome</small>
+    </a>
+  </div>
+</body>
+</html>
