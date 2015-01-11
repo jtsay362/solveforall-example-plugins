@@ -130,9 +130,11 @@ function makeResponseHandler(q) {
               <% } %>                  
               <% if (b.deals && (b.deals.length > 0)) { %>
                 <div class="deals_container">                  
-                  <h4>
-                    <%= _('deal').pluralize(b.deals.length, true) %> available:
-                    <span class="content_expander"><i class="fa fa-chevron-down"></i></span>
+                  <h4>                    
+                    <span class="content_expander">
+                      <%= _('deal').pluralize(b.deals.length, true) %> available: 
+                      <i class="fa fa-chevron-down"></i>
+                    </span>
                   </h4>
                   <div class="content_expandable initially_hidden">
                   <% _(b.deals).each(function (deal) { %>
