@@ -105,7 +105,7 @@ function makeResponseHandler(q, context) {
 function generateResults(recognitionResults, q, context) {
   'use strict';
 
-  if (context.isSuggestionQuery) {
+  if (!q || context.isSuggestionQuery) {
     return [];
   }
   
