@@ -266,6 +266,9 @@ function generateResults(recognitionResults, q, context) {
       }
 
       location += cityStateZip;
+        
+      q = q.replace(recognitionResult.matchedText, '').trim();
+      console.log('Removed US address from query: ' + q);        
     }
   }
   
@@ -317,6 +320,12 @@ function generateResults(recognitionResults, q, context) {
   }
   
   var processedQuery = q.replace(/\s+deals?(\s+|$)/, ' ').trim();
+    
+  if (!processedQuery) {
+    console.info('Nothing left after removing US address and "deals", not returning results');
+    return [];             
+  }
+    
   var dealsOnly = (processedQuery !== q);
   
   var oauth = OAuth({
@@ -333,7 +342,7 @@ function generateResults(recognitionResults, q, context) {
   };
   
   var uri = URI('http://api.yelp.com/v2/search');
-  uri.addQuery('term', q);
+  uri.addQuery('term', processedQuery);
   
   if (location) {
     uri.addQuery('location', location); 
@@ -358,7 +367,7 @@ function generateResults(recognitionResults, q, context) {
     data: oauth.authorize(requestData, token) 
   });
 
-  request.send('makeResponseHandler(' + JSON.stringify(q) + ')', 'errorHandler');
+  request.send('makeResponseHandler(' + JSON.stringify(processedQuery) + ')', 'errorHandler');
 
   return HostAdapter.SUSPEND;
 }
