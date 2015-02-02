@@ -54,8 +54,9 @@ function makeResponseHandler(key, bestResult) {
             dt {        
               margin-top: 8px;
             } 
-            img.with_fallback {
+            img.poster {
               margin-right: 10px;
+              margin-bottom: 10px; // In case summary is wrapped to next line
             }
             .watch_button {
               font-weight: bold;
@@ -67,7 +68,7 @@ function makeResponseHandler(key, bestResult) {
           <% if (title.poster) { %>              
           <div class="pull-left">
             <a href="<%= uri %>">
-              <img class="with_fallback" data-img-src-0="<%= title.poster %>"        
+              <img class="poster with_fallback" data-img-src-0="<%= title.poster %>"        
                width="250" alt="Movie Poster">
             </a>
           </div>
