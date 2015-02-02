@@ -1,0 +1,90 @@
+<%  
+var results = recognitionResults['com.solveforall.recognition.business.crunchbase.Person'];
+if (!results || (results.length === 0)) {
+  throw "No result found";
+}
+var person = results[0];
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= person.name %></title>  
+    <meta charset="UTF-8">    
+    <meta name="com.solveforall.meta.answer.uri" content="<%= person.crunchbase_url %>" >    
+    <style>
+      .content {
+        margin-left: 2px;
+        margin-right: 2px;        
+      }
+      .social_link {
+        display: inline-block;
+        margin-right: 23px;
+      }    
+      .column_container {
+        display: flex;
+        flex-direction: row;    
+        margin-bottom: 12px;
+      }
+      .column {
+        flex-direction: column;    
+        display: inline-flex;
+        justify-content: center;  
+      }
+      .profile_container {
+        margin-right: 20px;  
+      }
+      .social_link_container {
+        margin-top: 20px;         
+      }
+      .see_more {
+        margin-top: 10px; 
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="column_container">     
+        <% if (person.profile_image_url) { %>
+        <div class="column profile_container">
+          <img src="<%= person.profile_image_url %>?width=150" width="150" 
+           class="img-rounded" alt="">
+        </div>
+        <% } %>
+        <div class="column summary_container">
+          <h3><%= person.name %></h3>
+        
+          <div class="social_link_container">
+            <% if (person.twitter_url) { %>
+            <span class="social_link">
+              <a href="<%= person.twitter_url %>" title="See profile on Twitter">
+                <img src="https://abs.twimg.com/favicons/favicon.ico" 
+                 width="32" height="32" alt="Twitter profile">
+              </a>
+            </span>  
+            <% } %>
+            <% if (person.facebook_url) { %>
+            <span class="social_link">
+              <a href="<%= person.facebook_url %>" title="See profile on Facebook">
+                <img src="https://fbstatic-a.akamaihd.net/rsrc.php/yl/r/H3nktOa7ZMg.ico" 
+                 width="32" height="32" alt="Facebook profile">
+              </a>
+            </span>  
+            <% } %>
+            <% if (person.linkedin_url) { %>
+            <span class="social_link">
+              <a href="<%= person.linkedin_url %>" title="See profile on LinkedIn">
+                <img src="https://static.licdn.com/scds/common/u/images/logos/favicons/v1/favicon.ico" 
+                 width="32" height="32" alt="LinkedIn Profile">
+              </a>
+            </span>  
+            <% } %>  
+          </div>        
+        </div>  
+      </div>
+
+      <p class="see_more">
+        <small>See more at <a href="<%= person.crunchbase_url %>">Crunchbase</a>.</small>    
+      </p>
+    </div>
+  </body>
+</html>  
