@@ -183,7 +183,7 @@ function makeResponseHandler(q, key, bestName, bestResult) {
       serverSideSanitized: true,
       uri:  uri,
       iconUrl: 'http://www.allflicks.net/favicon.png',
-      relevance: bestResult.recognitionLevel + 0.01
+      relevance: bestResult.recognitionLevel - 0.01
     }];
   };
 }
