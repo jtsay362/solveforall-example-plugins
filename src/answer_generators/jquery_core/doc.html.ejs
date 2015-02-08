@@ -1,0 +1,193 @@
+<%  
+var KIND_METHOD = 'Method';
+var KIND_PROPERTY = 'Property';
+var KIND_SELECTOR = 'Selector';
+
+var bestResult = null;  
+_([KIND_METHOD, KIND_PROPERTY, KIND_SELECTOR]).each(function (kind) {
+  var results = recognitionResults['com.solveforall.recognition.programming.web.javascript.jquery.' + kind];  
+  if (results && (results.length > 0)) {
+    var result = results[0];    
+    if (!bestResult || (result.recognitionLevel > bestResult.recognitionLevel)) {
+      bestResult = result;
+    }
+  }
+});
+
+if (!bestResult) {
+  throw 'No result found';   
+}
+
+var r = bestResult;
+var kind = _.str.capitalize(bestResult.kind);
+var CATEGORY_BASE_URL = 'https://api.jquery.com/category/';
+
+var filteredCategories = _(r.categories || []).reject(function (category) {
+  return _.str.startsWith(category, 'version/');
+});
+
+var makeArgListHtml = null;
+
+makeArgListHtml = function (args) {
+  var s = '<ul>';
+    
+  _(args).each(function (arg) {     
+    s += '    <li><b>' + _.escapeHTML(arg.name) + '</b>';
+
+    if (arg.optional) {  
+      s += '&nbsp;<span class="label label-info">Optional</span>';
+    }
+
+    if (arg.possibleTypes) {
+      s += '&nbsp;(<i>' + arg.possibleTypes.join("</i> / <i>") + '</i>)&nbsp;';
+    }
+
+    if (arg.descriptionHtml) {    
+      s += ': ' + arg.descriptionHtml;
+    }
+
+    if (arg.arguments && (arg.arguments.length > 0)) {
+      s += '<p>Arguments:</p>' + makeArgListHtml(arg.arguments);
+    }
+
+    if (arg.properties && (arg.properties.length > 0)) {
+      s += '<p>Properties:</p>' + makeArgListHtml(arg.properties);
+    }
+    
+    s +=   '</li>';
+  });
+  s += '</ul>';    
+  
+  return s;  
+};
+%>
+<!doctype html>
+<html>
+  <head>
+    <title><%= r.title %></title>
+    <meta charset="UTF-8">
+    <meta name="com.solveforall.meta.answer.label" content="jQuery API: <%= r.title %>" >    
+    <meta name="com.solveforall.meta.answer.uri" content="<%= r.url %>" >
+    <style>
+      h3, .section, pre {
+        margin-top: 10px;         
+      }
+      h3 {
+        display: inline-block; 
+      }
+    </style>
+  </head>
+  <body>
+    <h3>
+      <%= kind %> <%= r.title %>
+    </h3>  
+    <% if (r.added) { %>
+      <span class="label label-info">Added: <%= r.added %></span>
+    <% } %>
+    <% if (r.deprecated) { %>
+      <span class="label label-warning">Deprecated: <%= r.deprecated %></span>
+    <% } %>      
+    <% if (r.removed) { %>
+      <span class="label label-danger">Removed: <%= r.removed %></span>
+    <% } %>            
+    <% if (filteredCategories.length > 0) { %>
+      <div>
+        <b>Categories</b>: 
+        <% for (var ci = 0; ci < filteredCategories.length; ci++) {
+             var category = filteredCategories[ci];          
+             var paths = category.split(/\//);
+             var parentPath = ''; %>    
+          <%- (ci === 0) ? '' : ',&nbsp;' %>                                           
+          <%  for (var i = 0; i < paths.length; i++) {
+                var path = paths[i];
+                var parentPath = parentPath + path + '/'; %>              
+                <%- (i === 0) ? '' : '/' %>                                         
+                <a href="<%= CATEGORY_BASE_URL %><%= parentPath %>">
+                 <%= path %>
+                </a>  
+          <%  }
+           } %>
+      </div>
+    <% } %>
+    <p class="section">
+      <%- r.summaryHtml %>      
+    </p>          
+    <% if (r.sampleHtml) { %>
+      <pre class="section"><%- r.sampleHtml %></pre>    
+    <% } %>    
+    <% if (r.signatures) { %>
+      <div class="section">
+      <%- (r.signatures.length > 1) ? '<p><b>Variants:</b></p>' : '' %>
+      <% _(r.signatures).each(function (signature) { 
+           var args = signature.args || [];
+           if (kind === KIND_METHOD) { %>              
+              <div class="content_expander">
+                <code><%= r.name %>(<%= _(args).map(function (arg) { 
+                        return arg.name; 
+                      }).join(', ') %>)</code> => 
+                <code><%= r.returnType %></code>
+                <i class="fa fa-chevron-down"></i>
+                <% if (signature.added) { %>
+                  <span class="label label-info">Added: <%= signature.added %></span>
+                <% } %>                
+              </div>              
+              <div class="content_expandable initially_hidden">                         
+        <% } %>  
+          <%- makeArgListHtml(args) %>                                
+          <% if (kind === KIND_METHOD) { %>                              
+              </div>                
+          <% } %>        
+      <% }); %>    
+      </div>  
+    <% } %>
+    <% if ((kind === KIND_PROPERTY) && r.returnType) { %>
+      <b>Property Type</b>: <%- r.returnType %>
+    <% } %>      
+    <% if (r.descriptionHtml) { %>
+      <div class="section">
+        <span class="content_expander">
+          <strong>Detailed Description</strong>:
+          <i class="fa fa-chevron-down"></i>
+        </span>
+        <div class="content_expandable initially_hidden">           
+          <%- r.descriptionHtml %>        
+        </div>
+      </div>
+    <% } %>
+    
+    <% if (r.examples && (r.examples.length > 0)) { %>
+      <div class="section">
+        <% if (r.examples.length === 1) { %>
+          <p>
+        <% } else { %>            
+          <div class="content_expander">
+        <% } %>    
+          <strong><%= _.pluralize('Example', r.examples.length) %></strong>:            
+        <% if (r.examples.length === 1) { %>    
+          </p>  
+        <% } else { %>      
+          <i class="fa fa-chevron-down"></i>
+        </div>        
+        <div class="content_expandable initially_hidden">           
+        <% } %>
+          <%- (r.examples.length > 1) ? '<ul>' : '' %>
+          <% _(r.examples).each(function (example) { %>
+               <%- (r.examples.length > 1) ? '<li>' : '' %>
+               <div class="content_expander">
+                 <%- example.descriptionHtml %>
+                 <i class="fa fa-chevron-down"></i>
+               </div>
+               <div class="content_expandable initially_hidden">                            
+                 <% if (example.exampleHtml) { %>
+                   <pre><%= example.exampleHtml %></pre>
+                 <% } %>
+                 <pre><%= example.codeHtml %></pre>
+               </div>
+               <%- (r.examples.length > 1) ? '</li>' : '' %>
+          <% }); %>
+          <%- (r.examples.length > 1) ? '</ul>' : '' %>
+        </div>
+      </div>
+    <% } %>    
+  </body>
+</html>
