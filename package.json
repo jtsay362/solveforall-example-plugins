@@ -1,0 +1,28 @@
+{
+  "name": "solveforall-example-plugins",
+  "version": "0.1.0",
+  "description": "Example plugins for Solve for All",
+  "author": "Jeff Tsay <help@solveforall.com>",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jtsay362/solveforall-example-plugins"
+  },
+  "bugs": {
+    "url": "https://github.com/jtsay362/solveforall-example-plugins/issues"
+  },
+  "keywords": [
+    "solveforall"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "lodash" : "^3.1.0",
+    "gulp": "^3.8.10",
+    "gulp-ejs-precompiler": "^0.2.0",
+    "gulp-plumber": "^0.6.6"
+  },
+  "analyze": true,
+  "license": "Apache"
+}
+  
