@@ -35,9 +35,13 @@ makeArgListHtml = function (args) {
     s += '    <li><b>' + _.escapeHTML(arg.name) + '</b>';
 
     if (arg.optional) {  
-      s += '&nbsp;<span class="label label-info">Optional</span>';
+      s += '&nbsp;<span class="label label-default">Optional</span>';
     }
-
+    
+    if (arg.added) {  
+      s += '&nbsp;<span class="label label-info">Added: ' + _.str.escapeHTML(arg.added) + '</span>';
+    }
+    
     if (arg.possibleTypes) {
       s += '&nbsp;(<i>' + arg.possibleTypes.join("</i> / <i>") + '</i>)&nbsp;';
     }
@@ -47,7 +51,7 @@ makeArgListHtml = function (args) {
     }
 
     if (arg.arguments && (arg.arguments.length > 0)) {
-      s += '<p>Arguments:</p>' + makeArgListHtml(arg.arguments);
+      s += '<p>Parameters:</p>' + makeArgListHtml(arg.arguments);
     }
 
     if (arg.properties && (arg.properties.length > 0)) {
@@ -69,7 +73,10 @@ makeArgListHtml = function (args) {
     <meta name="com.solveforall.meta.answer.label" content="jQuery API: <%= r.title %>" >    
     <meta name="com.solveforall.meta.answer.uri" content="<%= r.url %>" >
     <style>
-      h3, .section, pre {
+      h3 {
+        margin-top: 0; 
+      }
+      .section, pre {
         margin-top: 10px;         
       }
       h3 {
@@ -79,7 +86,7 @@ makeArgListHtml = function (args) {
   </head>
   <body>
     <h3>
-      <%= kind %> <%= r.title %>
+      <%= (kind === KIND_PROPERTY) ? '' : kind %> <code><%= r.title %></code>
     </h3>  
     <% if (r.added) { %>
       <span class="label label-info">Added: <%= r.added %></span>
@@ -121,12 +128,14 @@ makeArgListHtml = function (args) {
       <% _(r.signatures).each(function (signature) { 
            var args = signature.args || [];
            if (kind === KIND_METHOD) { %>              
-              <div class="content_expander">
-                <code><%= r.name %>(<%= _(args).map(function (arg) { 
-                        return arg.name; 
-                      }).join(', ') %>)</code> => 
-                <code><%= r.returnType %></code>
-                <i class="fa fa-chevron-down"></i>
+              <div>
+                <span class="content_expander">
+                  <code><%= r.name %>(<%= _(args).map(function (arg) { 
+                          return arg.name; 
+                        }).join(', ') %>)</code> => 
+                  <code><%= r.returnType %></code>
+                  <i class="fa fa-chevron-down"></i>
+                </span>  
                 <% if (signature.added) { %>
                   <span class="label label-info">Added: <%= signature.added %></span>
                 <% } %>                
