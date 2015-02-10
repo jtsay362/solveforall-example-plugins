@@ -1,12 +1,15 @@
 <%
   var address = recognitionResults['com.solveforall.recognition.location.UsAddress'][0];
+  if (!address) {
+   throw 'No address found'; 
+  }
 %>
 
 <!doctype html>
 <html>
   <head>
     <title>Geocoder</title>
-    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/readable/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
     <div>
@@ -35,9 +38,9 @@
      data-address="<%= JSON.stringify(address) %>">
     </div>
 
-    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.0,underscorejs@1.6.0,underscore.string@2.3.1,bootstrap@2.3.2">
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.2,underscorejs@1.7.0,underscore.string@2.4.0,bootstrap@3.3.2">
     </script>
         
-    <script src="https://googledrive.com/host/0B9oRjsJCVus3SGczand1LThickk/openstreetmap_geocoder.js"></script>
+    <script src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/7f7fd4bbc8606a9c0cdc9bdf6d5210f650061e6c/src/answer_generators/openstreetmap_geocoder/openstreetmap_geocoder.js"></script>
   </body>
 </html>
