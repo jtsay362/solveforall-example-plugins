@@ -25,7 +25,7 @@ $(function() {
   var infoHolder = $('#info_holder');
   var address = JSON.parse(infoHolder.attr('data-address'));
 
-  var url = 'http://nominatim.openstreetmap.org/search?format=json';
+  var url = 'https://nominatim.openstreetmap.org/search?format=json';
 
   if (address.streetAddress) {
     url += '&street=' + encodeURIComponent(address.streetAddress);
