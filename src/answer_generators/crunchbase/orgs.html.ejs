@@ -48,7 +48,13 @@ var org = results[0];
           <h3><%= org.name %></h3>
           <p><a href="<%= org.homepage_url %>"><%= org.homepage_domain %></a></p>
           <p>
-            <%= org.location_city %>, <%= org.location_region %> <%= org.location_country_code %>
+            <%= _([org.location_city, org.location_region]).filter(function (name) { 
+                  return name; 
+                }).join(', ') %>
+  
+            <% if (org.location_country_code) { %>
+                <%= org.location_country_code %>
+            <% } %>
           </p>
         </div>
       </div>
