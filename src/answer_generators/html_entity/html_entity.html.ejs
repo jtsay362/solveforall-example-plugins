@@ -23,11 +23,15 @@
     <div>
       <p>Character: <span class="symbol"><%= rr.symbol %></span>
       <p>
-        Code: <code><%= rr.code %></code>            
-        <% if (rr.namedCode) { %>
-          (<code><%= rr.namedCode %></code>)
-        <% } %>
-      </p>    
+        Code: <code><%= rr.code %></code> (<code><%= rr.hexCode %></code>)
+      </p>
+      <% if (rr.namedCodes && (rr.namedCodes.length > 0)) { %>                
+
+        <p>
+          Named <%= _.pluralize('code', rr.namedCodes.length) %>:
+          <%- _(rr.namedCodes).map(function (code) { return '<code>' + _.escapeHTML(code) + '</code>' }).join(', ') %>
+        </p>
+      <% } %>          
       <% if (rr.aliases && (rr.aliases.length > 0)) { %>
         <p>
           Alias<%= (rr.aliases.length > 1) ? 'es' : '' %>: 
