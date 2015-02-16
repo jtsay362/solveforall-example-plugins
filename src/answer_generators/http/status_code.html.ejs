@@ -1,0 +1,62 @@
+<%
+  var results = recognitionResults['com.solveforall.recognition.programming.web.http.StatusCode'];
+  if (!results || results.length === 0) {    
+    throw 'No entity found!';
+  }  
+  var rr = results[0];  
+  var BASE_URL = 'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html';
+%>  
+
+<html>
+  <head>
+    <style>
+      h3 {
+        margin-top: 0;
+      }
+      .footer {
+        margin-top: 10px; 
+      }
+    </style>
+    <meta name="com.solveforall.meta.answer.uri" 
+    content="<%= BASE_URL %><%= rr.location ? ('#' + rr.location) : '' %>" > 
+  </head>
+  <body>    
+    <div>
+      <h3><%= rr.statusCode %> <%= rr.message %></h3>
+      <div>
+        <%- rr.descriptionHtml %>
+      </div>
+      <% if (rr.members) { %> 
+        <div>
+          <span class="content_expander">
+            <strong>Status codes</strong>:&nbsp;
+            <i class="fa fa-chevron-down"></i>
+          </span>
+          <div class="content_expandable initially_hidden">           
+            <% _(rr.members).each(function (member) { %>
+              <h4 class="content_expander">
+                <a href="<%= BASE_URL %>#<%= member.location %>">
+                  <%= member.statusCode %> <%= member.message %>                  
+                </a>
+                &nbsp;
+                <i class="fa fa-chevron-down"></i>
+              </h4>
+              <div class="content_expandable initially_hidden">
+                <%- member.descriptionHtml %>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+    </div>
+    <footer>    
+      <% if (rr.class) { 
+           var clazz = rr.class; %>        
+      <small><a href="<%= BASE_URL %>#<%= clazz.location %>">
+        All <%= clazz.message %> <%= clazz.statusCode %> status codes
+      </a>&nbsp;&nbsp;|&nbsp;&nbsp;</small>      
+      <% } %>
+      <small><a href="<%= BASE_URL %>">All HTTP status codes</a></small>    
+    </footer>  
+  </body>
+</html>
