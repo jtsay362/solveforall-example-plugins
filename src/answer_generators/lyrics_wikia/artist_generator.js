@@ -132,7 +132,7 @@ function generateResults(recognitionResults, q, context) {
   var recognitionLevel = 0.0;
   if (artistResult) {
     artist = articleNameToName(artistResult.wikipediaArticleName, recognitionResults);    
-    recognitionLevel = artistResult.recognitionLevel;
+    recognitionLevel = artistResult.recognitionLevel * 0.5;
   } else {
     artist = q;        
   }
