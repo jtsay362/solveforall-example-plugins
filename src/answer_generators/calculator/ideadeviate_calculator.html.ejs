@@ -289,7 +289,7 @@ button::-moz-focus-inner {
   <div id="calculator" class="calculator demo">
       <div class="u4 display">
          <div class="display-inner">
-           <div id="display" class="display-text"><%= recognitionResult.matchedText %></div>
+           <div id="display" class="display-text"><%= recognitionResult ? recognitionResult.matchedText : 0 %></div>
          </div>
       </div>
       <button id="calculator-button-clear" class="u1 button button-red">c</button>
