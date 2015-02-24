@@ -1,3 +1,5 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, browser: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _, calcEps */
 /*
  js-expression-eval
  https://github.com/silentmatt/js-expression-eval
@@ -6,7 +8,7 @@
  http://www.undefined.ch/mparser/index.html
 */
 var Parser = (function (scope) {
-	mchEps = calcEps() * 10;
+	var mchEps = calcEps() * 10;
 
 	function object(o) {
 		function F() {}
@@ -917,5 +919,5 @@ var Parser = (function (scope) {
 	};
 
 	scope.Parser = Parser;
-	return Parser
+	return Parser;
 })(typeof exports === 'undefined' ? {} : exports);

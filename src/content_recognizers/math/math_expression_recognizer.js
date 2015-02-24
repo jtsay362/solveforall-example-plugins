@@ -1,3 +1,6 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, browser: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global _ */
+
 /**
  * This file handles math calculations
  */
@@ -18,7 +21,7 @@ function calcEps(){
 
 Math.log10 = function(arg) {
 	return Math.log(arg)/Math.log(10);
-}
+};
 
 var Calc = {};
 
@@ -104,11 +107,11 @@ function calc(opts) {
 		var pi = Math.PI;
 	    if (x === 0) {
 	        return -0.5;
-	    } else if (x == 1) {
+	    } else if (x === 1) {
 	        return Infinity;
-	    } else if (x == 2) {
+	    } else if (x === 2) {
 	        return pi * pi / 6;
-	    } else if (x == 4) {
+	    } else if (x === 4) {
 	        return pi * pi * pi * pi / 90;
 	    } else if (x < 1) {
 	        return Infinity;
