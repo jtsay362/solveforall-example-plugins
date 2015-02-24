@@ -1,0 +1,129 @@
+@mixin fixed_width_font {
+    font-family: Inconsolata, 'Courier New', Monospace;
+}
+
+#wrapper { position: absolute; top: 0px; left: 0px; height: 100%; width: 100%;overflow: hidden;}
+
+
+#toolbar { width: 100%; padding-left: 11px; padding-top: 4px; height: 52px; background: #EDEDED; border-top: 1px solid #BBB; position: absolute; z-index: 10; top: calc(100% - 250px); }
+.toolbar_option {
+    border-radius: 5px;
+}
+#tool_select img { border: 1px solid transparent; opacity: 0.5; }
+#tool_select img:hover { opacity: 1.0;}
+#tool_select a.toolbar_selected img { border: 1px solid #CCC; opacity: 1.0 !important; background: #FFF;
+	-webkit-box-shadow: inset 0px -900px 50px -900px rgba(150, 150, 150, 0.3), inset 0px 1px 0px 0px #FFF;
+	box-shadow: inset 0px -900px 40px -900px rgba(150, 150, 150, 0.3), inset 0px 1px 0px 0px #FFF;}
+
+.apply_zoom_button {
+  margin-top: 5px;
+}
+
+#sidewrapper { position: absolute; top: calc(100% - 200px); right: 1px; width: 100%; z-index: 5; background: #F6F6F6; border-left: 1px solid #BBB; height: 200px; overflow: auto;}
+#graph_sidebar { margin: 5px 10px;}
+#graph_inputs { margin-top: 14px; }
+
+.toolbox {
+    width: 330px; background: #FFFFFF; border: 1px solid #999; position: absolute; right: 292px; top: 20px; z-index: 9; display: none;
+
+    .number {
+        @include fixed_width_font;
+    }
+}
+.toolbox_header { font-weight: bold; background: #E8E8E8; padding: 3px;}
+.toolbox_close {
+    float: right; display: inline-block;
+    a {
+        color: black;
+    }
+}
+.toolbox_main {
+    padding: 3px;
+}
+
+
+#toolbox_zoombox {
+   .number {
+       width: 100px;
+   }
+}
+
+#toolbox_trace {
+   input.number {
+      width: 90%;
+   }
+
+}
+
+#trace_button_container {
+    width: 100px;
+}
+
+#trace_button {
+  margin-bottom: 6px;
+}
+
+#zoom_button_group {
+  margin-top: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 6px;
+  width: 186px;
+}
+
+.close_button {
+  color: black;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.graph_input_wrapper {
+  margin-bottom: 5px; padding: 4px 6px; margin: 1px 0px; font-size: 12pt;
+  @include fixed_width_font;
+}
+.active_equation { background: #F0F0F0; padding: 3px 5px; border: 1px solid #CCC; border-radius: 5px; text-shadow:1px 1px 0px #FAFAFA;
+	-webkit-box-shadow: inset 0px -900px 50px -900px rgba(150, 150, 150, 0.3), inset 0px 1px 0px 0px #FFF;
+	box-shadow: inset 0px -900px 40px -900px rgba(150, 150, 150, 0.3), inset 0px 1px 0px 0px #FFF; }
+.graph_equation_display {
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    width: calc(100% - 45px);
+    span { margin-left: 8px; padding-right: 5px; font-family: Inconsolata, 'Courier New', Monospace; }
+}
+.graph_color_indicator { height: 30px; width: 30px; border: 1px solid #BBB; display: inline-block; position: relative; top: 10px;}
+#graph_inputs input {
+    height: 36px; padding: 1px; clear: both; width: calc(100% - 90px); max-width: 600px; border: 1px solid #BBB; padding: 3px; margin: 5px; margin-right: 0; font-size: 12pt;
+    @include fixed_width_font;
+}
+
+#buttonbar {
+  margin-top: 14px;
+}
+
+.remove_equation_button {
+  margin-left: 0;
+  line-height: 1.18;
+}
+
+#settings { display: none; margin-bottom: 20px;}
+
+#graph_wrapper { position: absolute; top: 0px; left: 0px; height: calc(100% - 250px); width: 100%; z-index: 2; }
+#graph_wrapper:hover { cursor: crosshair;}
+#graph_wrapper:active { cursor: move;}
+#graph { width: 100%; height: calc(100% - 250px);}
+
+h1 { margin: 0; padding: 0;}
+
+.options_list { line-height: 25px;}
+.option { color: #666; border: 1px solid #BBB; background: #E7E7E7; border-radius: 5px; padding: 1px 4px;}
+.option_selected { font-weight: bold; color: #000; background: #F6F6F6; border: 1px solid #999; }
+
+textarea { border: 1px dashed #56ADFF; outline: none; resize: none; overflow: hidden; white-space: nowrap; font-family: 'times new roman' ,georgia, serif;
+	font-size: 14pt; min-width: 1em; height: 1em; padding: 0.2em}
+textarea:focus { border: 1px solid #56ADFF;}
+
+a { text-decoration: none;}
+a:hover { text-decoration: underline;}
+
+.hidden { display: none;}
