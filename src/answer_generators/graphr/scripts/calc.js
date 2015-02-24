@@ -172,8 +172,8 @@ function calc() {
 	 */
 
 
-	//Terribly Inaccurate. Ah well.
-	this.getVertex = function(equation, start, end, precision){
+    //Terribly Inaccurate. Ah well.
+	this.getVertex = function(f, start, end, precision){
 		this.loopcounter++;
 		if(Math.abs(end - start) <= precision) {
 			this.loopcounter = 0;
@@ -186,18 +186,18 @@ function calc() {
 
 		var interval = (end-start) / 40;
 		var xval = start - interval;
-		var prevanswer = startanswer = Parser.evaluate(equation, {x : xval});
+		var prevanswer = startanswer = f(xval);
 		for(xval = start; xval <= end; xval += interval) {
 			xval = this.roundFloat(xval);
-			var answer = Parser.evaluate(equation, {x : xval});
+			var answer = f(xval);
 			if((prevanswer > startanswer && answer < prevanswer) || (prevanswer < startanswer && answer > prevanswer)) {
-				return this.getVertex(equation, xval - 2*interval, xval, precision);
+				return this.getVertex(f, xval - 2*interval, xval, precision);
 			}
 			prevanswer = answer;
 		}
 		this.loopcounter = 0;
 		return false;
-	}
+	};
 
 	//Uses Newton's method to find the root of the equation. Accurate enough for these purposes.
 	this.getRoot = function(equation, guess, range, shifted){
