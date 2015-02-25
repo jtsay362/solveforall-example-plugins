@@ -531,6 +531,7 @@ var Parser = (function (scope) {
 
 	Parser.prototype = {
 		parse: function (expr) {
+            expr = expr.replace(/(\d+)\s*([a-zA-Z])/g, '$1 * $2');              
 			this.errormsg = "";
 			this.success = true;
 			var operstack = [];
@@ -1061,7 +1062,7 @@ var Parser = (function (scope) {
     
     return rv;
   }
-
+  
   var expr = Parser.parse(q);
   
   var variables = expr.variables();
