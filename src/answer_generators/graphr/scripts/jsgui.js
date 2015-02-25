@@ -9,7 +9,7 @@ function JSgui() {
 	this.settings = {};
 
 	this.setQuality = function(q) {
-		$("#quality_select a").removeClass("option_selected");
+		$("#quality_select .option").removeClass("option_selected");
 		q2 = Math.round(q * 10);
 		$("#quality_select_"+q2).addClass("option_selected");
 
@@ -18,7 +18,7 @@ function JSgui() {
 	}
 
 	this.setAngles = function(q) {
-		$("#angle_select a").removeClass("option_selected");
+		$("#angle_select .option").removeClass("option_selected");
 		$("#angle_select_"+q).addClass("option_selected");
 
 		Calc.angles = q;
@@ -56,7 +56,7 @@ function JSgui() {
 	}
 
 	this.setGridlines = function(t) {
-		$("#gridlines_select a").removeClass("option_selected");
+		$("#gridlines_select  .option").removeClass("option_selected");
 		$("#gridlines_select_"+t).addClass("option_selected");
 
 		this.gridlines = t;
@@ -130,7 +130,7 @@ function JSgui() {
 		for (var i = 0; i < equations.length; i++) {
 			$("#graph_inputs").append("<div id=\"graph_input_wrapper_"+i+"\" class=\"graph_input_wrapper\">"+
 				"<div class=\"graph_color_indicator\" id=\"graph_color_indicator_"+i+"\"></div>"+
-				"<div class=\"graph_equation_display\"><span>y =</span><input id=\"graph_input_"+i+"\" size=\"20\" value=\""+equations[i].equation+"\" placeholder=\"Enter a function of x\"/><button class=\"remove_equation_button btn btn-default\" title=\"Clear the equation\"><i class=\"fa fa-remove\"></i></button></div></div>");
+				"<div class=\"graph_equation_display\"><span>y =</span><input id=\"graph_input_"+i+"\" size=\"20\" value=\""+equations[i].equation+"\" placeholder=\"Enter a function of x\" spellcheck=\"false\" autocorrect=\"off\" autocapitalize=\"off\" autocomplete=\"off\"><button class=\"remove_equation_button btn btn-default\" title=\"Clear the equation\"><i class=\"fa fa-remove\"></i></button></div></div>");
 			$("#graph_color_indicator_"+i).css("backgroundColor", equations[i].color);
 			this.lineColors[equations[i].color] = i;
 		}
@@ -237,6 +237,7 @@ $(document).ready(function() {
     });
 
     $('#disclaimer_link').click(function (e) {
+       e.preventDefault();
        $('#disclaimer_modal').modal();
     });
 

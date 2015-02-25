@@ -2,77 +2,60 @@
 <html lang="en">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-	<title>Graphr - The JavaScript Graphing Calculator</title>
+  <title>Graphr - The JavaScript Graphing Calculator</title>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/readable/bootstrap.min.css"
-     rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/readable/bootstrap.min.css"
+   rel="stylesheet" />
 
-    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
-     rel="stylesheet" />
+  <link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+   rel="stylesheet" />
 
-	<link rel="stylesheet" type="text/css" href="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/styles/jsgcalc.css" />
+  <link rel="stylesheet" type="text/css" href="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/styles/jsgcalc.css" />
 </head>
 
 <body>
 
 <div id="wrapper">
 
-<div id="toolbar">
-	<div id="tool_select">
-		<button id="tool_select_pointer" class="toolbar_option toolbar_selected">
-		<img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/pointer.png" alt="Pointer" title="Pointer"/></button>
-		<button id="tool_select_trace" class="toolbar_option">
-		<img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/trace.png" alt="Trace" title="Trace"/></button>
-		<button id="tool_select_vertex" class="toolbar_option">
-		<img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/minmax.png" alt="Local Minima/Maxima" title="Local Minima/Maxima"/></button>
-		<button id="tool_select_root" class="toolbar_option">
-		<img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/root.png" alt="Root" title="Root"/></button>
-		<button id="tool_select_intersect" class="toolbar_option">
-		<img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/intersect.png" alt="Intersect" title="Intersect"/></button>
-		<button id="tool_select_derivative" class="toolbar_option">
-		<img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/derivative.png" alt="Derivative" title="Derivative"/></button>
-		<button id="tool_select_zoombox" class="toolbar_option">
-		<img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/zoombox.png" alt="ZoomBox" title="ZoomBox"/></button>
-	</div>
-</div>
-
 <div id="toolboxes">
 	<div class="toolbox" id="toolbox_zoombox">
-		<div class="toolbox_header">
-			<div class="toolbox_close"><button class="close_button btn btn-link"><i class="fa fa-times"></i></button></div>
-			Window Options
-		</div>
+      <div class="toolbox_header">
+        <div class="toolbox_close">
+          <button class="close_button btn btn-link"><i class="fa fa-times"></i></button>
+        </div>
+          Window Options
+      </div>
 
-		<div class="toolbox_main">
-			<table>
-				<tr>
-					<td></td>
-					<td align="center">y-max: <input id="toolbox_zoombox_ymax" class="jsgcalc_ymax number" type="text" size="4" /></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>x-min:<br /><input id="toolbox_zoombox_xmin" class="jsgcalc_xmin number" type="text" size="4" /></td>
-					<td align="center"><img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/graph.png" style="width: 70px;"/></td>
-					<td>x-max:<br /><input id="toolbox_zoombox_xmax" class="jsgcalc_xmax number" type="text" size="4" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td align="center">y-min: <input id="toolbox_zoombox_ymin" class="jsgcalc_ymin number" type="text" size="4" /></td>
-					<td></td>
-				</tr>
-			</table>
+      <div class="toolbox_main">
+        <table>
+            <tr>
+                <td></td>
+                <td align="center">y-max: <input id="toolbox_zoombox_ymax" class="jsgcalc_ymax number" type="text" size="4" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>x-min:<br /><input id="toolbox_zoombox_xmin" class="jsgcalc_xmin number" type="text" size="4" /></td>
+                <td align="center"><img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/graph.png" style="width: 70px;"/></td>
+                <td>x-max:<br /><input id="toolbox_zoombox_xmax" class="jsgcalc_xmax number" type="text" size="4" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="center">y-min: <input id="toolbox_zoombox_ymin" class="jsgcalc_ymin number" type="text" size="4" /></td>
+                <td></td>
+            </tr>
+        </table>
 
-            <div id="zoom_button_group" class="center-block">
-                <button id="apply_zoom_button" class="btn btn-primary">
-                    Apply
-                </button>
-                <button id="reset_zoom_button" class="btn btn-default">
-                    Reset View
-                </button>
-            </div>
-		</div>
+        <div id="zoom_button_group" class="center-block">
+            <button id="apply_zoom_button" class="btn btn-primary">
+                Apply
+            </button>
+            <button id="reset_zoom_button" class="btn btn-default">
+                Reset View
+            </button>
+        </div>
+      </div>
 	</div>
 
 	<div class="toolbox" id="toolbox_trace">
@@ -106,76 +89,93 @@
 
 
 <div id="graph_wrapper">
-	<canvas id="graph">Sorry, your browser does not support this application. The following browsers are supported:<br /><br />
-	<a href="http://www.google.com/chrome/">Google Chrome</a><br /><a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a><br />
-	<a href="http://www.opera.com/">Opera</a></canvas>
+  <canvas id="graph">Sorry, your browser does not support this application. The following browsers are supported:<br /><br />
+  <a href="http://www.google.com/chrome/">Google Chrome</a><br /><a href="http://www.mozilla.com/firefox/">Mozilla Firefox</a><br />
+  <a href="http://www.opera.com/">Opera</a></canvas>
 </div>
 
 </div>
-
 
 <div id="sidewrapper">
-	<div id="graph_sidebar">
-		<div id="graph_inputs"></div>
+  <div id="toolbar">
+    <div id="tool_select">
+      <button id="tool_select_pointer" class="toolbar_option toolbar_selected">
+      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/pointer.png" alt="Pointer" title="Pointer"/></button>
+      <button id="tool_select_trace" class="toolbar_option">
+      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/trace.png" alt="Trace" title="Trace"/></button>
+      <button id="tool_select_vertex" class="toolbar_option">
+      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/minmax.png" alt="Local Minima/Maxima" title="Local Minima/Maxima"/></button>
+      <button id="tool_select_root" class="toolbar_option">
+      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/root.png" alt="Root" title="Root"/></button>
+      <button id="tool_select_intersect" class="toolbar_option">
+      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/intersect.png" alt="Intersect" title="Intersect"/></button>
+      <button id="tool_select_derivative" class="toolbar_option">
+      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/derivative.png" alt="Derivative" title="Derivative"/></button>
+      <button id="tool_select_zoombox" class="toolbar_option">
+      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/zoombox.png" alt="ZoomBox" title="ZoomBox"/></button>
+    </div>
+  </div>
+  
+  <div id="graph_sidebar">
+    <div id="graph_inputs"></div>
 
-		<div id="buttonbar">
-			<button id="add_input_button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Function</button>
-			<button id="settings_button" class="btn btn-default"><i class="fa fa-cog"></i> Settings</button>
-		</div>
+    <div id="buttonbar">
+      <button id="add_input_button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Function</button>
+      <button id="settings_button" class="btn btn-default"><i class="fa fa-cog"></i> Settings</button>
+    </div>
 
-		<div id="settings">
-			<div id="angle_select" class="options_list">
-                Angle units:
-				<button id="angle_select_degrees" class="option">DEG</button>
-				<button id="angle_select_radians" class="option option_selected">RAD</button>
-				<button id="angle_select_gradians" class="option">GRAD</button>
-			</div>
+    <div id="settings">
+      <div id="angle_select" class="options_list">
+        Angle units:
+        <button id="angle_select_degrees" class="option">DEG</button>
+        <button id="angle_select_radians" class="option option_selected">RAD</button>
+        <button id="angle_select_gradians" class="option">GRAD</button>
+      </div>
 
-			<div id="gridlines_select" class="options_list">
-				Gridlines:
-				<button id="gridlines_select_normal" class="option option_selected">NORMAL</button>
-				<button id="gridlines_select_less" class="option">LESS</button>
-				<button id="gridlines_select_off" class="option">OFF</button>
-			</div>
+      <div id="gridlines_select" class="options_list">
+        Gridlines:
+        <button id="gridlines_select_normal" class="option option_selected">NORMAL</button>
+        <button id="gridlines_select_less" class="option">LESS</button>
+        <button id="gridlines_select_off" class="option">OFF</button>
+      </div>
 
-			<div id="quality_select" class="options_list">
-				Precision:
-				<button id="quality_select_1" class="option">LOW</button>
-				<button id="quality_select_5" class="option">MED</button>
-				<button id="quality_select_10" class="option option_selected">HIGH</button>
-				<button id="quality_select_50" class="option">ULTRA</button>
-			</div>
-		</div>
-
-		<p>Based on <a href="http://www.graphr.org/" target="_top">Graphr</a> by <a href="http://www.yerich.net" target="_top">Richard Ye</a> |
-		<button id="disclaimer_link" class="btn btn-link">Disclaimer</button><br />
-
-	</div>
-
-    <div class="modal fade" id="disclaimer_modal" tabindex="-1" role="dialog" aria-labelledby="disclaimer_title" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="disclaimer_title">Disclaimer</h4>
-          </div>
-          <div class="modal-body">
-            <p>
-                For demonstration purposes only.
-            </p>
-            <p>
-              Calculations are not guaranteed to be correct and are often inaccurate due to floating point errors. Use at your own risk.
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+      <div id="quality_select" class="options_list">
+        Precision:
+        <button id="quality_select_1" class="option">LOW</button>
+        <button id="quality_select_5" class="option">MED</button>
+        <button id="quality_select_10" class="option option_selected">HIGH</button>
+        <button id="quality_select_50" class="option">ULTRA</button>
       </div>
     </div>
 
-    <div id="data_container" data-equations="[&quot;<%= q %>&quot;]">
+    <p>Based on <a href="http://www.graphr.org/" target="_top">Graphr</a> by <a href="http://www.yerich.net" target="_top">Richard Ye</a> |
+    <a id="disclaimer_link" href="#">Disclaimer</a>
+  </div>
+
+  <div class="modal fade" id="disclaimer_modal" tabindex="-1" role="dialog" aria-labelledby="disclaimer_title" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="disclaimer_title">Disclaimer</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+              For demonstration purposes only.
+          </p>
+          <p>
+            Calculations are not guaranteed to be correct and are often inaccurate due to floating point errors. Use at your own risk.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div id="data_container" data-equations="[&quot;<%= q %>&quot;]">
+  </div>
 
 </div>
 

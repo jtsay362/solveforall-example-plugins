@@ -8,8 +8,6 @@
  http://www.undefined.ch/mparser/index.html
 */
 var Parser = (function (scope) {
-	var mchEps = calcEps() * 10;
-
 	function object(o) {
 		function F() {}
 		F.prototype = o;
@@ -211,7 +209,7 @@ var Parser = (function (scope) {
 			if (nstack.length > 1) {
 				throw new Error("invalid Expression (parity)");
 			}
-			return Math.round(nstack[0] / mchEps) * mchEps;
+			return nstack[0];
 		},
 
 		toString: function (toJS) {
@@ -388,6 +386,7 @@ var Parser = (function (scope) {
 			fac: fac,
 			min: Math.min,
 			max: Math.max,
+            exp: Math.exp,
 			pyt: pyt,
 			pow: Math.pow,
             sec: Calc.sec,
@@ -445,8 +444,8 @@ var Parser = (function (scope) {
 		pyt: pyt,
 		pow: Math.pow,
 		atan2: Math.atan2,
-		E: Math.E,
-		PI: Math.PI
+		e: Math.E,
+		pi: Math.PI
 	};
 
 	var PRIMARY  = 1 << 0;
@@ -460,6 +459,9 @@ var Parser = (function (scope) {
 
 	Parser.prototype = {
 		parse: function (expr) {
+		    // Fixup 2x to 2*x
+		    expr = expr.replace(/(\d+|\))\s*([a-zA-Z\(])/g, '$1*$2');
+
 			this.errormsg = "";
 			this.success = true;
 			var operstack = [];
@@ -471,7 +473,13 @@ var Parser = (function (scope) {
 			this.pos = 0;
 
 			while (this.pos < this.expression.length) {
-				if (this.isOperator()) {
+			    if (((expected & PRIMARY) !== 0) && this.isNumber()) {
+					var token = new Token(TNUMBER, 0, 0, this.tokennumber);
+					tokenstack.push(token);
+
+					expected = (OPERATOR | RPAREN | COMMA);
+				}
+				else if (this.isOperator()) {
 					if (this.isSign() && (expected & SIGN)) {
 						if (this.isNegativeSign()) {
 							this.tokenprio = 2;
@@ -492,15 +500,6 @@ var Parser = (function (scope) {
 						this.addfunc(tokenstack, operstack, TOP2);
 						expected = (PRIMARY | LPAREN | FUNCTION | SIGN);
 					}
-				}
-				else if (this.isNumber()) {
-					if ((expected & PRIMARY) === 0) {
-						this.error_parsing(this.pos, "unexpected number");
-					}
-					var token = new Token(TNUMBER, 0, 0, this.tokennumber);
-					tokenstack.push(token);
-
-					expected = (OPERATOR | RPAREN | COMMA);
 				}
 				else if (this.isString()) {
 					if ((expected & PRIMARY) === 0) {
@@ -540,14 +539,6 @@ var Parser = (function (scope) {
 					noperators += 2;
 					expected = (PRIMARY | LPAREN | FUNCTION | SIGN);
 				}
-				else if (this.isConst()) {
-					if ((expected & PRIMARY) === 0) {
-						this.error_parsing(this.pos, "unexpected constant");
-					}
-					var consttoken = new Token(TNUMBER, 0, 0, this.tokennumber);
-					tokenstack.push(consttoken);
-					expected = (OPERATOR | RPAREN | COMMA);
-				}
 				else if (this.isOp2()) {
 					if ((expected & FUNCTION) === 0) {
 						this.error_parsing(this.pos, "unexpected function");
@@ -563,6 +554,14 @@ var Parser = (function (scope) {
 					this.addfunc(tokenstack, operstack, TOP1);
 					noperators++;
 					expected = (LPAREN);
+				}
+				else if (this.isConst()) {
+					if ((expected & PRIMARY) === 0) {
+						this.error_parsing(this.pos, "unexpected constant");
+					}
+					var consttoken = new Token(TNUMBER, 0, 0, this.tokennumber);
+					tokenstack.push(consttoken);
+					expected = (OPERATOR | RPAREN | COMMA);
 				}
 				else if (this.isVar()) {
 					if ((expected & PRIMARY) === 0) {
@@ -627,19 +626,28 @@ var Parser = (function (scope) {
 
 		isNumber: function () {
 			var r = false;
-			var str = "";
-			while (this.pos < this.expression.length) {
-				var code = this.expression.charCodeAt(this.pos);
-				if ((code >= 48 && code <= 57) || code === 46) {
-					str += this.expression.charAt(this.pos);
-					this.pos++;
-					this.tokennumber = parseFloat(str);
+			var str = '';
+            var initialPos = this.pos;
+            var pos = this.pos;
+			while (pos < this.expression.length) {
+				var code = this.expression.charCodeAt(pos);
+                // Detect leading - sign
+                if ((pos === initialPos) && (code === 45)) {
+					str += this.expression.charAt(pos);
+					pos++;
+                } else if ((code >= 48 && code <= 57) || code === 46) {
+					str += this.expression.charAt(pos);
+					pos++;
 					r = true;
 				}
 				else {
 					break;
 				}
 			}
+            if (r) {
+              this.pos = pos;
+              this.tokennumber = parseFloat(str);
+            }
 			return r;
 		},
 
@@ -919,5 +927,5 @@ var Parser = (function (scope) {
 	};
 
 	scope.Parser = Parser;
-	return Parser;
+	return Parser
 })(typeof exports === 'undefined' ? {} : exports);

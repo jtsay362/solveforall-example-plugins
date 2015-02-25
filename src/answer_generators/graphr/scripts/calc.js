@@ -22,13 +22,7 @@ Math.log10 = function(arg) {
 
 function calc() {
 	this.eqcache = new Object;
-	/*
-	this.replacements = {"sec" : "Calc.sec", "csc" : "Calc.csc", "cot" : "Calc.csc", "sqrt" : "Math.sqrt",
-		"asin" : "Calc.asin", "acos" : "Calc.acos", "atan" : "Calc.atan",
-		"sin" : "Calc.sin", "tan" : "Calc.tan", "cos" : "Calc.cos", "log" : "Math.log10", "pi" : "3.14159265358979", "e" : "2.71828183",
-		"abs" : "Math.abs", "ln" : "Math.log", "zeta" : "Calc.zeta", "gamma" : "Calc.gamma", "fact" : "Calc.fact", "bellb" : "Calc.bellb", "Math.pow" : "Math.asdf", "Calc.pow" : "pow",
-		"pow" : "Calc.pow", "Math.asdf" : "Calc.pow"}; */
-	this.angles = "radians";
+	this.angles = 'radians';
 	this.loopcounter = 0;
 	this.eps = calcEps();	//Machine epsilon - the maximum expected floating point error
 
@@ -37,18 +31,18 @@ function calc() {
 
 	//This will take a number and covert it to radians, based on the current setting
 	this.convAngles = function(value) {
-		if(this.angles == "degrees")
+		if(this.angles === 'degrees')
 			return value*(Math.PI/180);
-		if(this.angles == "gradians")
+		if(this.angles === 'gradians')
 			return value*(Math.PI/200);
 		return value;
 	}
 
 	//This will take a radian value and convert it to the proper unit, based on the current setting
 	this.convRadians = function(value) {
-		if(this.angles == "degrees")
+		if(this.angles === 'degrees')
 			return (value * 180 / Math.PI);
-		if(this.angles == "gradians")
+		if(this.angles === 'gradians')
 			return (value * 200 / Math.PI);
 		return value;
 	}
@@ -203,7 +197,7 @@ function calc() {
 	this.getRoot = function(equation, guess, range, shifted){
         var expr = Parser.parse(equation);
 
-		dump(equation + ", guess: "+guess);
+		dump(equation + ', guess: ' + guess);
 		//Newton's method becomes very inaccurate if the root is too close to zero. Therefore we just whift everything over a few units.
 		if((guess > -0.1 && guess < 0.1) && shifted != true) {
             var replacedEquation = equation;
@@ -253,7 +247,7 @@ function calc() {
             return prev;
 		}
 
-		dump("false: center at "+center+" but guess at "+prev);
+		dump('false: center at ' + center + ' but guess at ' + prev);
 
 		return false;
 	};
@@ -261,7 +255,7 @@ function calc() {
 	//Uses Newton's method for finding the intersection of the two equations. Actually very simple.
 	this.getIntersection = function(equation1, equation2, guess, range){
 		//dump("("+equation1 + ") - (" + equation2 + "); guess at "+guess);
-		return this.getRoot("("+equation1 + ") - (" + equation2 + ")", guess, range);
+		return this.getRoot('(' + equation1 + ') - (' + equation2 + ')', guess, range);
 	}
 
 	this.getDerivative = function(f, xval){
@@ -325,31 +319,29 @@ function calc() {
 			return this.eqcache[input];
 
 		var equation = input;
-		var newequation = "";
+		var newequation = '';
 		var bracketdepth = 0;	//The depth of the braket
 		var bracketstart = 0;	//Where the fuirst braket started
-		var lastchar = "";
+		var lastchar = '';
 		var i = 0;
 
 		for(i; i < equation.length; i++) {
 			var currchar = equation[i];
 
-			if(bracketdepth != 0) {
-				if (currchar == "(") {
+			if(bracketdepth !== 0) {
+				if (currchar === '(') {
 					bracketdepth++;
 				}
-				else if(currchar == ")") {
+				else if(currchar === ')') {
 					bracketdepth--;
 				}
 
-				if(bracketdepth != 0)
+				if(bracketdepth !== 0)
 					continue;
 			}
 
 			var newlength = newequation.length;
 			if(currchar.match(/[a-zA-Z]/)) {	//letter
-				if(lastchar == ")" || lastchar.match(/[0-9]/) || lastchar == "|" || lastchar == "x")
-					newequation += "*";
 				newequation += currchar;
 			}
 
@@ -367,17 +359,17 @@ function calc() {
 				newequation += currchar;
 			}
 
-			if(currchar == "(") {
+			if(currchar == '(') {
 				bracketdepth++;
 				bracketstart = i;
 			}
 
-			if(currchar == ")") {
+			if(currchar == ')') {
 				bracketend = i;
-				newequation += "(" + this.parseEquation(input.substr(bracketstart + 1, bracketend - bracketstart - 1), false) + ")";
+				newequation += '(' + this.parseEquation(input.substr(bracketstart + 1, bracketend - bracketstart - 1), false) + ')';
 			}
 
-			if(currchar != " ")
+			if(currchar !== ' ')
 				lastchar = currchar;
 		}
 
@@ -385,16 +377,16 @@ function calc() {
 			if(newequation.match(/\(/g)) {
 				if(newequation.match(/\)/g)) {
 					for(i=0;i<newequation.match(/\(/g).length - newequation.match(/\)/g).length;i++)	//append unclosed brackets
-						newequation += ")";
+						newequation += ')';
 				}
 				else {
 					for(i=0;i<newequation.match(/\(/g).length;i++)	//append unclosed brackets
-						newequation += ")";
+						newequation += ')';
 				}
 			}
 
 			this.eqcache[input] = newequation;
-			dump(equation+" parsed as: "+newequation);
+			dump(equation + ' parsed as: ' + newequation);
 		}
 		return newequation;
 	}

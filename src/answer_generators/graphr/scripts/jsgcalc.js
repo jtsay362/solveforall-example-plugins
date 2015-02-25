@@ -1,6 +1,6 @@
 var DEFAULT_HEIGHT = 600;
 var DEFAULT_WIDTH = 600;
-var NON_GRAPH_HEIGHT = 250;
+var NON_GRAPH_HEIGHT = 230;
 
 function dump(text) {
 	console.log(text);

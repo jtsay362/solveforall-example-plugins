@@ -1,3 +1,5 @@
+$bottom_panel_height: 230px;
+
 @mixin fixed_width_font {
     font-family: Inconsolata, 'Courier New', Monospace;
 }
@@ -5,9 +7,11 @@
 #wrapper { position: absolute; top: 0px; left: 0px; height: 100%; width: 100%;overflow: hidden;}
 
 
-#toolbar { width: 100%; padding-left: 11px; padding-top: 4px; height: 52px; background: #EDEDED; border-top: 1px solid #BBB; position: absolute; z-index: 10; top: calc(100% - 250px); }
+#toolbar { width: 100%; padding-left: 11px; padding-top: 4px; background: #EDEDED; border-top: 1px solid #BBB; z-index: 10;}
 .toolbar_option {
     border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 #tool_select img { border: 1px solid transparent; opacity: 0.5; }
 #tool_select img:hover { opacity: 1.0;}
@@ -19,7 +23,7 @@
   margin-top: 5px;
 }
 
-#sidewrapper { position: absolute; top: calc(100% - 200px); right: 1px; width: 100%; z-index: 5; background: #F6F6F6; border-left: 1px solid #BBB; height: 200px; overflow: auto;}
+#sidewrapper { position: absolute; top: calc(100% - #{$bottom_panel_height}); right: 1px; width: 100%; z-index: 5; background: #F6F6F6; border-left: 1px solid #BBB; height: $bottom_panel_height; overflow: auto;}
 #graph_sidebar { margin: 5px 10px;}
 #graph_inputs { margin-top: 14px; }
 
@@ -75,6 +79,9 @@
   color: black;
   padding-top: 0;
   padding-bottom: 0;
+  &:hover {
+    color: black;
+  }
 }
 
 .graph_input_wrapper {
@@ -99,6 +106,7 @@
 
 #buttonbar {
   margin-top: 14px;
+  margin-bottom: 14px;
 }
 
 .remove_equation_button {
@@ -108,10 +116,10 @@
 
 #settings { display: none; margin-bottom: 20px;}
 
-#graph_wrapper { position: absolute; top: 0px; left: 0px; height: calc(100% - 250px); width: 100%; z-index: 2; }
+#graph_wrapper { position: absolute; top: 0px; left: 0px; height: calc(100% - #{$bottom_panel_height}); width: 100%; z-index: 2; }
 #graph_wrapper:hover { cursor: crosshair;}
 #graph_wrapper:active { cursor: move;}
-#graph { width: 100%; height: calc(100% - 250px);}
+#graph { width: 100%; height: calc(100% - #{$bottom_panel_height});}
 
 h1 { margin: 0; padding: 0;}
 
