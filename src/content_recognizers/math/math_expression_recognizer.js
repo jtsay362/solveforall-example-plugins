@@ -1,23 +1,9 @@
-/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, browser: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global _ */
 
 /**
  * This file handles math calculations
  */
-
-//Machine epsilon
-function calcEps(){
-	var temp1, temp2, mchEps;
-	temp1 = 1.0;
-	do {
-		mchEps = temp1;
-		temp1 /= 2;
-		temp2 = 1.0 + temp1;
-	}
-	while (temp2 > 1.0);
-	return mchEps;
-}
-
 
 Math.log10 = function(arg) {
 	return Math.log(arg)/Math.log(10);
@@ -28,7 +14,6 @@ var Calc = {};
 function calc(opts) {
     opts = opts || {};
 	this.angles = opts.angles || "radians";
-	this.eps = calcEps();	//Machine epsilon - the maximum expected floating point error
 
 	/* Basic Math Functions (sin, cos, csc, etc.)
 	 */
@@ -109,7 +94,7 @@ function calc(opts) {
 	        return -0.5;
 	    } else if (x === 1) {
 	        return Infinity;
-	    } else if (x === 2) {
+	    } else if (x == 2) {
 	        return pi * pi / 6;
 	    } else if (x === 4) {
 	        return pi * pi * pi * pi / 90;
@@ -179,8 +164,6 @@ function recognize(q, context) {
  http://www.undefined.ch/mparser/index.html
 */
 var Parser = (function (scope) {
-	mchEps = calcEps() * 10;
-
 	function object(o) {
 		function F() {}
 		F.prototype = o;
@@ -308,7 +291,7 @@ var Parser = (function (scope) {
 			if (nstack.length > 1) {
 				throw new Error("invalid Expression (parity)");
 			}
-			return Math.round(nstack[0] / mchEps) * mchEps;
+			return nstack[0];
 		},
 
 		toString: function (toJS) {
@@ -502,10 +485,6 @@ var Parser = (function (scope) {
 		return new Parser().parse(expr);
 	};
 
-	Parser.evaluate = function (expr, variables) {
-		return Parser.parse(expr).evaluate(variables);
-	};
-
 	Parser.Expression = Expression;
 
 	Parser.values = {
@@ -537,8 +516,8 @@ var Parser = (function (scope) {
 		pyt: pyt,
 		pow: Math.pow,
 		atan2: Math.atan2,
-		E: Math.E,
-		PI: Math.PI
+		e: Math.E,
+		pi: Math.PI
 	};
 
 	var PRIMARY  = 1 << 0;
@@ -1013,6 +992,75 @@ var Parser = (function (scope) {
 	scope.Parser = Parser;
 	return Parser;
 })({});
+  
+  function desiredVariableNameBoost(variables) {
+    var numVars = variables.length;
+    
+    var rv = 0;
+    switch (numVars) {
+      case 1: {
+        var name = variables[0];
+        if (name === 'x') {
+          return 0.5; 
+        } else if (name === 't') {
+          return 0.3; 
+        } else if (name.length === 1) {
+          return 0.1; 
+        }
+      }
+      break;
+        
+      case 2: {
+        variables.forEach(function (name) {
+          switch (name) {
+            case 'x':
+            case 'y':
+            rv += 0.5;
+            break;
+              
+            case 't':
+            case 'u':
+            rv += 0.3;
+            break;                            
+            
+            default:
+            if (name.length === 1) {
+              rv += 0.1;              
+            }
+            break;
+          }                                      
+        });                
+      }
+      break;
+      
+      default: {
+        variables.forEach(function (name) {
+          switch (name) {
+            case 'x':
+            case 'y':
+            case 'z':
+            rv += (1 / numVars);
+            break;
+              
+            case 't':
+            case 'u':
+            case 'v':
+            rv += (0.6 / numVars);
+            break;                            
+              
+            default:
+            if (name.length === 1) {
+              rv += (0.2 / numVars);              
+            }
+            break;              
+          }                                      
+        });                
+      }
+      break;
+    }    
+    
+    return rv;
+  }
 
   var expr = Parser.parse(q);
   
@@ -1027,21 +1075,15 @@ var Parser = (function (scope) {
        }]
     };        
   } else if (variables.length === 1) {    
-     var recognitionLevel = 0.5;
-     if (/^[a-zA-Z]+$/.test(q)) {
-       recognitionLevel = 0;
-     }
+    var recognitionLevel = 0.5;
+    if (/^[a-zA-Z]+$/.test(q) && (q !== 'e') && (q !== 'pi')) {
+     recognitionLevel = 0;
+    }
+
+    recognitionLevel += desiredVariableNameBoost(variables);
     
-     var varName = variables[0];
-    
-     if (varName === 'x') {
-       recognitionLevel += 0.5; 
-     } else if (varName === 't') {
-       recognitionLevel += 0.3; 
-     }
-    
-     return {
-       'com.solveforall.recognition.mathematics.SingleVariableFunction': [{ 
+    return {
+      'com.solveforall.recognition.mathematics.SingleVariableFunction': [{ 
          matchedText: q,
          recognitionLevel: recognitionLevel,
          variableName: variables[0],
@@ -1049,7 +1091,13 @@ var Parser = (function (scope) {
        }]
     };                 
   } else {
-    console.log('Expression has more than one variable: ' + variables.join(','));
-    return []; 
+    return {
+       'com.solveforall.recognition.mathematics.MultipleVariableFunction': [{ 
+         matchedText: q,
+         recognitionLevel: desiredVariableNameBoost(variables),
+         variables: variables,
+         canonicalExpression: expr.toString()
+       }]      
+    };
   }
 }
