@@ -1,5 +1,6 @@
 <%  
 var ans = recognitionResult ? recognitionResult.doubleValue.toPrecision(8) : '0';
+ans = ans.replace(/(\.\d*?[1-9])0+$/, '$1').replace(/\.0*$/, '');
 
 %>  
 <!DOCTYPE html>
