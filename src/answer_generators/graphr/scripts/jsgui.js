@@ -3,9 +3,9 @@ function JSgui() {
 	this.lineColors = {"#FF0000" : -1, "#0000FF" : -1, "#00FF00" : -1, "#FF00FF" : -1, "#00FFFF" : -1,
 		"#000000" : -1, "#990000" : -1, "#000099" : -1, "#009900" : -1, "#999900" : -1, "#990099" : -1, "#009999" : -1};
 	this.lineSettings = {0 : {color : "#FF0000"}};
-	this.currtool = "pointer";
+	this.currtool = 'trace';
 	this.currEq = 0;
-	this.gridlines = "normal";
+	this.gridlines = 'normal';
 	this.settings = {};
 
 	this.setQuality = function(q) {
@@ -48,11 +48,6 @@ function JSgui() {
 
 		this.currtool = t;
 		jsgcalc.draw();
-	};
-
-	this.doTrace = function(xval) {
-		jsgcalc.draw();
-		jsgcalc.drawTrace(jsgcalc.getEquation(this.currEq), "#000000", xval);
 	};
 
 	this.setGridlines = function(t) {
@@ -130,7 +125,7 @@ function JSgui() {
 		for (var i = 0; i < equations.length; i++) {
 			$("#graph_inputs").append("<div id=\"graph_input_wrapper_"+i+"\" class=\"graph_input_wrapper\">"+
 				"<div class=\"graph_color_indicator\" id=\"graph_color_indicator_"+i+"\"></div>"+
-				"<div class=\"graph_equation_display\"><span>y =</span><input id=\"graph_input_"+i+"\" size=\"20\" value=\""+equations[i].equation+"\" placeholder=\"Enter a function of x\" spellcheck=\"false\" autocorrect=\"off\" autocapitalize=\"off\" autocomplete=\"off\"><button class=\"remove_equation_button btn btn-default\" title=\"Clear the equation\"><i class=\"fa fa-remove\"></i></button></div></div>");
+				"<div class=\"graph_equation_display\"><span>y =</span><input id=\"graph_input_"+i+"\" size=\"20\" value=\""+equations[i].equation+"\" placeholder=\"Enter a function of x\"  spellcheck=\"false\" autocorrect=\"off\" autocapitalize=\"off\" autocomplete=\"off\"><button class=\"remove_equation_button btn btn-default\" title=\"Clear the equation\"><i class=\"fa fa-remove\"></i></button></div></div>");
 			$("#graph_color_indicator_"+i).css("backgroundColor", equations[i].color);
 			this.lineColors[equations[i].color] = i;
 		}
@@ -171,7 +166,7 @@ $(document).ready(function() {
         jsgui.addInput('');
     }
 
-    _(['pointer', 'trace', 'vertex', 'root', 'intersect', 'derivative', 'zoombox']).each(function (tool) {
+    _(['trace', 'vertex', 'root', 'intersect', 'derivative', 'zoombox']).each(function (tool) {
         $('#tool_select_' + tool).click(function (e) {
             jsgui.setTool(tool);
         });
@@ -187,10 +182,6 @@ $(document).ready(function() {
 
     $('#reset_zoom_button').click(function (e) {
         jsgcalc.resetZoom()
-    });
-
-    $('#trace_button').click(function (e) {
-        jsgui.doTrace($('#toolbox_trace_input').val())
     });
 
 	$(".close_button").click(function() {
