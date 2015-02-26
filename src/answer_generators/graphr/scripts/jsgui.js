@@ -10,12 +10,12 @@ function JSgui() {
 
 	this.setQuality = function(q) {
 		$("#quality_select .option").removeClass("option_selected");
-		q2 = Math.round(q * 10);
+		var q2 = Math.round(q * 10);
 		$("#quality_select_"+q2).addClass("option_selected");
 
 		jsgcalc.quality = q;
 		jsgcalc.draw();
-	}
+	};
 
 	this.setAngles = function(q) {
 		$("#angle_select .option").removeClass("option_selected");
@@ -23,14 +23,14 @@ function JSgui() {
 
 		Calc.angles = q;
 		jsgcalc.draw();
-	}
+	};
 
 	this.selectEquation = function(x) {
 		this.currEq = x;
 		$("#graph_inputs div.graph_input_wrapper").removeClass("active_equation");
 		$("#graph_input_wrapper_"+x).addClass("active_equation");
 		jsgcalc.draw();
-	}
+	};
 
 	this.setTool = function(t) {
 		$("#tool_select a").removeClass("toolbar_selected");
@@ -48,12 +48,12 @@ function JSgui() {
 
 		this.currtool = t;
 		jsgcalc.draw();
-	}
+	};
 
 	this.doTrace = function(xval) {
 		jsgcalc.draw();
 		jsgcalc.drawTrace(jsgcalc.getEquation(this.currEq), "#000000", xval);
-	}
+	};
 
 	this.setGridlines = function(t) {
 		$("#gridlines_select  .option").removeClass("option_selected");
@@ -61,7 +61,7 @@ function JSgui() {
 
 		this.gridlines = t;
 		jsgcalc.draw();
-	}
+	};
     /*
 	this.hideSidebar = function() {
 		$("#sidewrapper").hide();
@@ -88,20 +88,20 @@ function JSgui() {
 		$("#graph_inputs div.graph_input_wrapper").each(function() {
 			jsgcalc.lines.push({equation : $("input", this).val(), color : $(".graph_color_indicator", this).css('backgroundColor')});
 		});
-	}
+	};
 
 	this.evaluate = function() {
 		this.updateInputData();
 		jsgcalc.draw();
 		this.refreshInputs();
-	}
+	};
 
 	this.findAvailableColor = function() {
 		for(var color in this.lineColors) {
 			if(this.lineColors[color] == -1)
 				return color;
 		}
-	}
+	};
 
 	//Update gui values
 	this.updateValues = function() {
@@ -109,7 +109,7 @@ function JSgui() {
 		$("input.jsgcalc_xmax").val(Math.round(jsgcalc.currCoord.x2 * 1000) / 1000);
 		$("input.jsgcalc_ymin").val(Math.round(jsgcalc.currCoord.y1 * 1000) / 1000);
 		$("input.jsgcalc_ymax").val(Math.round(jsgcalc.currCoord.y2 * 1000) / 1000);
-	}
+	};
 
 	this.addInput = function (equation) {
 		this.updateInputData();
@@ -121,7 +121,7 @@ function JSgui() {
 		});
 		this.currInput++;
 		this.refreshInputs();
-	}
+	};
 
 	this.refreshInputs = function() {
 		var equations = jsgcalc.lines;
@@ -146,7 +146,7 @@ function JSgui() {
 		this.currInput = equations.length + 1;
 
 		$("#graph_input_wrapper_"+this.currEq).addClass("active_equation");
-	}
+	};
 
 
 }
