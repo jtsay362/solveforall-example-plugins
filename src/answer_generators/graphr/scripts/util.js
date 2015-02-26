@@ -1,3 +1,5 @@
+/*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, browser: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
+/*global jQuery */
 /*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
  * Licensed under the MIT License (LICENSE.txt).
  *
