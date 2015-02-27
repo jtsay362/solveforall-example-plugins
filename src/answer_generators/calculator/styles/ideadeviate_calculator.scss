@@ -257,3 +257,20 @@ button::-moz-focus-inner {
 		background-image: none;
 		filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 	}
+
+.expression_holder {
+  margin-left: auto; 
+  margin-right: auto;
+  width: 100%;
+  
+  .expression {
+    color: #444;
+    text-align: center;
+    margin-right: 22px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+    font-family: "Courier New", Monospace;
+    font-size: 18px;
+    width: 100%;
+  }
+}

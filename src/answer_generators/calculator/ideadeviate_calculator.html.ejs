@@ -2,15 +2,32 @@
 var ans = recognitionResult ? recognitionResult.doubleValue.toPrecision(8) : '0';
 ans = ans.replace(/(\.\d*?[1-9])0+$/, '$1').replace(/\.0*$/, '');
 
+var computation;
+if (q && /^[\-+]?((\d+(\.\d*)?)|(\.\d+))([Ee][\-+]?\d+)?$/.test(q)) {
+  computation = null;
+} else {
+  computation = q.replace(/\s+/g, '');
+}
+
+var height = computation ? 257 : 230;
 %>  
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Calculator</title>
+    <meta name="com.solveforall.meta.answer.min_height" 
+          content="<%- height %>">    
+    <meta name="com.solveforall.meta.answer.preferred_height" 
+          content="<%- height %>">
   
     <link rel="stylesheet" type="text/css" href="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/ideadeviate_calculator/ideadeviate_calculator.css" />
 </head>
 <body class="body">
+  <% if (computation) { %>
+  <div class="expression_holder">
+    <div class="expression"><%= computation %> =</div>
+  </div>  
+  <% } %>
   <div id="calculator" class="calculator demo">
       <div class="u4 display">
          <div class="display-inner">
