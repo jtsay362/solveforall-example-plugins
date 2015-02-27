@@ -85,6 +85,10 @@ function variablesInExpression(expr) {
 }
 
 function recognize(q, context) {
+  if (!q) {
+    return null;  
+  }
+  
   var expr = math.parse(q);
   var code = expr.compile(math);    
   var variables = variablesInExpression(expr);

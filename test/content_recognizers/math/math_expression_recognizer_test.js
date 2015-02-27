@@ -15,8 +15,8 @@ testCases(test,
     var n = numbers[0];
 
     assert.that(n.matchedText, eq('999999'));
-    assert.that(n.recognitionLevel, eq(0.5));
-    assert.that(n.doubleValue, eq(999999));  
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(999999));  
   },
             
   function testPi() {
@@ -25,8 +25,8 @@ testCases(test,
     var n = numbers[0];
 
     assert.that(n.matchedText, eq('pi'));
-    assert.that(n.recognitionLevel, eq(0.5));
-    assert.that(n.doubleValue, eq(Math.PI));  
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(Math.PI));  
   }, 
   
   function testE() {
@@ -35,8 +35,8 @@ testCases(test,
     var n = numbers[0];
 
     assert.that(n.matchedText, eq('e'));
-    assert.that(n.recognitionLevel, eq(0.5));
-    assert.that(n.doubleValue, eq(Math.E));  
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(Math.E));  
   }, 
           
   function testNumberPrefixingVariable() {
@@ -73,8 +73,8 @@ testCases(test,
     var n = numbers[0];
 
     assert.that(n.matchedText, eq('9^-2'));
-    assert.that(n.recognitionLevel, eq(0.5));
-    assert.that(n.doubleValue, eq(1/81));  
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(1/81));  
   },
             
   function testGamma() {
@@ -93,8 +93,8 @@ testCases(test,
     var n = numbers[0];
 
     assert.that(n.matchedText, eq('sin(pi/2)'));
-    assert.that(n.recognitionLevel, eq(0.5));
-    assert.that(n.doubleValue, eq(1));  
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(1));  
   },          
           
   function testMultiplicativeFactors() {
@@ -112,7 +112,7 @@ testCases(test,
     var f = fs[0];
 
     assert.that(f.matchedText, eq('exp(x^-2)-1'));
-    assert.that(f.recognitionLevel, eq(1));            
+    assert.that(f.recognitionLevel, eqFloat(1));   
   },
           
   function testFactorial() {
@@ -121,8 +121,8 @@ testCases(test,
     var n = numbers[0];
 
     assert.that(n.matchedText, eq('5!'));
-    assert.that(n.recognitionLevel, eq(0.5));
-    assert.that(n.doubleValue, eq(120));  
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(120));  
   },
           
   function testSpaces() {
@@ -131,7 +131,12 @@ testCases(test,
     var n = numbers[0];
 
     assert.that(n.matchedText, eq('2*30 - 25/ 5'));
-    assert.that(n.recognitionLevel, eq(0.5));
-    assert.that(n.doubleValue, eq(55));      
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(55));      
+  },
+          
+  function testEmpty() {
+    var r = recognize('', context);    
+    assert.that(Object.keys(r || {}).length, eq(0))  
   }
 );
