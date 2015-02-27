@@ -1,0 +1,18 @@
+<project name="solveforall-example-plugins" basedir="." default="run-all-tests">
+  <property name="test_harness.dir" location="test_harness" />
+  
+  <target name="run-all-tests" depends="run-unit-tests"/>
+			
+  <target name="run-unit-tests">       
+    <java classname="org.mozilla.javascript.tools.shell.Main">
+      <classpath>
+        <fileset dir="${test_harness.dir}/lib">
+          <include name="*.jar" />
+        </fileset>  
+      </classpath>         
+      <arg value="-modules" />
+      <arg value="${test_harness.dir}/modules" />
+      <arg value="${test_harness.dir}/rhinounit/test_runner.js" />
+     </java>  
+  </target>	
+</project>
