@@ -1,3 +1,12 @@
+<%
+  var equations;
+  var rr = recognitionResults['com.solveforall.recognition.mathematics.SingleVariableFunction'];
+  if (rr && (rr.length > 0)) {
+    equations = _(rr).pluck('expression');      
+  } else {
+    equations = [q];
+  }    
+%>  
 <!DOCTYPE html>
 <html lang="en">
 
@@ -144,7 +153,7 @@
     </div>
   </div>
 
-  <div id="data_container" data-equations="[&quot;<%= q %>&quot;]">
+  <div id="data_container" data-equations="<%= JSON.stringify(equations) %>">
   </div>
 
 </div>
