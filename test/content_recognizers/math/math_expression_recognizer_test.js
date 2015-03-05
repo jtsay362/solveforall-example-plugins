@@ -39,15 +39,6 @@ testCases(test,
     assert.that(n.doubleValue, eqFloat(Math.E));  
   }, 
           
-  function testNumberPrefixingVariable() {
-    var r = recognize('26x - 7pi^2', context);
-    var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];
-    var f = fs[0];
-
-    assert.that(f.matchedText, eq('26x - 7pi^2'));
-    assert.that(f.recognitionLevel, eq(1));      
-  },
-  
   function testNumberPrefixingConstant() {
     var r = recognize('-3pi/2', context);
     var numbers = r['com.solveforall.recognition.Number'];
@@ -124,6 +115,17 @@ testCases(test,
     assert.that(n.recognitionLevel, eqFloat(0.5));
     assert.that(n.doubleValue, eqFloat(120));  
   },
+   
+  function testUnitConversion() {
+    var r = recognize('2 in to cm', context);          
+    var numbers = r['com.solveforall.recognition.Number'];
+    var n = numbers[0];
+
+    assert.that(n.matchedText, eq('2 in to cm'));
+    assert.that(n.recognitionLevel, eqFloat(0.5));
+    assert.that(n.doubleValue, eqFloat(5.08));    
+    assert.that(n.unit, eq('cm'));
+  },
           
   function testSpaces() {
     var r = recognize('2*30 - 25/ 5', context);
@@ -134,7 +136,74 @@ testCases(test,
     assert.that(n.recognitionLevel, eqFloat(0.5));
     assert.that(n.doubleValue, eqFloat(55));      
   },
-          
+
+  function testNumberPrefixingVariable() {
+    var r = recognize('26x - 7pi^2', context);
+    var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];
+    var f = fs[0];
+
+    assert.that(f.matchedText, eq('26x - 7pi^2'));
+    assert.that(f.recognitionLevel, eq(1));       
+    assert.that(f.variableName, eq('x'));
+  },
+  
+  function testAssignment() {
+    var r = recognize('y = 1 / 7x', context);
+    var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];
+    var f = fs[0];
+    
+    assert.that(f.matchedText, eq('y = 1 / 7x'));    
+    assert.that(f.recognitionLevel, eq(1));      
+    assert.that(f.variableName, eq('x'));
+    assert.that(f.expression, eq('1 / 7x'));
+    assert.that(f.assignedTo, eq('y'));              
+  },
+
+  function testFunctionAssigment() {
+    var r = recognize('f(t)= cosh(t)', context);
+    var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];
+    var f = fs[0];
+    
+    assert.that(f.matchedText, eq('f(t)= cosh(t)'));    
+    assert.that(f.recognitionLevel, eqFloat(0.8));      
+    assert.that(f.variableName, eq('t'));
+    assert.that(f.expression, eq('cosh(t)'));
+    assert.that(f.assignedTo, eq('f(t)'));                
+  },
+  function testCalculateCommand() {
+    var r = recognize('calculate tan(pi/4)', context);
+    var numbers = r['com.solveforall.recognition.Number'];
+    var n = numbers[0];
+    
+    assert.that(n.matchedText, eq('calculate tan(pi/4)'));    
+    assert.that(n.recognitionLevel, eq(1));          
+    assert.that(n.doubleValue, eqFloat(1));          
+    assert.that(n.expression, eq('tan(pi/4)'));    
+    assert.that(n.command, eq('calculate'));    
+  },                  
+  function testPlotCommand() {
+    var r = recognize('graph of csc(x)', context);
+    var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];
+    var f = fs[0];
+    
+    assert.that(f.matchedText, eq('graph of csc(x)'));    
+    assert.that(f.recognitionLevel, eq(1));      
+    assert.that(f.variableName, eq('x'));
+    assert.that(f.expression, eq('csc(x)'));    
+    assert.that(f.command, eq('graph'));    
+  }, 
+  function testPlotCommandWithAssignment() {
+    var r = recognize('plot y = log(x)', context);
+    var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];
+    var f = fs[0];
+    
+    assert.that(f.matchedText, eq('plot y = log(x)'));    
+    assert.that(f.recognitionLevel, eq(1));      
+    assert.that(f.variableName, eq('x'));
+    assert.that(f.assignedTo, eq('y'));  
+    assert.that(f.expression, eq('log(x)'));    
+    assert.that(f.command, eq('plot'));    
+  },                                 
   function testEmpty() {
     var r = recognize('', context);    
     assert.that(Object.keys(r || {}).length, eq(0))  

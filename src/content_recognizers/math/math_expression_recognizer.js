@@ -1,5 +1,5 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, node: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/*global _ */
+/*global _, min */
 
 var math = require('math');
 
@@ -76,8 +76,18 @@ function variablesInExpression(expr) {
   var obj = {};
 
   expr.traverse(function (node) {
-    if ((node.type === 'SymbolNode') && (math[node.name] === undefined)) {
-      obj[node.name] = true;          
+    var name =  node.name;
+    if ((node.type === 'SymbolNode') && (math[name] === undefined)) {
+      var isVariable = true;
+      try {
+        var u = math.unit('1 ' + name);
+        isVariable = !u.equalBase;
+      } catch (ex) {
+        ;
+      }
+      if (isVariable) {
+        obj[name] = true;          
+      }
     }      
   });
 
@@ -89,48 +99,84 @@ function recognize(q, context) {
     return null;  
   }
   
-  var expr = math.parse(q);
+  var m = /^(?:((?:(?:graph|plot)(?:\s+of)?)|convert|calculate|compute|draw)\s+)?(?:(.*\w.*)\s*=\s*)?([^=]+)$/.exec(q);
+  var assignedTo = null;
+  var expression = q;
+  var command = null;
+  if (m) {
+    //print("Matched " + q + ", m[1] = " + m[1] + ", m[2] = " + m[2] + ", m[3] = " + m[3]);
+    if (m[1]) {
+      command = m[1].trim(); 
+      if (_.str.endsWith(command, 'of')) {
+        command = command.substr(0, command.length - 2).trim(); 
+      }
+    }
+    if (m[2]) {
+      assignedTo = m[2].trim();         
+    }
+    expression = m[3];
+  }
+  
+  var expr = math.parse(expression);
   var code = expr.compile(math);    
   var variables = variablesInExpression(expr);
   
-  //print('variables in expression ' + q + ' are: ' + variables.join(', '));
+  //print('variables in expression ' + expression + ' are: ' + variables.join(', '));
   
   //print('code = ' + code);
+  var recognitionLevel = 0.5;
   
-  if (variables.length === 0) {
-     //print('eval returned: ' + code.eval());
+  if (command) {
+    recognitionLevel = 1.0; 
+  }
+  
+  var result = {
+    matchedText: q,
+    command: command,
+    assignedTo: assignedTo,
+    expression: expression      
+  };
     
-     return {
-       'com.solveforall.recognition.Number': [{ 
-         matchedText: q,
-         recognitionLevel: 0.5,
-         doubleValue: code.eval()
-       }]
+  if (variables.length === 0) {
+    //print('eval returned: ' + code.eval());
+    var y = code.eval();
+    var unit = null;
+    
+    if ((typeof y === 'object') && y.equalBase) {
+      var unitJson = y.toJSON();
+      y = unitJson.value;
+      unit = unitJson.unit;
+    }
+    
+    result.recognitionLevel = recognitionLevel;
+    result.doubleValue = y;
+    result.unit = unit;
+    
+    return {       
+      'com.solveforall.recognition.Number': [result]
     };        
-  } else if (variables.length === 1) {    
-    var recognitionLevel = 0.5;
-    if (/^[a-zA-Z]+$/.test(q) && (q !== 'e') && (q !== 'pi')) {
+  } else if (variables.length === 1) {        
+    if (!command && /^[a-zA-Z\s]+$/.test(expression) && 
+        (expression !== 'e') && (expression !== 'pi')) {
       recognitionLevel = 0;
     }
 
     recognitionLevel += desiredVariableNameBoost(variables);
+    result.recognitionLevel = min(recognitionLevel, 1.0);
+    result.canonicalExpression = expr.toString();
+    result.variableName = variables[0];
     
     return {      
-      'com.solveforall.recognition.mathematics.SingleVariableFunction': [{ 
-         matchedText: q,
-         recognitionLevel: recognitionLevel,
-         variableName: variables[0],
-         canonicalExpression: expr.toString()
-      }]
+      'com.solveforall.recognition.mathematics.SingleVariableFunction': [result]
     };                 
   } else {
+    recognitionLevel += desiredVariableNameBoost(variables);
+    result.recognitionLevel = min(recognitionLevel, 1.0);
+    result.canonicalExpression = expr.toString();
+    result.variables = variables;
+          
     return { 
-      'com.solveforall.recognition.mathematics.MultipleVariableFunction': [{ 
-         matchedText: q,
-         recognitionLevel: desiredVariableNameBoost(variables),
-         variables: variables,
-         canonicalExpression: expr.toString()
-      }]      
+      'com.solveforall.recognition.mathematics.MultipleVariableFunction': [result]      
     };
   }
 }
