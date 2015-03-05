@@ -5,11 +5,13 @@ ans = ans.replace(/(\.\d*?[1-9])0+$/, '$1').replace(/\.0*$/, '');
 var computation;
 if (q && /^[\-+]?((\d+(\.\d*)?)|(\.\d+))([Ee][\-+]?\d+)?$/.test(q)) {
   computation = null;
-} else {
-  computation = q.replace(/\s+/g, '');
+} else if (recognitionResult && recognitionResult.expression) {
+  computation = recognitionResult.expression; 
+} else if (q) {
+  computation = q.trim();
 }
 
-var height = computation ? 257 : 230;
+var height = (computation === null) ? 230 : 257;
 %>  
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -59,7 +61,7 @@ var height = computation ? 257 : 230;
   </script>
 
   <script type="text/javascript"
-   src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/ideadeviate_calculator/ideadeviate_calculator.js">
+   src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/ideadeviate_calculator/calculator.js">
   </script>
 </body>
 </html>

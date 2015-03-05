@@ -35,6 +35,7 @@ var Calculator = function () {
   self.isShowing = false;
 
   self.display = function(v) {
+    $('.expression_holder').css('visibility', 'hidden');
     if (v) {
       self.value = v;
       $('#display').text('' + v);
