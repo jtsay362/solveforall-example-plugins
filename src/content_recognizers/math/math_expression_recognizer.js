@@ -99,7 +99,7 @@ function recognize(q, context) {
     return null;  
   }
   
-  var m = /^(?:((?:(?:graph|plot)(?:\s+of)?)|convert|calculate|compute|draw)\s+)?(?:(.*\w.*)\s*=\s*)?([^=]+)$/.exec(q);
+  var m = /^(?:((?:(?:graph|plot)(?:\s+of)?)|convert|calculate|compute|draw)\s+)?(?:([\w(,\s]+\)?)\s*=\s*)?([^=]+)$/.exec(q);
   var assignedTo = null;
   var expression = q;
   var command = null;

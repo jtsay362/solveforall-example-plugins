@@ -158,7 +158,13 @@ testCases(test,
     assert.that(f.expression, eq('1 / 7x'));
     assert.that(f.assignedTo, eq('y'));              
   },
-
+          
+  function testNonLeadingAssignment() {
+    var r = recognize('https://foo.com/y=x+2', context);
+    var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];        
+    assert.that(fs, isFalse());    
+  },
+          
   function testFunctionAssigment() {
     var r = recognize('f(t)= cosh(t)', context);
     var fs = r['com.solveforall.recognition.mathematics.SingleVariableFunction'];
