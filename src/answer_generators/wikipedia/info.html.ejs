@@ -1,13 +1,14 @@
 <%
 var results = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
 if (!results || (results.length < 1)) {
-  return null
+  return null;
 }
 
 var result = null;
 var imageUri = null;
 var text = null; 
-var i = 0;    do {
+var i = 0;    
+do {
   var r = results[i];
   imageUri = r.depictionImageUri || r.thumbnailImageUri;
   text = r.longAbstract_en; 
@@ -62,6 +63,7 @@ if (text && (text.length > maxAbstractCharacters)) {
     <title>Wikipedia Infobox</title>
     <meta name="com.solveforall.meta.answer.uri" content="http://wikipedia.org/wiki/<%= result.article %>">
     <meta name="com.solveforall.meta.answer.embeddable" content="true">
+    <meta name="com.solveforall.meta.answer.relevance" content="<%= result.recognitionLevel %>">
     <style>
     img.with_fallback {
       margin-top: 5px;
@@ -106,7 +108,7 @@ if (text && (text.length > maxAbstractCharacters)) {
       <% if (text) { %> 
         <% if (pruned) { %>
           <%= pruned %>
-          <span class="content_expander"><i class="fa fa-chevron-down"></i></span>                    
+          <span class="content_expander"><i class="content_expander_label">More ...</i> <i class="fa fa-chevron-down"></i></span>                    
         <% } else { %>
           <%= text %>      
         <% } %>
