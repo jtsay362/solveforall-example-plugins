@@ -24,7 +24,7 @@ function makeResponseHandler(q) {
       return [];
     }
     
-    var DISCARDED_PHONE_PREFIX_REGEX = /^\s*\+?1\-?\s*/;
+    var DISCARDED_PHONE_PREFIX_REGEX = /^\s*\+?1\-?\s*/;    
     var contentTemplateXml = <heredoc>
       <![CDATA[
       <html>
@@ -68,7 +68,8 @@ function makeResponseHandler(q) {
           </p>
         
           <div>
-          <% _(response.businesses).each(function (b) { %>            
+          <% var DEAL_URL_PREFIX = 'http://www.dpbolvw.net/click-7730982-10867460?url=';
+             _(response.businesses).each(function (b) { %>            
             <div class="business_container">
               <div class="text_container pull-left">
                 <div>
@@ -137,15 +138,17 @@ function makeResponseHandler(q) {
                     </span>
                   </h4>
                   <div class="content_expandable initially_hidden">
-                  <% _(b.deals).each(function (deal) { %>
+                  <% _(b.deals).each(function (deal) { 
+                    var dealUrl = DEAL_URL_PREFIX + encodeURIComponent(deal.url);                     
+                  %>
                     <div class="deal">
                       <p>
-                        <a href="<%= deal.url %>"><b><%= deal.title %></b></a>
+                        <a href="<%= dealUrl %>"><b><%= deal.title %></b></a>
                       </p>
                       <div>
                         <% if (deal.image_url) { %>  
                         <div class="deal_image pull-left">
-                          <a href="<%= deal.url %>"> 
+                          <a href="<%= dealUrl %>"> 
                             <img src="<%= deal.image_url %>" width="32" height="32">
                           </a>    
                         </div>  
@@ -161,7 +164,7 @@ function makeResponseHandler(q) {
                           <ul>
                           <% _(deal.options).each(function (option) { %> 
                             <li>
-                              <a href="<%= option.purchase_url %>">
+                              <a href="<%= DEAL_URL_PREFIX + encodeURIComponent(option.purchase_url) %>">
                                 <%= option.title %>                              
                               </a>
                               <% if (option.remaining_count) { %>
