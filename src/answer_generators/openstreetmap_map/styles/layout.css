@@ -1,4 +1,6 @@
-body {
+#map_column {
+  padding-left: 0;
+  padding-right: 0;
 }
 .map {
   height: 100%;
@@ -15,3 +17,10 @@ body {
   display: none;
 }
 
+#popup {
+  padding-bottom: 45px;
+}
+
+.popover {
+  width: 350px;
+}
