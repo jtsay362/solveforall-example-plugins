@@ -22,6 +22,8 @@ function latLongToCoordinates(lat, lon) {
 $(function () {
   var de = $('#data');
 
+  var BASE_URL = (de.attr('data-content-base-url') || '');
+
   var zoom = 15;
   var zoomString = de.attr('data-zoom');
   try {
@@ -85,7 +87,7 @@ $(function () {
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
         opacity: 0.9,
-        src: 'images/pin.png'
+        src: BASE_URL + '/images/pin.png'
       }))
     });
 
