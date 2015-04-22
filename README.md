@@ -1,6 +1,8 @@
 solveforall-example-plugins
 ===========================
 
+[![Join the chat at https://gitter.im/jtsay362/solveforall-example-plugins](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jtsay362/solveforall-example-plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Example plugins for Solve for All
 
 [![Join the chat at https://gitter.im/jtsay362/solveforall-example-plugins](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jtsay362/solveforall-example-plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
