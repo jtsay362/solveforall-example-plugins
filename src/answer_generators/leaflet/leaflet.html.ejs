@@ -1,0 +1,116 @@
+<%
+var address = null;
+var latitude = null;
+var longitude = null;
+var label = null;
+
+try {
+  var usAddressResults = recognitionResults['com.solveforall.recognition.location.UsAddress'];
+
+  if (usAddressResults && (usAddressResults.length > 0)) {
+    var recognitionResult = usAddressResults[0];
+
+    address = recognitionResult.streetAddress || '';
+
+    var city = recognitionResult.city;
+    if (city) {
+      if (address.length > 0) {
+        address += ', ';
+      }
+
+      address += city;
+    }
+
+    var state = recognitionResult.stateAbbreviation;
+    if (state) {
+      if (address.length > 0) {
+        address += ', ';
+      }
+
+      address += state;
+    }
+
+    var zipCode = recognitionResult.zipCode;
+    if (zipCode) {
+      if (address.length > 0) {
+        address += ' ';
+      }
+      address += zipCode;
+    }
+  } else {
+    var geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
+    var geoResult = null;
+
+    if (geoResults && (geoResult.length > 0)) {
+      geoResult = geoResults[0];
+    } else {
+      var wikipediaResults = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
+
+      geoResult = _(wikipediaResults).find(function (wr) {
+        return wr.longitude && wr.latitude;
+      });
+    }
+
+    if (geoResult) {
+      label = geoResult.matchedText;
+      latitude = geoResult.latitude;
+      longitude = geoResult.longitude;
+    }
+  }
+} catch (e) {
+  console.log('Recognition result not found, falling back to query, error message = "' +
+              e.message + "'");
+}
+
+if (!address && !latitude) {
+  address = q;
+}
+
+var settings = context.settings;
+%>
+
+<!DOCTYPE html>
+<html>
+  <head>
+<% if (address) { %>
+    <meta name="com.solveforall.meta.answer.uri"
+     content="https://www.openstreetmap.org/search?query=<%= encodeURIComponent(address) %>">
+<% } %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/spacelab/bootstrap.min.css" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" >
+    <style>
+      html { height: 100vh; }
+      body { height: 100vh; margin: 0; padding: 0;}
+      .map { height: 100vh; }
+    </style>
+    <title>Map</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div id="map_column" class="col-xs-12">
+          <div id="map" class="map">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="data"
+    <% if (address) { %>
+      data-address="<%= address %>"
+    <% } else if (latitude) { %>
+      data-label="<%= label %>"
+      data-latitude="<%= latitude %>" data-longitude="<%= longitude %>"
+    <% } %>
+      data-zoom="<%= (settings.zoomLevel || 15) %>"
+      data-tile-provider="<%= (settings.tileProvider || 'MapQuest OSM') %>">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.2,underscorejs@1.8.3,bootstrap@3.3.4"></script>
+    <!-- Loading from jsDelivr doesn't work for some reason. -->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/leaflet/scripts/leaflet.js"></script>
+  </body>
+</html>

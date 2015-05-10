@@ -13,14 +13,17 @@ var OUTPUT_DIR = 'build';
 
 var ANSWER_GENERATOR_MODULES = {
   calculator: {
-    scripts: ['ideadeviate_calculator']  
-  },  
-  graphr : {
-    scripts: ['util', 'calc', 'parser', 'jsgcalc', 'jsgui']    
+    scripts: ['ideadeviate_calculator']
+  },
+  graphr: {
+    scripts: ['util', 'calc', 'parser', 'jsgcalc', 'jsgui']
+  },
+  leaflet: {
+    scripts: ['leaflet-providers', 'leaflet']    
   }
 };
 
-gulp.task('scripts', function () { 
+gulp.task('scripts', function () {
   Object.keys(ANSWER_GENERATOR_MODULES).forEach(function (mod) {
     var descriptor = ANSWER_GENERATOR_MODULES[mod];
     return gulp.src(
@@ -29,29 +32,29 @@ gulp.task('scripts', function () {
       }))
     .pipe(concat(mod + '.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(OUTPUT_DIR + '/answer_generators/' + mod + '/scripts/'));    
+    .pipe(gulp.dest(OUTPUT_DIR + '/answer_generators/' + mod + '/scripts/'));
   });
 
   return gulp.src(
     _.map(['content_recognizers', 'triggers'], function (pluginType) {
        return SOURCE_DIR + '/' + pluginType + '/*/*.js';
     }), {
-      base: SOURCE_DIR    
-    })      
+      base: SOURCE_DIR
+    })
   .pipe(uglify())
-  .pipe(gulp.dest(OUTPUT_DIR));        
+  .pipe(gulp.dest(OUTPUT_DIR));
 });
 
 gulp.task('sass', function () {
   return gulp.src('src/answer_generators/**/*.scss')
-  .pipe(sass({    
+  .pipe(sass({
     style: 'compressed'
   }))
-  .pipe(gulp.dest(OUTPUT_DIR + '/answer_generators/'));        
+  .pipe(gulp.dest(OUTPUT_DIR + '/answer_generators/'));
 });
 
 gulp.task('checkejs', function () {
-  var s = gulp.src(SOURCE_DIR + '/**/*.ejs') 
+  var s = gulp.src(SOURCE_DIR + '/**/*.ejs')
     .pipe(plumber())
     .pipe(ejs({
       compileDebug: true,
