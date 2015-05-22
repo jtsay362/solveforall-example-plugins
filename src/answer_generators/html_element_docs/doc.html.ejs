@@ -1,4 +1,4 @@
-<%  
+<%
 var results = recognitionResults['com.solveforall.recognition.programming.web.html.Element'];
 
 var rr = null;
@@ -8,7 +8,7 @@ if (results && (results.length > 0)) {
 }
 
 if (!rr) {
-  throw "No result found";   
+  throw "No result found";
 }
 
 var tag = rr.name;
@@ -23,77 +23,77 @@ var title = '<' + tag + '>';
     <meta charset="UTF-8">
     <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>" >
   </head>
-  <body>        
+  <body>
     <h3>
       <%= title %>
       <% if (rr.html5Only) { %>
-        <span class="label label-info">HTML5 only</span> 
-      <% } %>    
+        <span class="label label-info">HTML5 only</span>
+      <% } %>
     </h3>
-    
+
     <p>
-    <% if (rr.summary && (rr.summary.length > 0)) { %>       
-      <%= rr.summary %>          
+    <% if (rr.summaryHtml && (rr.summaryHtml.length > 0)) { %>
+      <%- rr.summaryHtml %>
     <% } else { %>
       No summary available
     <% } %>
-    </p>    
-      
-    <h4>Attributes</h4>  
-      
+    </p>
+
+    <h4>Attributes</h4>
+
     <% if (rr.attributes && (rr.attributes.length > 0)) { %>
       <p>
         Besides the <a href="https://developer.mozilla.org/en-US/docs/HTML/Global_attributes">global attributes</a>,
         the following attributes are also supported:
       </p>
-      
+
       <ul>
       <% _(rr.attributes).each(function (attribute) { %>
         <li>
           <p>
             <strong><%= attribute.name %></strong>
             <% if (attribute.html5Only) { %>
-              <span class="label label-info">HTML5 only</span> 
-            <% } %>              
-          </p>  
+              <span class="label label-info">HTML5 only</span>
+            <% } %>
+          </p>
           <p>
-          <% if (attribute.summary && (attribute.summary.length > 0)) { %>       
-            <%= attribute.summary %>          
+          <% if (attribute.summaryHtml && (attribute.summaryHtml.length > 0)) { %>
+            <%- attribute.summaryHtml %>          
           <% } else { %>
             No summary available
           <% } %>
           </p>
-        </li>            
-      <% }); %>      
+        </li>
+      <% }); %>
       </ul>
     <% } else { %>
       <p>
-        Only the <a href="https://developer.mozilla.org/en-US/docs/HTML/Global_attributes">global attributes</a> 
+        Only the <a href="https://developer.mozilla.org/en-US/docs/HTML/Global_attributes">global attributes</a>
         are supported.
-      </p>          
+      </p>
     <% } %>
-      
+
     <h4>Links</h4>
-             
-    <a href="<%= uri %>"><img                                                          
-     src="https://developer.cdn.mozilla.net/media/img/favicon.ico" 
+
+    <a href="<%= uri %>"><img
+     src="https://developer.cdn.mozilla.net/media/img/favicon.ico"
      width="16" height="16">MDN</a> |
-    <a href="http://www.w3.org/wiki/HTML/Elements/<%= tag %>"><img 
+    <a href="http://www.w3.org/wiki/HTML/Elements/<%= tag %>"><img
      src="http://www.w3.org/favicon.ico"  width="16" height="16">W3C</a> |
-    <a href="http://www.w3schools.com/tags/tag_<%= tag %>.asp"><img                        src="http://www.w3schools.com/favicon.ico" 
+    <a href="http://www.w3schools.com/tags/tag_<%= tag %>.asp"><img                        src="http://www.w3schools.com/favicon.ico"
      width="16" height="16">w3schools.com</a> |
     <a href="http://reference.sitepoint.com/html/<%= tag %>"><img
-     src="http://reference.sitepoint.com/favicon.ico" 
+     src="http://reference.sitepoint.com/favicon.ico"
      width="16" height="16">Sitepoint</a> |
     <a href="http://docs.webplatform.org/wiki/html/elements/<%= tag %>"><img
-     src="http://docs.webplatform.org/favicon.ico" 
+     src="http://docs.webplatform.org/favicon.ico"
      width="16" height="16">&nbsp;WebPlatform.org</a>
-    
+
     <br/><br/>
-    
+
     <p>
-      <small>      
-        Documentation for <a href="<%= uri %>"><%= title %></a> by 
+      <small>
+        Documentation for <a href="<%= uri %>"><%= title %></a> by
         <a href="<%= uri %>$history">Mozilla Contributors</a> is licensed under
         <a href="http://creativecommons.org/licenses/by-sa/2.5/">CC-BY-SA 2.5</a>.
       </small>

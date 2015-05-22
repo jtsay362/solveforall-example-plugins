@@ -18,24 +18,24 @@
       <td>The name of the element</td>
     </tr>
     <tr>
-      <td>summary</td>
+      <td>summaryHtml</td>
       <td>String</td>
-      <td>A description of the element</td>
+      <td>A description of the element, in HTML format</td>
     </tr>
     <tr>
       <td>html5Only</td>
       <td>Boolean</td>
       <td>True if the element is new in HTML5</td>
-    </tr>    
+    </tr>
     <tr>
       <td>attributes</td>
       <td>Array</td>
       <td>An array of supported attributes. Each attribute object has the following properties:
         <ul>
           <li>name: The name of the attribute</li>
-          <li>summary: A summary of the usage of the attribute</li>
+          <li>summaryHtml: A summary of the usage of the attribute, in HTML format</li>
           <li>html5Only: True if the attribute is was added in HTML5 to an existing element</li>
-       </ul>      
+       </ul>
       </td>
     </tr>
   </tbody>
@@ -46,9 +46,9 @@
 {
   &quot;name&quot; : &quot;audio&quot;,
   &quot;summary&quot; : &quot;The HTML &lt;audio&gt; element is used to embed sound content in documents...&quot;,
-  &quot;html5Only&quot; : true, 
+  &quot;html5Only&quot; : true,
   &quot;attributes&quot; : [
-    { 
+    {
       &quot;name&quot; : &quot;autoplay&quot;,
       &quot;summary&quot; : &quot;A Boolean attribute...&quot;,
       &quot;html5Only&quot; : false
