@@ -1,0 +1,24 @@
+<%
+const collectLinks = (settings.collectLinks !== false);
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Hacker News Settings</title>
+  </head>
+  <body>
+    <form role="form">
+      <div class="checkbox">
+        <label>
+          <input id="input_collect_links" type="checkbox"
+           name="collectLinks:boolean"
+            <% if (collectLinks) { %>
+            checked
+            <% } %>
+          >
+          Collect links together in a single content block
+        </label>
+      </div>
+    </form>
+  </body>
+</html>
