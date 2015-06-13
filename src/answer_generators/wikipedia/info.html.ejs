@@ -1,97 +1,101 @@
 <%
-var results = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
+const results = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
 if (!results || (results.length < 1)) {
   return null;
 }
 
-var result = null;
-var imageUri = null;
-var text = null; 
-var i = 0;    
+let result, imageUri, altImageUri, text;
+let i = 0;
 do {
-  var r = results[i];
+  const r = results[i];
   imageUri = r.depictionImageUri || r.thumbnailImageUri;
-  text = r.longAbstract_en; 
+  text = r.longAbstract_en;
 
   if (imageUri || text) {
-    result = r; 
+    result = r;
   }
   i++;
 } while ((result === null) && (i < results.length));
 
-if (!result) {      
+if (!result) {
   throw "No eligible result found";
 }
 
-var label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
+const label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
 
-var settings = context.settings;
-var maxAbstractCharacters = settings.maxAbstractCharacters || 
+const settings = context.settings;
+const maxAbstractCharacters = settings.maxAbstractCharacters ||
   (context.isSuggestionQuery ? 10000 : 570);
-var showImage = imageUri && (settings.showImage !== 'false');
+const showImage = imageUri && (settings.showImage !== 'false');
 
-var requiresExplicitHeight = false;
+let requiresExplicitHeight = false;
 if (showImage) {
-  var altImageUri = null;
-  
+  // Wikipedia support HTTPS on all URLs now!
+  if (_.str.startsWith(imageUri, 'http:')) {
+    imageUri = 'https' + imageUri.substr(4);
+  }
+
   if (imageUri.indexOf('/commons/') > 0) {
     altImageUri = imageUri.replace('/commons/', '/en/');
-  } else if (imageUri.indexOf('/en/') > 0) { 
+  } else if (imageUri.indexOf('/en/') > 0) {
     altImageUri = imageUri.replace('/en/', '/commons/');
-  }  
+  }
 }
 
-var pruned = null;
-var remaining = null;
-if (text && (text.length > maxAbstractCharacters)) {  
-  var x = text.substring(0, maxAbstractCharacters);
-  var chopped = _(x).strRightBack('.');
+let pruned = null;
+let remaining = null;
+if (text && (text.length > maxAbstractCharacters)) {
+  let x = text.substring(0, maxAbstractCharacters);
+  let chopped = _(x).strRightBack('.');
 
-  pruned = x.substring(0, x.length - chopped.length);  
-  
+  pruned = x.substring(0, x.length - chopped.length);
+
   // Avoid just a short sentence that is hidden.
-  if (text.length - pruned.length < 100) {    
+  if (text.length - pruned.length < 100) {
     pruned = null;
   } else {
-    remaining = text.substring(pruned.length);  
-  }    
+    remaining = text.substring(pruned.length);
+  }
 }
-%>    
+%>
 <!doctype html>
 <html>
   <head>
     <title>Wikipedia Infobox</title>
-    <meta name="com.solveforall.meta.answer.uri" content="http://wikipedia.org/wiki/<%= result.article %>">
+    <meta name="com.solveforall.meta.answer.uri"
+     content="https://wikipedia.org/wiki/<%= result.article %>">
     <meta name="com.solveforall.meta.answer.embeddable" content="true">
-    <meta name="com.solveforall.meta.answer.relevance" content="<%= result.recognitionLevel %>">
+    <meta name="com.solveforall.meta.answer.relevance"
+     content="<%= result.recognitionLevel %>">
     <style>
     img.with_fallback {
       margin-top: 5px;
-      margin-right: 10px;      
-    }    
+      margin-right: 10px;
+    }
     </style>
   </head>
-  <body>    
-    <strong><%= result.humanFormattedArticle %></strong>    
-    <small>          
+  <body>
+    <strong><%= result.humanFormattedArticle %></strong>
+    <small>
       &nbsp;&nbsp;
-      <a href="http://wikipedia.org/wiki/<%= result.article %>" target="_top">Full article</a></a>
+      <a href="https://wikipedia.org/wiki/<%= result.article %>"
+       target="_top">Full article</a></a>
 
       <% if (result.homePageUri) { %>
-        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_top">Website</a>            
+        &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_top">Website</a>
       <% } %>
 
-      <% if (result.latitude && result.longitude) { %>            
+      <% if (result.latitude && result.longitude) { %>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic" target="_top">Map</a>           
+        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic" target="_top">Map</a>
       <% } %>
-    </small>            
-    
+    </small>
+
     <p class="text-justify">
-      <% if (showImage) { %>                  
+      <% if (showImage) { %>
         <span class="pull-left">
           <a href="<%= imageUri %>"  target="_top">
-            <img data-img-src-0="<%= imageUri %>" 
+            <img data-img-src-0="<%= imageUri %>"
               <% if (altImageUri) { %>
                 data-img-src-1="<%= altImageUri %>"
               <% } %>
@@ -99,25 +103,25 @@ if (text && (text.length > maxAbstractCharacters)) {
               <% if (requiresExplicitHeight) { %>
               height="200"
               <% } %>
-            >                          
-          </a>            
+            >
+          </a>
         </span>
-      <% } %>  
-    
-        
-      <% if (text) { %> 
+      <% } %>
+
+
+      <% if (text) { %>
         <% if (pruned) { %>
           <%= pruned %>
-          <span class="content_expander"><i class="content_expander_label">More ...</i> <i class="fa fa-chevron-down"></i></span>                    
+          <span class="content_expander"><i class="content_expander_label">More ...</i> <i class="fa fa-chevron-down"></i></span>
         <% } else { %>
-          <%= text %>      
+          <%= text %>
         <% } %>
       <% } %>
     </p>
     <% if (remaining) { %>
-      <p class="text-justify content_expandable initially_hidden">        
+      <p class="text-justify content_expandable initially_hidden">
         <%= remaining %>
       </p>
-    <% } %>  
+    <% } %>
   </body>
 </html>
