@@ -2,8 +2,7 @@
   var results = recognitionResults['com.solveforall.recognition.solveforall.AnswerGenerator'];
 
   if (!results || (results.length === 0)) {
-    console.log('No Answer Generators found.');
-    return [];
+    throw 'No Answer Generators found.';
   }
 
   var IMAGE_URL_BASE = 'https://solveforall.com/libs/jquery-raty/img/';
@@ -47,7 +46,7 @@
   <head>
     <title>Answer Generators</title>
     <meta name="com.solveforall.meta.answer.uri"
-     content="https://solveforall.com/catalog/answer_generator/find?q=<%= encodeURIComponent(q) %>">
+     content="https://solveforall.com/customize/find?q=<%= encodeURIComponent(q) %>">
   </head>
   <body>
 
