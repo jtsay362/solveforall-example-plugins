@@ -1,7 +1,7 @@
 <%
 var address = null;
 
-try { 
+try {
   var recognitionResult = recognitionResults['com.solveforall.recognition.EmailAddress'][0];
   address = recognitionResult.matchedText;
   console.log('Using email address in recognition result: "' + address + '".');
@@ -14,7 +14,7 @@ try {
 var hash = md5(address.toLowerCase());
 
 var settings = context.settings;
-var size = settings.size || '80';
+var size = settings.size || 80;
 var defaultAvatar = settings.defaultAvatar || 'mm';
 var rating = settings.rating || 'g';
 var url = 'https://secure.gravatar.com/' + hash;
@@ -22,16 +22,17 @@ var url = 'https://secure.gravatar.com/' + hash;
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Gravatar</title>   
-  <meta name="com.solveforall.meta.answer.uri" content="<%= url %>" >      
+  <title>Gravatar</title>
+  <meta name="com.solveforall.meta.answer.uri" content="<%= url %>" >
   </head>
 </head>
 
 <body>
-  <img src="https://secure.gravatar.com/avatar/<%= hash %>.jpg?s=<%= size %>&d=<%= encodeURIComponent(defaultAvatar) %>&r=<%= encodeURIComponent(rating) %>" class="img-rounded" width="<%= size %>" height="<%= size %>">
+  <img src="https://secure.gravatar.com/avatar/<%= hash %>.jpg?s=<%= size %>&d=<%= encodeURIComponent(defaultAvatar) %>&r=<%= encodeURIComponent(rating) %>" class="img-rounded" width="<%= size %>" height="<%= size %>"
+   alt="Gravatar image for <%= address %>">
   &nbsp;
   <a href="mailto:<%= address %>">
-    <%= address %>    
+    <%= address %>
   </a>
   &nbsp;/&nbsp;
   <a href="<%= url %>">Gravatar profile</a>
