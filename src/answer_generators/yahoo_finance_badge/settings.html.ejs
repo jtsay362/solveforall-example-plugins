@@ -1,12 +1,11 @@
 <%
-var chartIntervalValues = ['None', '1d', '5d', '3m', '6m', '1y', '2y', '5y', 'my'];
-var chartIntervalLabels = ['None', '1 day', '5 days', '3 months', '6 months', '1 year', '2 years', '5 years', 'Max years'];
+const chartIntervalValues = ['None', '1d', '5d', '3m', '6m', '1y', '2y', '5y', 'my'];
+const chartIntervalLabels = ['None', '1 day', '5 days', '3 months', '6 months', '1 year', '2 years', '5 years', 'Max years'];
 selectedChartInterval = settings.chartInterval || '5d';
 
-var newsCountValues = ['None', '3', '5', '10'];
-var selectedNewsCount = settings.newsCount || '5';
+const newsCountValues = ['None', '3', '5', '10'];
+const selectedNewsCount = settings.newsCount || '5';
 %>
-
 <!doctype html>
 <html>
   <head>
@@ -15,10 +14,10 @@ var selectedNewsCount = settings.newsCount || '5';
   <body>
     <form class="form-horizontal" role="form">
       <div class="form-group">
-        <label class="col-xs-2 control-label">Chart Interval</label>
-        <div class="col-xs-2">
+        <label class="col-xs-4 control-label">Chart Interval</label>
+        <div class="col-xs-4">
           <select name="chartInterval" class="form-control">
-            <% for (var i = 0; i < chartIntervalValues.length; i++) { %>
+            <% for (let i = 0; i < chartIntervalValues.length; i++) { %>
               <option value="<%= chartIntervalValues[i] %>"
                <% if (chartIntervalValues[i] === selectedChartInterval) { %>
                  selected
@@ -28,12 +27,12 @@ var selectedNewsCount = settings.newsCount || '5';
             <% } %>
           </select>
         </div>
-      </div>  
+      </div>
       <div class="form-group">
-        <label class="col-xs-2 control-label">News Stories</label>
-        <div class="col-xs-2">
+        <label class="col-xs-4 control-label">News Stories</label>
+        <div class="col-xs-4">
           <select name="newsCount" class="form-control">
-            <% for (var i = 0; i < newsCountValues.length; i++) { %>
+            <% for (let i = 0; i < newsCountValues.length; i++) { %>
               <option value="<%= newsCountValues[i] %>"
                 <% if (newsCountValues[i] === selectedNewsCount) { %>
                   selected
@@ -43,13 +42,6 @@ var selectedNewsCount = settings.newsCount || '5';
           </select>
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-2">
-          <button type="submit" class="btn btn-primary">
-            <i class="fa fa-check"></i>&nbsp;Save
-          </button>
-        </div>
-      </fieldset>
     </form>
   </body>
 </html>

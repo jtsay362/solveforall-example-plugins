@@ -15,10 +15,10 @@ var selectedPriceType = settings.priceType || '';
   </head>
   <body>
     <form class="form-horizontal">
-      <div class="control-group">
-        <label for="input_category" class="control-label">Category</label>
-        <div class="controls">
-          <select id="input_category" name="category">
+      <div class="form-group">
+        <label for="input_category" class="col-xs-4 control-label">Category</label>
+        <div class="col-xs-4">
+          <select id="input_category" name="category" class="form-control">
             <% for (var i = 0; i < categoryValues.length; i++) { %>
               <option value="<%= categoryValues[i] %>"
                 <% if (categoryValues[i] === selectedCategory) { %>
@@ -30,10 +30,10 @@ var selectedPriceType = settings.priceType || '';
         </div>
       </div>
 
-      <div class="control-group">
-        <label for="input_price_type" class="control-label">Price Type</label>
-        <div class="controls">
-          <select id="input_price_type" name="priceType">
+      <div class="form-group">
+        <label for="input_price_type" class="col-xs-4 control-label">Price Type</label>
+        <div class="col-xs-4">
+          <select id="input_price_type" name="priceType" class="form-control">
             <% for (var i = 0; i < priceTypeValues.length; i++) { %>
               <option value="<%= priceTypeValues[i] %>"
                 <% if (priceTypeValues[i] === selectedPriceType) { %>
@@ -42,14 +42,6 @@ var selectedPriceType = settings.priceType || '';
               ><%= priceTypeLabels[i] %></option>
             <% } %>
           </select>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <div class="controls">
-          <button type="submit" class="btn btn-primary">
-            <i class="fa fa-check"></i>&nbsp;Save
-          </button>
         </div>
       </div>
     </form>

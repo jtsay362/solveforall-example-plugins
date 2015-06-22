@@ -10,10 +10,10 @@ try {
   if (usAddressResults && (usAddressResults.length > 0)) {
     var recognitionResult = usAddressResults[0];
 
-    var address = recognitionResult.streetAddress || '';
+    address = recognitionResult.streetAddress || '';
 
     var city = recognitionResult.city;
-    if (isNonBlankString(city)) {
+    if (city) {
       if (address.length > 0) {
         address += ', ';
       }
@@ -22,7 +22,7 @@ try {
     }
 
     var state = recognitionResult.stateAbbreviation;
-    if (isNonBlankString(state)) {
+    if (state) {
       if (address.length > 0) {
         address += ', ';
       }
@@ -31,7 +31,7 @@ try {
     }
 
     var zipCode = recognitionResult.zipCode;
-    if (isNonBlankString(zipCode)) {
+    if (zipCode) {
       if (address.length > 0) {
         address += ' ';
       }

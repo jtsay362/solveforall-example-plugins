@@ -23,8 +23,8 @@ var selectedZoomLevel = settings.zoomLevel || '11';
   <body>
     <form class="form-horizontal">
       <div class="form-group">
-        <label for="input_action" class="col-xs-2 control-label">View</label>
-        <div class="col-xs-2">
+        <label for="input_action" class="col-xs-4 control-label">View</label>
+        <div class="col-xs-8">
           <select id="input_action" name="action" class="form-control">
             <% for (var i = 0; i < actionValues.length; i++) { %>
               <option value="<%= actionValues[i] %>"
@@ -36,10 +36,10 @@ var selectedZoomLevel = settings.zoomLevel || '11';
           </select>
         </div>
       </div>
-      
+
       <div class="form-group">
-        <label for="input_map_type" class="col-xs-2 control-label">Map Type</label>
-        <div class="col-xs-2">
+        <label for="input_map_type" class="col-xs-4 control-label">Map Type</label>
+        <div class="col-xs-4">
           <select id="input_map_type" name="mapType" class="form-control">
             <% for (var i = 0; i < mapTypeValues.length; i++) { %>
               <option value="<%= mapTypeValues[i] %>"
@@ -53,16 +53,16 @@ var selectedZoomLevel = settings.zoomLevel || '11';
       </div>
 
       <div class="form-group">
-        <label for="input_zoom_level" class="col-xs-2 control-label">Zoom Level</label>
-        <div class="col-xs-2">
+        <label for="input_zoom_level" class="col-xs-4 control-label">Zoom Level</label>
+        <div class="col-xs-4">
           <input id="input_zoom_level" name="zoomLevel" type="number" min="1" max="16"
            value="<%= selectedZoomLevel %>"  class="form-control">
         </div>
       </div>
 
       <div class="form-group">
-        <label for="input_layer" class="col-xs-2 control-label">Layer</label>
-        <div class="col-xs-2">
+        <label for="input_layer" class="col-xs-4 control-label">Layer</label>
+        <div class="col-xs-4">
           <select id="input_layer" name="layer"  class="form-control">
             <% for (var i = 0; i < layerValues.length; i++) { %>
               <option value="<%= layerValues[i] %>"
@@ -72,14 +72,6 @@ var selectedZoomLevel = settings.zoomLevel || '11';
               ><%= layerLabels[i] %></option>
             <% } %>
           </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-2">
-          <button type="submit" class="btn btn-primary">
-            <i class="fa fa-check"></i>&nbsp;Save
-          </button>
         </div>
       </div>
     </form>

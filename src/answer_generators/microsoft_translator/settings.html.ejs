@@ -1,15 +1,14 @@
 <%
-var targetLanguageCodes = ['ar', 'bg', 'ca', 'zh-CHS', 'zh-CHT', 'cs', 'da', 'nl', 'en', 'et', 'fi', 'fr', 'de', 'el', 'ht', 'he', 'hi', 'mww', 'hu', 'id', 'it', 'ja', 'tlh', 'ko', 'lv', 'lt', 'ms', 'mt', 'no', 'fa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'es', 'sv', 'th', 'tr', 'uk', 'ur', 'vi', 'cy'];
-var targetLanguageNames = ['Arabic', 'Bulgarian', 'Catalan', 'Chinese Simplified', 'Chinese Traditional', 'Czech', 'Danish', 'Dutch', 'English', 'Estonian', 'Finnish', 'French', 'German', 'Greek', 'Haitian Creole', 'Hebrew', 'Hindi', 'Hmong Daw', 'Hungarian', 'Indonesian', 'Italian', 'Japanese', 'Klingon', 'Korean', 'Latvian', 'Lithuanian', 'Malay', 'Maltese', 'Norwegian', 'Persian', 'Polish', 'Portuguese', 'Romanian', 'Russian', 'Slovak', 'Slovenian', 'Spanish', 'Swedish', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese', 'Welsh'];
+const targetLanguageCodes = ['ar', 'bg', 'ca', 'zh-CHS', 'zh-CHT', 'cs', 'da', 'nl', 'en', 'et', 'fi', 'fr', 'de', 'el', 'ht', 'he', 'hi', 'mww', 'hu', 'id', 'it', 'ja', 'tlh', 'ko', 'lv', 'lt', 'ms', 'mt', 'no', 'fa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'es', 'sv', 'th', 'tr', 'uk', 'ur', 'vi', 'cy'];
+const targetLanguageNames = ['Arabic', 'Bulgarian', 'Catalan', 'Chinese Simplified', 'Chinese Traditional', 'Czech', 'Danish', 'Dutch', 'English', 'Estonian', 'Finnish', 'French', 'German', 'Greek', 'Haitian Creole', 'Hebrew', 'Hindi', 'Hmong Daw', 'Hungarian', 'Indonesian', 'Italian', 'Japanese', 'Klingon', 'Korean', 'Latvian', 'Lithuanian', 'Malay', 'Maltese', 'Norwegian', 'Persian', 'Polish', 'Portuguese', 'Romanian', 'Russian', 'Slovak', 'Slovenian', 'Spanish', 'Swedish', 'Thai', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese', 'Welsh'];
+const selectedTargetLanguageCode = settings.targetLanguageCode || 'zh-CHT';
 
-var selectedTargetLanguageCode = settings.targetLanguageCode || 'zh-CHT';
-
-var sourceLanguageCodes = _(targetLanguageCodes).toArray();
+const sourceLanguageCodes = _(targetLanguageCodes).toArray();
 sourceLanguageCodes.unshift('null');
-var sourceLanguageNames = _(targetLanguageNames).toArray();
+const sourceLanguageNames = _(targetLanguageNames).toArray();
 sourceLanguageNames.unshift('Auto-detect');
 
-var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
+const selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
 %>
 <!doctype html>
 <html>
@@ -19,10 +18,10 @@ var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
   <body>
     <form class="form-horizontal">
       <div class="form-group">
-        <label for="input_source_language_code" class="col-xs-2 control-label">Source Language</label>
-        <div class="col-xs-2">
+        <label for="input_source_language_code" class="col-xs-4 control-label">Source Language</label>
+        <div class="col-xs-8">
           <select id="input_source_language_code" name="sourceLanguageCode" class="form-control">
-            <% for (var i = 0; i < sourceLanguageCodes.length; i++) { %>
+            <% for (let i = 0; i < sourceLanguageCodes.length; i++) { %>
               <option value="<%= sourceLanguageCodes[i] %>"
                 <% if (sourceLanguageCodes[i] === selectedSourceLanguageCode) { %>
                   selected
@@ -34,10 +33,10 @@ var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
       </div>
 
       <div class="form-group">
-        <label for="input_target_language_code" class="col-xs-2 control-label">Target Language</label>
-        <div class="col-xs-2">
+        <label for="input_target_language_code" class="col-xs-4 control-label">Target Language</label>
+        <div class="col-xs-8">
           <select id="input_target_language_code" name="targetLanguageCode" class="form-control">
-            <% for (var i = 0; i < targetLanguageCodes.length; i++) { %>
+            <% for (let i = 0; i < targetLanguageCodes.length; i++) { %>
               <option value="<%= targetLanguageCodes[i] %>"
                 <% if (targetLanguageCodes[i] === selectedTargetLanguageCode) { %>
                   selected
@@ -45,14 +44,6 @@ var selectedSourceLanguageCode = settings.sourceLanguageCode || 'null';
               ><%= targetLanguageNames[i] %></option>
             <% } %>
           </select>
-        </div>
-      </div>           
-
-      <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-2">
-          <button type="submit" class="btn btn-primary">
-            <i class="fa fa-check"></i>&nbsp;Save
-          </button>
         </div>
       </div>
     </form>
