@@ -1,0 +1,135 @@
+<%
+const DEFAULT_MARKET = 'default';
+
+// https://developer.yahoo.com/boss/search/boss_api_guide/supp_regions_lang.html
+// Use jQuerify to scrape: https://chrome.google.com/webstore/detail/jquerify/gbmifchmngifmadobkcpijhhldeeelkc
+// $('.informaltable tr td:nth-child(1)').map(function () { return $(this).text().trim() });
+const MARKET_LABELS = ['Default', 'Argentina - Spanish', 'Austria – German', 'Australia – English', 'Belgium - Dutch', 'Brazil – Portuguese', 'Bulgaria - Bulgarian', 'Canada - English', 'Canada - French', 'Chile - Spanish', 'Colombia - Spanish', 'Croatia - Croatian', 'Czech Republic', 'Denmark – Danish', 'Estonia - Estonian', 'Finland – Finnish', 'France - French', 'Germany - German', 'Greece - Greek', 'Hong Kong – Simplified Chinese', 'Hungary - Hungarian', 'Indonesia - English', 'Indonesia - Indonesian', 'India – English', 'Ireland - English', 'Israel - Hebrew', 'Italy - Italian', 'Japan – Japanese', 'Korea - Korean', 'Latvia - Latvian', 'Lithuania - Lithuanian', 'Malaysia - English', 'Malaysia– Malaysian', 'Mexico- Spanish', 'Netherlands - Dutch', 'New Zealand - English', 'Norway – Norwegian', 'Peru – Spanish', 'Philippines – Filipino', 'Philippines - English', 'Poland - Polish', 'Romania - Romanian', 'Russia Federation – Russian', 'Saudi Arabia - Arabic', 'Singapore - English', 'Slovakia - Slovak', 'Slovenia - Slovenian', 'Spain – Catalan', 'Spain – Spanish', 'Sweden – Swedish', 'Switzerland - French', 'Switzerland - German', 'Switzerland - Italian', 'Thailand - Thai', 'Taiwan – Traditional Chinese', 'Turkey – Turkish', 'United Kingdom - English', 'United States - English', 'United States - Spanish', /* 'Venezuela - Spanish', */ 'Vietnam – Vietnamese'];
+
+// $('.informaltable tr td:nth-child(2)').map(function () { return $(this).text().trim() });
+const MARKET_VALUES = [DEFAULT_MARKET, 'es-ar', 'de-at', 'en-au', 'nl-be', 'pt-br', 'bg-bg', 'en-ca', 'fr-ca', 'es-cl', 'es-co', 'hr-hr', 'cs-cz', 'da-dk', 'et-ee', 'fi-fi', 'fr-fr', 'de-de', 'el-gr', 'zh-hant-hk', 'hu-hu', 'id-en', 'id-id', 'en-in', 'en-ie', 'he-il', 'it-it', 'ja-jp', 'ko-kr', 'lv-lv', 'lt-lt', 'en-my', 'ms-my', 'es-mx', 'nl-nl', 'en-nz', 'no-no', 'es-pe', 'tl-ph', 'en-ph', 'pl-pl', 'ro-ro', 'ru-ru', 'ar-xa', 'en-sg', 'sk-sk', 'sl-si', 'ca-es', 'es-es', 'sv-se', 'fr-ch', 'de-ch', 'it-ch', 'th-th', 'zh-hant-tw', 'tr-tr', 'en-gb', 'en-us', 'es-us', /* 'es-ve' , */ 'vi-vn']
+
+const FILTER_LABELS = ['No', 'Text only', 'Yes'];
+const FILTER_VALUES = ['Strict', 'Moderate', 'Off'];
+
+const market = settings.market || DEFAULT_MARKET;
+const webSettings = settings.web || {};
+const webEnabled = (webSettings.enabled !== false);
+const filter = settings.filter || 'Moderate';
+
+// News options
+const newsSettings = settings.news || {};
+const newsEnabled = (newsSettings.enabled !== false);
+
+// Video options
+const videoSettings = settings.video || {};
+const videoEnabled = (videoSettings.enabled !== false);
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Bing Search Settings</title>
+    <style>
+      .checkbox-inline {
+        padding-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="form-horizontal" role="form">
+      <fieldset>
+        <legend>Common Options</legend>
+        <div class="form-group">
+          <label for="input_market" class="col-xs-4 control-label">Content Locale</label>
+          <div class="col-xs-6">
+            <select id="input_market" name="market" class="form-control">
+              <% for (let i = 0; i < MARKET_VALUES.length; i++) { %>
+                <option value="<%= MARKET_VALUES[i] %>"
+                  <% if (MARKET_VALUES[i] === market) { %>
+                    selected
+                  <% } %>
+                ><%= MARKET_LABELS[i] %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="input_filter" class="col-xs-4 control-label">
+            Adult Content
+          </label>
+          <div class="col-xs-6">
+            <select id="input_filter" name="filter" class="form-control">
+              <% for (let i = 0; i < FILTER_VALUES.length; i++) { %>
+                <option value="<%= FILTER_VALUES[i] %>"
+                  <% if (filter === FILTER_VALUES[i]) { %>
+                    selected
+                 <% } %>
+                ><%= FILTER_LABELS[i] %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Web Search Options</legend>
+
+        <div class="form-group">
+          <label for="input_enable_web_search" class="col-xs-4 control-label">
+            Search the Web?
+          </label>
+          <div class="col-xs-8">
+            <label class="checkbox-inline">
+              <input id="input_enable_web_search" type="checkbox"
+               name="web[enabled]:boolean" value="true"
+                <% if (webEnabled) { %>
+                checked
+                <% } %>
+              >
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>News Search Options</legend>
+
+        <div class="form-group">
+          <label for="input_enable_news" class="col-xs-4 control-label">
+            Search News?
+          </label>
+          <div class="col-xs-8">
+            <label class="checkbox-inline">
+              <input id="input_enable_news" type="checkbox"
+               name="news[enabled]:boolean" value="true"
+              <% if (newsEnabled) { %>
+                checked
+              <% } %>
+              >
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Video Search Options</legend>
+
+        <div class="form-group">
+          <label for="input_enable_video" class="col-xs-4 control-label">
+            Search Videos?
+          </label>
+          <div class="col-xs-8">
+            <label class="checkbox-inline">
+              <input id="input_enable_video" type="checkbox"
+               name="video[enabled]:boolean" value="true"
+                <% if (videoEnabled) { %>
+                checked
+                <% } %>
+              >
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </body>
+</html>
