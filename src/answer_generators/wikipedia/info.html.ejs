@@ -56,6 +56,9 @@ if (text && (text.length > maxAbstractCharacters)) {
     remaining = text.substring(pruned.length);
   }
 }
+
+// TODO: use settings and/or size of area
+const mapZoomLevel = 15;
 %>
 <!doctype html>
 <html>
@@ -84,9 +87,9 @@ if (text && (text.length > maxAbstractCharacters)) {
         &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_top">Website</a>
       <% } %>
 
-      <% if (result.latitude && result.longitude) { %>
+      <% if (result.geoLocation) { %>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="http://mapq.st/map?q=<%= encodeURIComponent(result.latitude) %>+<%= encodeURIComponent(result.longitude) %><%= encodeURIComponent(label) %>&maptype=map&layer=traffic" target="_top">Map</a>
+        <a href="https://www.openstreetmap.org/#map=<%= mapZoomLevel %>/<%= result.geoLocation.lat %>/<%= result.geoLocation.lon %>" target="_top">Map</a>
       <% } %>
     </small>
 
