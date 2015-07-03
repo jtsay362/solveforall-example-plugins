@@ -7,18 +7,17 @@ if (!results || (results.length < 1)) {
 let result, imageUri, altImageUri, text;
 let i = 0;
 do {
-  const r = results[i];
+  let r = results[i];
   imageUri = r.depictionImageUri || r.thumbnailImageUri;
   text = r.longAbstract_en;
-
   if (imageUri || text) {
     result = r;
   }
   i++;
-} while ((result === null) && (i < results.length));
+} while (!result && (i < results.length));
 
 if (!result) {
-  throw "No eligible result found";
+  throw 'No eligible result found.';
 }
 
 const label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
