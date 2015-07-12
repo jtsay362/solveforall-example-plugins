@@ -6,7 +6,23 @@ function handleContentExpansion(element) {
       var expandable = parent.next('.content_expandable');
 
       if (expandable.length > 0) {
-        expandable.slideToggle();
+        switch (expandable.prop('tagName')) {
+          case 'SPAN':
+          case 'P':
+          case 'B':
+          case 'I':
+          case 'STRONG':
+          case 'EM':
+          case 'CODE':
+          case 'SMALL':
+          expandable.toggle();
+          break;
+
+          default:
+          expandable.slideToggle();
+          break;
+        }
+
         var label = null;
 
         var labelContainer = element.find('.content_expander_label');
