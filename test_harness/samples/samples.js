@@ -28,10 +28,30 @@ function outputToFile(fileName, s) {
 
 eval(loadFile('test_harness/env/setup.js'));
 
+var IMPLICIT_HTML = '<head>\n' +
+  '<!-- Start simulated environment for sanitized content (for testing only) -->\n' +
+  loadFile('test_harness/env/browser/sanitized_content.html');
+
+['sanitized_content'].forEach(function (f) {
+  IMPLICIT_HTML += '\n<style>\n';
+  IMPLICIT_HTML += loadFile('test_harness/env/browser/' + f + '.css');
+  IMPLICIT_HTML += '</style>\n';
+});
+
+['common', 'content_expander', 'fallback_images', 'on_load'].forEach(function (f) {
+  IMPLICIT_HTML += '\n<script>\n';
+  IMPLICIT_HTML += loadFile('test_harness/env/browser/' + f + '.js');
+  IMPLICIT_HTML += '</script>\n';
+});
+
+IMPLICIT_HTML += '<!-- End simulated environment for sanitized content -->';
+
 function processEjs(inFileName, input) {
   var template = loadFile('src/answer_generators/wikipedia/info.html.ejs');
 	var renderer = ejs.compile(template);
 	var html = renderer(input);
+
+  html = html.replace('<head>', IMPLICIT_HTML);
 
   outFileName = inFileName.replace('src/answer_generators/', 'build/samples/')
     .replace(/\.ejs$/, '');

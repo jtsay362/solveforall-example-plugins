@@ -1,0 +1,39 @@
+body {
+  max-width: 850px;
+
+  /* Will remove someday to allow content be border-less.
+   * Best to include it in your own styles.
+   */
+  padding: 9px;
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.inline {
+  display: inline;
+}
+
+.plain {
+  color: black;
+}
+
+.plain_on_hover:hover {
+   color: black;
+}
+
+.initially_hidden {
+  display: none;
+}
+
+.content_expander {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
