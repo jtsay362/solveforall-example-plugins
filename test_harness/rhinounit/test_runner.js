@@ -27,11 +27,11 @@ var testfailed = false;
 var project = new Project();
 
 var self = {
-  log: function (m) { 
+  log: function (m) {
     print(m + '\n');
   },
   fail: function (m) {
-    print('Failed: ' + m + '\n');    
+    print('Failed: ' + m + '\n');
   }
 };
 
@@ -45,25 +45,7 @@ function loadFile(fileName) {
 	return (new String(FileUtils.readFully(reader))).toString();
 }
 
-function loadBuiltIns() {    
-  [ "ejs", "lodash.underscore.min", "underscore.string.min",
-    "underscore.inflection.min", "URI.min", 
-    "hmac-sha1.min", "enc-base64-min", "oauth-1.0a.min", 
-    "md5.min", "aliases", "console"].forEach(function (base) {
-    eval(loadFile('test_harness/builtins/' + base + '.js'));      
-  });   
-
-  _.mixin(_.str.exports());    
-  
-  /*
-  Object.keys(ejs).forEach(function (prop) {
-    print('ejs.' + prop + ' = ' + ejs[prop]);     
-  }); */
-  
-  print('loaded builtins');
-  console.log('console log working!');
-  
-}
+eval(loadFile('test_harness/env/setup.js'));
 
 var rhinoUnitUtilPath = "test_harness/rhinounit/rhinoUnitUtil.js";
 /*
