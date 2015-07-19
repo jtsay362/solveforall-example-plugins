@@ -64,10 +64,14 @@ const semanticProps = result.semanticProps || {};
 let semanticPropsArray = [];
 let description;
 
+const RANGE_SUFFIXES = ['YearsStartYear', 'YearsEndYear'];
+const dateRanges = {};
+
 _(semanticProps).chain().keys().each(function (k) {
   const v = semanticProps[k];
   if (k && v && v.value) {
-    const name = _.str.humanize(_.str.capitalize(k.substr(k.lastIndexOf('.') + 1)));
+    const lastDotIndex = k.lastIndexOf('.');
+    const name = _.str.humanize(_.str.capitalize(k.substr(lastDotIndex + 1)));
     const kind = v.kind;
     let value = v.value;
     if (kind === 'uri') {
@@ -86,50 +90,96 @@ _(semanticProps).chain().keys().each(function (k) {
       default: break;
     }
 
+
     if (value.indexOf('__') >= 0) {
       return;
     }
 
-    semanticPropsArray.push([name, value]);
-  }
+    let doPush = true;
+    for (let rangeIndex = 0; rangeIndex < RANGE_SUFFIXES.length; rangeIndex++) {
+      const suffix = RANGE_SUFFIXES[rangeIndex];
+      if (_.str.endsWith(k, suffix)) {
+        const dateRangeName = k.substring(lastDotIndex + 1, k.length - suffix.length);
+        dateRanges[dateRangeName] = dateRanges[dateRangeName] || {};
 
-  // If there is a birth date, remove birth year, month, etc.
-  const SKIP = '__SKIP__';
-  _(semanticPropsArray).each(function (pair) {
-    const lowerName = pair[0].toLowerCase();
-
-    _(['year', 'month', 'day']).each(function (period) {
-      if (_.str.endsWith(lowerName, ' ' + period)) {
-        const prefix = lowerName.substr(0, lowerName.length - period.length);
-        const datePropertyName = prefix + 'date';
-        const datePair = _(semanticPropsArray).find(function (pair2) {
-          return (datePropertyName === pair2[0].toLowerCase());
-        });
-
-        if (datePair) {
-          pair[0] = SKIP;
+        if (suffix.indexOf('Start') > 0) {
+          dateRanges[dateRangeName].start = value;
+        } else {
+          dateRanges[dateRangeName].end = value;
         }
+        doPush = false;
       }
-    });
-  });
-
-  semanticPropsArray = _(semanticPropsArray).reject(function (pair) {
-    return (pair[0] === SKIP)
-  });
-
-  semanticPropsArray = _(semanticPropsArray).sortBy(function (pair) {
-    const name = pair[0];
-
-    // Ensures birth name comes before birth date and birth place
-    const nameIndex = name.indexOf('name');
-    if (nameIndex >= 0) {
-      return name.substr(0, nameIndex) + '0' + name.substr(nameIndex + 1);
     }
 
-    return name;
+    if (doPush) {
+      semanticPropsArray.push([name, value]);
+    }
+  }
+});
+
+// If there is a birth date, remove birth year, month, etc.
+const SKIP = '__SKIP__';
+
+_(semanticPropsArray).each(function (pair) {
+  const name = pair[0];
+  const lowerName = name.toLowerCase();
+
+  _(['year', 'month', 'day']).each(function (period) {
+    if (_.str.endsWith(lowerName, ' ' + period)) {
+      const prefix = lowerName.substr(0, lowerName.length - period.length);
+      const datePropertyName = prefix + 'date';
+      const datePair = _(semanticPropsArray).find(function (pair2) {
+        return (datePropertyName === pair2[0].toLowerCase());
+      });
+
+      if (datePair) {
+        pair[0] = SKIP;
+      }
+    }
   });
 });
 
+semanticPropsArray = _(semanticPropsArray).reject(function (pair) {
+  return (pair[0] === SKIP)
+});
+
+semanticPropsArray = _(semanticPropsArray).sortBy(function (pair) {
+  const name = pair[0];
+
+  // Ensures birth name comes before birth date and birth place
+  const nameIndex = name.indexOf('name');
+  if (nameIndex >= 0) {
+    return name.substr(0, nameIndex) + '0' + name.substr(nameIndex + 1);
+  }
+
+  return name;
+});
+
+_(dateRanges).chain().pairs().sortBy(function (pair) {
+  return pair[0];
+}).each(function (pair) {
+  let v = '';
+
+  const start = pair[1].start;
+
+  if (start) {
+    v += start;
+  } else {
+    v += '(Unknown)';
+  }
+
+  const end = pair[1].end;
+
+  if (end) {
+    if (end !== start) {
+      v += ' - ' + end;
+    }
+  } else {
+    v += ' -';
+  }
+
+  semanticPropsArray.push([_.str.capitalize(pair[0]), v]);
+});
 %>
 <!doctype html>
 <html>
@@ -163,6 +213,9 @@ _(semanticProps).chain().keys().each(function (k) {
     }
     .semantic_props_container {
       margin-top: 6px;
+    }
+    .semantic_props_container td {
+      padding-right: 16px;
     }
     </style>
   </head>
