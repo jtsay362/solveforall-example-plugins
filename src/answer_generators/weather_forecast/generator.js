@@ -3,44 +3,49 @@
 
 function isCurrentLocationQuery(q) {
   'use strict';
-  var lowerQuery = q.toLowerCase();    
-  return (lowerQuery.length === 0) || (lowerQuery === 'weather');  
+  const lowerQuery = q.toLowerCase();
+  return (lowerQuery.length === 0) || (lowerQuery === 'weather');
 }
 
 function generateResults(recognitionResults, q, context) {
-  'use strict';  
-  var placeName = q;
-  var relevance = 0.0;
-  var lat = null;
-  var lng = null;  
-  var geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
-  var geoResult = null;
+  'use strict';
+  let placeName = q;
+  let relevance = 0.0;
+  let lat = null;
+  let lng = null;
+  let geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
+  let geoResult = null;
 
   if (geoResults && (geoResult.length > 0)) {
-    geoResult = geoResults[0];          
+    geoResult = geoResults[0];
   } else {
-    var wikipediaResults = recognitionResults['com.solveforall.recognition.WikipediaArticle'];      
+    const wikipediaResults = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
 
     geoResult = _(wikipediaResults).find(function (wr) {
-      return wr.longitude && wr.latitude;
+      const g = wr.geoLocation;
+      return g && g.lon && g.lat;
     });
 
     if (geoResult) {
       placeName = geoResult.title;
-    }        
+      geoResult = {
+        longitude: geoResult.geoLocation.lon,
+        latitude: geoResult.geoLocation.lat
+      }
+    }
   }
 
   if (geoResult) {
     lat = geoResult.latitude;
-    lng = geoResult.longitude;            
-    
-    relevance = geoResult.recognitionLevel;     
-    
+    lng = geoResult.longitude;
+
+    relevance = geoResult.recognitionLevel;
+
     if (q.indexOf('weather') >= 0) {
-      relevance = 1.0; 
-    }            
+      relevance = 1.0;
+    }
   } else if (context.location && context.location.lat && context.location.lng && isCurrentLocationQuery(q)) {
-    placeName = 'your location';  
+    placeName = 'your location';
     lat = context.location.lat;
     lng = context.location.lng;
     relevance = 1.0;
@@ -49,27 +54,27 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  var latString = lat.toFixed(5);
-  var lngString = lng.toFixed(5);          
+  let latString = lat.toFixed(5);
+  let lngString = lng.toFixed(5);
 
-  var settings = context.settings;
-  var unitsType = settings.unitsType || 'us';
-  var font = settings.font || 'Helvetica';
-  var color = settings.color || '#00aaff';
-  
+  let settings = context.settings;
+  let unitsType = settings.unitsType || 'us';
+  let font = settings.font || 'Helvetica';
+  let color = settings.color || '#00aaff';
+
   return [{
     label: 'Weather',
     iconUrl: 'https://forecast.io/favicon.ico',
-    tooltip: 'View the weather for ' + placeName,    
-    uri: 'https://forecast.io/embed/#lat=' + latString + '&lon=' + lngString + '&name=' + 
+    tooltip: 'View the weather for ' + placeName,
+    uri: 'https://forecast.io/embed/#lat=' + latString + '&lon=' + lngString + '&name=' +
       encodeURIComponent(placeName) + '&units=' + encodeURIComponent(unitsType) + '&font=' +
       encodeURIComponent(font) + '&color=' + encodeURIComponent(color),
     embeddable: true,
     shouldEmbed: true,
-    relevance: relevance,    
-    minHeight: 247,    
+    relevance: relevance,
+    minHeight: 247,
     preferredHeight: 247,
     minWidth: 200,
-    preferredWidth: 400   
+    preferredWidth: 400
   }];
-}  
+}
