@@ -13,6 +13,10 @@ do {
   if (imageUri || text) {
     result = r;
   }
+  if (text) {
+    text = text.replace(/–+/g, '-');
+  }
+
   i++;
 } while (!result && (i < results.length));
 
@@ -66,54 +70,119 @@ let description;
 
 const RANGE_SUFFIXES = ['YearsStartYear', 'YearsEndYear'];
 const dateRanges = {};
+const IGNORED_VALUE_PREFIXES = ['List of'];
+const NAME_CHANGES = {
+  'Is part of' : 'Part of',
+  'Nick' : 'Nickname',
+  'Point' : 'Geolocation',
+  'Area land' : 'Land area',
+  'Area total' : 'Total area',
+  'Area water' : 'Water area',
+  'Percentage of area water' : 'Water area (%)',
+  'Population metro' : 'Metro population',
+  'Population total' : 'Total population',
+  'Population total ranking' : 'Total population rank',
+  'Population urban' : 'Urban population',
+  'Utc offset' : 'UTC offset',
+  'Area code' : 'Area code(s)',
+  'Postal code' : 'Postal code(s)'
+};
+
+const numeral = require('numeral');
+
+function humanizeUriValue(v) {
+  // Fix weird slash as in org.dbpedia.resource.Mayor–council_government
+  const x = v.value.replace(/–/g, '-');
+  if (v.kind !== 'uri') {
+    return x;
+  }
+
+  return x.substr(x.lastIndexOf('.') + 1).replace(/_+/g, ' ');
+}
 
 _(semanticProps).chain().keys().each(function (k) {
-  const v = semanticProps[k];
-  if (k && v && v.value) {
-    const lastDotIndex = k.lastIndexOf('.');
-    const name = _.str.humanize(_.str.capitalize(k.substr(lastDotIndex + 1)));
-    const kind = v.kind;
-    let value = v.value;
-    if (kind === 'uri') {
-      value = value.substr(value.lastIndexOf('.') + 1).replace('_', ' ');
-    }
+  try {
+    const v = semanticProps[k];
+    if (k && v && v.value) {
+      switch (k) {
+        case 'org.w3.www.1999.02.22-rdf-syntax-ns#type':
+        case 'org.w3.www.2003.01.geo.wgs84_pos#lat':
+        case 'org.w3.www.2003.01.geo.wgs84_pos#long':
+        return;
+      }
 
-    switch (name) {
-      case 'Viaf':
-      case 'Name':
-      return;
+      const lastDotIndex = k.lastIndexOf('.');
+      let name = _.str.humanize(_.str.capitalize(k.substr(lastDotIndex + 1)));
+      const kind = v.kind;
+      let value = v.value;
+      if (kind === 'uri') {
+        value = humanizeUriValue(v);
+      }
 
-      case 'Description':
-      description = _.str.capitalize(value);
-      return;
+      switch (name) {
+        case 'Viaf':
+        case 'Name':
+        case 'Homepage':
+        case 'Leader name':
+        case 'Leader title':
+        return;
 
-      default: break;
-    }
+        case 'Description':
+        description = _.str.capitalize(value);
+        return;
 
-
-    if (value.indexOf('__') >= 0) {
-      return;
-    }
-
-    let doPush = true;
-    for (let rangeIndex = 0; rangeIndex < RANGE_SUFFIXES.length; rangeIndex++) {
-      const suffix = RANGE_SUFFIXES[rangeIndex];
-      if (_.str.endsWith(k, suffix)) {
-        const dateRangeName = k.substring(lastDotIndex + 1, k.length - suffix.length);
-        dateRanges[dateRangeName] = dateRanges[dateRangeName] || {};
-
-        if (suffix.indexOf('Start') > 0) {
-          dateRanges[dateRangeName].start = value;
-        } else {
-          dateRanges[dateRangeName].end = value;
+        default: {
+          const alias = NAME_CHANGES[name];
+          if (alias) {
+            name = alias;
+          }
         }
-        doPush = false;
+        break;
+      }
+
+      if ((value.indexOf('__') >= 0) || _(IGNORED_VALUE_PREFIXES).find(function (prefix) {
+          return _.str.startsWith(value, prefix);
+      })) {
+        return;
+      }
+
+      let doPush = true;
+      for (let rangeIndex = 0; rangeIndex < RANGE_SUFFIXES.length; rangeIndex++) {
+        const suffix = RANGE_SUFFIXES[rangeIndex];
+        if (_.str.endsWith(k, suffix)) {
+          const dateRangeName = k.substring(lastDotIndex + 1, k.length - suffix.length);
+          dateRanges[dateRangeName] = dateRanges[dateRangeName] || {};
+
+          if (suffix.indexOf('Start') > 0) {
+            dateRanges[dateRangeName].start = value;
+          } else {
+            dateRanges[dateRangeName].end = value;
+          }
+          doPush = false;
+        }
+      }
+
+      switch (v.dataType) {
+        case 'usDollar':
+        value = numeral(parseFloat(value)).format('($ 0.00 a)');
+        break;
+
+        case 'http://www.w3.org/2001/XMLSchema#nonNegativeInteger':
+        value = numeral(parseFloat(value)).format('0,0');
+        break;
+
+        case 'float':
+        case 'http://www.w3.org/2001/XMLSchema#double':
+        value = numeral(parseFloat(value)).format('0,0.0');
+        break;
+      }
+
+      if (doPush) {
+        semanticPropsArray.push([name, value]);
       }
     }
-
-    if (doPush) {
-      semanticPropsArray.push([name, value]);
-    }
+  } catch (e) {
+    console.warn('Error processing prop "' + name + '", value "' + value + '"');
   }
 });
 
@@ -142,6 +211,14 @@ _(semanticPropsArray).each(function (pair) {
 semanticPropsArray = _(semanticPropsArray).reject(function (pair) {
   return (pair[0] === SKIP)
 });
+
+const leaderName = semanticProps['org.dbpedia.ontology.leaderName'];
+const leaderTitle = semanticProps['org.dbpedia.ontology.leaderTitle'];
+
+if (leaderName && leaderName.value && leaderTitle && leaderTitle.value) {
+  semanticPropsArray.push([leaderTitle.value,
+    humanizeUriValue(leaderName)]);
+}
 
 semanticPropsArray = _(semanticPropsArray).sortBy(function (pair) {
   const name = pair[0];
