@@ -3,6 +3,9 @@
   var ex = null;
   var relevance = 1.0;
 
+  // Don't leak this!
+  context.developerSettings = {};
+
   try {
     rv = JSON.stringify(eval(q), null, 2);
   } catch (err) {
@@ -41,11 +44,11 @@
         no message.
         </p>
       <% } %>
-    <% } else { 
+    <% } else {
          var srv = '' + rv;
          var totalLength = q.length + srv.length;
          if ((totalLength <= MAX_SINGLE_LINE_LENGTH) && (srv.indexOf('\n') < 0)) { %>
-           <pre><%= q %> == <%= rv %></pre>    
+           <pre><%= q %> == <%= rv %></pre>
     <%   } else { %>
            <pre><%= q %></pre>
            <p>
