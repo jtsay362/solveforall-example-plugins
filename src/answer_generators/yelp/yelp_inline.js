@@ -2,34 +2,34 @@
 /* global _, HostAdapter, hostAdapter, ejs, URI, OAuth */
 
 function mapUrl(business) {
-  var location = business.location;
-  var uri = URI('http://www.mapquest.com/')
+  const location = business.location;
+  const uri = URI('http://www.mapquest.com/')
   return uri.addQuery('le', 't').
     addQuery('q', 'addr: ' + location.address.join(',') + ' city: ' + location.city +
-             ' state: ' + location.state_code + ' postalCode: ' + 
+             ' state: ' + location.state_code + ' postalCode: ' +
              location.postal_code + ' country: ' + location.country_code + ' (' +
              business.name + ')').
-    addQuery('maptype', 'map').addQuery('vs', 'embed').toString();      
+    addQuery('maptype', 'map').addQuery('vs', 'embed').toString();
 }
 
 function makeResponseHandler(q) {
   return function (responseText, httpResponse) {
     console.log('got response text = "' + responseText + '"');
-    
-    var response = JSON.parse(responseText);
-    var businesses = response.businesses;
-    
+
+    const response = JSON.parse(responseText);
+    const businesses = response.businesses;
+
     if (!businesses || (businesses.length === 0)) {
       console.log('No businesses found');
       return [];
     }
-    
-    var DISCARDED_PHONE_PREFIX_REGEX = /^\s*\+?1\-?\s*/;    
-    var contentTemplateXml = <heredoc>
+
+    const DISCARDED_PHONE_PREFIX_REGEX = /^\s*\+?1\-?\s*/;
+    const contentTemplateXml = <heredoc>
       <![CDATA[
       <html>
         <head>
-          <style> 
+          <style>
             .business_title {
               font-size: large;
             }
@@ -52,109 +52,114 @@ function makeResponseHandler(q) {
             .snippet_image, .deal_image {
               margin: 6px;
             }
-            .snippet_text, .deal_text {              
+            .snippet_text, .deal_text {
               width: calc(100% - 48px);
               max-width: 400px;
-            }            
+            }
           </style>
         </head>
-        <body>          
+        <body>
           <p>
-            <img src="http://s3-media4.fl.yelpcdn.com/assets/2/www/img/7e704c57a423/developers/yelp_logo_75x38.png" 
+            <img src="http://s3-media4.fl.yelpcdn.com/assets/2/www/img/7e704c57a423/developers/yelp_logo_75x38.png"
              width="75" height="38" alt="Yelp">
-            <span class="num_results_label"> returned 
+            <span class="num_results_label"> returned
               <%= _('result').pluralize(response.total, true) %>:
-            </span>            
+            </span>
           </p>
-        
+
           <div>
-          <% var DEAL_URL_PREFIX = 'http://www.dpbolvw.net/click-7730982-10867460?url=';
-             _(response.businesses).each(function (b) { %>            
+          <% let DEAL_URL_PREFIX = 'http://www.dpbolvw.net/click-7730982-10867460?url=';
+             _(response.businesses).each(function (b) { %>
             <div class="business_container">
               <div class="text_container pull-left">
                 <div>
                   <span><a href="<%= b.url %>" class="business_title"><%= b.name %></a></span>
                   <% if (b.is_closed) { %>
-                    <span class="label label-danger">CLOSED</span>                                      
-                  <% } %>                          
+                    <span class="label label-danger">CLOSED</span>
+                  <% } %>
                 </div>
                 <div>
                   <span><img src="<%= b.rating_img_url %>"></span>
-                  <span><small><%= _('review').pluralize(b.review_count, true) %></small></span>     
+                  <span><small><%= _('review').pluralize(b.review_count, true) %></small></span>
                 </div>
                 <div>
                   <address>
-                  <% var addresses = b.location.display_address || [];
+                  <% let addresses = b.location.display_address || [];
                      while (addresses.length > 3) {
                        addresses[0] = addresses[0] + ', ' + addresses[1];
-                       addresses.splice(1, 1); 
-                     }        
-                     var firstLine = true;  
+                       addresses.splice(1, 1);
+                     }
+                     let firstLine = true;
                      _(addresses).each(function (a) { %>
                        <%= a %>
-                       <% if (firstLine) { 
+                       <% if (firstLine) {
                             if (b.distance) { %>
                               (<%= (b.distance * 0.000621371).toFixed(1) %> mi.)
                          <% } %>
                             <a href="<%= mapUrl(b) %>" target="_blank" title="View map">
                               <i class="fa fa-map-marker fa-lg"></i>
-                            </a>        
-                       <%   firstLine = false;                          
-                          } %>                               
-                       <br/>        
+                            </a>
+                       <%   firstLine = false;
+                          } %>
+                       <br/>
                      <% }); %>
-                  </address>                      
+                  </address>
                 </div>
                 <div>
-                  <%= b.display_phone ? b.display_phone.replace(DISCARDED_PHONE_PREFIX_REGEX, '') : 
+                  <%= b.display_phone ? b.display_phone.replace(DISCARDED_PHONE_PREFIX_REGEX, '') :
                       '(No phone number available)' %>
-                </div>                
-              </div>      
+                </div>
+              </div>
               <div class="pull-right">
                 <a href="<%= b.url %>">
                   <img class="img-thumbnail" src="<%= b.image_url %>" width="150" height="150">
                 </a>
-              </div>                    
-              <div class="clear"></div> 
-              <% if (b.snippet_text) { %>    
+              </div>
+              <div class="clear"></div>
+              <% if (b.snippet_text) { %>
                 <div class="snippet_container">
                   <% if (b.snippet_image_url) { %>
-                    <div class="snippet_image pull-left">  
+                    <div class="snippet_image pull-left">
                       <img src="<%= b.snippet_image_url %>" width="32" height="32">
-                    </div>    
+                    </div>
                   <% } %>
-                  <div class="snippet_text pull-left">  
+                  <div class="snippet_text pull-left">
                     <i>&ldquo;<%= b.snippet_text %>&rdquo;</i>
                   </div>
                   <div class="clear"></div>
-                </div>      
-              <% } %>                  
+                </div>
+              <% } %>
               <% if (b.deals && (b.deals.length > 0)) { %>
-                <div class="deals_container">                  
-                  <h4>                    
+                <div class="deals_container">
+                  <span class="label label-success"
+                    title="Links to deals are affiliate links, for which Solve for All receives a commission from Yelp.">
+                    Affiliate
+                  </span>
+                  &nbsp;
+                  <h4 class="inline-block">
                     <span class="content_expander">
-                      <%= _('deal').pluralize(b.deals.length, true) %> available: 
+                      <%= _('deal').pluralize(b.deals.length, true) %> available:
                       <i class="fa fa-chevron-down"></i>
                     </span>
                   </h4>
                   <div class="content_expandable initially_hidden">
-                  <% _(b.deals).each(function (deal) { 
-                    var dealUrl = DEAL_URL_PREFIX + encodeURIComponent(deal.url);                     
+                  <% _(b.deals).each(function (deal) {
+                    let dealUrl = DEAL_URL_PREFIX + encodeURIComponent(deal.url);
                   %>
                     <div class="deal">
                       <p>
                         <a href="<%= dealUrl %>"><b><%= deal.title %></b></a>
                       </p>
                       <div>
-                        <% if (deal.image_url) { %>  
+                        <% if (deal.image_url) { %>
                         <div class="deal_image pull-left">
-                          <a href="<%= dealUrl %>"> 
+                          <a href="<%= dealUrl %>">
                             <img src="<%= deal.image_url %>" width="32" height="32">
-                          </a>    
-                        </div>  
-                        <% } %>  
+                          </a>
+                        </div>
+                        <% } %>
                         <div class="deal_text pull-left">
-                          <%- deal.what_you_get %>    
+                          <%- deal.what_you_get %>
                         </div>
                         <div class="clear"></div>
                       </div>
@@ -162,50 +167,50 @@ function makeResponseHandler(q) {
                         <div class="deal_options">
                           <b>Options</b>:
                           <ul>
-                          <% _(deal.options).each(function (option) { %> 
+                          <% _(deal.options).each(function (option) { %>
                             <li>
                               <a href="<%= DEAL_URL_PREFIX + encodeURIComponent(option.purchase_url) %>">
-                                <%= option.title %>                              
+                                <%= option.title %>
                               </a>
                               <% if (option.remaining_count) { %>
                                 <span class="label label-warning"><%= option.remaining_count %> left</span>
                               <% } %>
                             </li>
                           <% }); %>
-                          </ul>  
-                        </div>  
-                      <% } %>  
-                        
-                      <% _(['important', 'additional']).each(function (restrictionType) { 
-                           var restrictions = deal[restrictionType + '_restrictions']; 
+                          </ul>
+                        </div>
+                      <% } %>
+
+                      <% _(['important', 'additional']).each(function (restrictionType) {
+                           let restrictions = deal[restrictionType + '_restrictions'];
                            if (restrictions && (restrictions.length > 0)) { %>
-                           <p>  
+                           <p>
                              <b><%= _(restrictionType).capitalize() %> restrictions</b>:
                              <ul>
                              <% _(restrictions.split(/[\r\n]+/)).each(function (line) { %>
                                 <li><%- line %></li>
                              <% }); %>
-                             </ul> 
-                           </p>   
+                             </ul>
+                           </p>
                         <% }
-                         }); %>                     
-                    </div>     
+                         }); %>
+                    </div>
                   <% }); %>
                   </div>
-                </div>                  
-              <% } %>  
-            </div>  
-            <hr/>  
-          <% }); %>  
-          </div>                                
+                </div>
+              <% } %>
+            </div>
+            <hr/>
+          <% }); %>
+          </div>
         </body>
       </html>
       ]]>
     </heredoc>
 
-    var contentTemplate = contentTemplateXml.toString();
+    const contentTemplate = contentTemplateXml.toString();
 
-    var model = {
+    const model = {
       response: response,
       DISCARDED_PHONE_PREFIX_REGEX: DISCARDED_PHONE_PREFIX_REGEX,
       mapUrl: mapUrl
@@ -217,7 +222,7 @@ function makeResponseHandler(q) {
       serverSideSanitized: true,
       label: 'Yelp',
       uri: 'http://www.yelp.com/search?find_desc=' + encodeURIComponent(q),
-      iconUrl: 'http://www.yelp.com/favicon.ico',    
+      iconUrl: 'http://www.yelp.com/favicon.ico',
       relevance: 1.0
     }];
   };
@@ -225,11 +230,11 @@ function makeResponseHandler(q) {
 
 function errorHandler(response) {
   if (response) {
-    console.log('No response available?!');    
+    console.log('No response available?!');
   } else {
     console.log('Got error response: ' + JSON.stringify(response));
   }
-  
+
   return [];
 }
 
@@ -240,14 +245,15 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  var location = null;
-  var queryAddresses = recognitionResults['com.solveforall.recognition.location.UsAddress'];
-  var queryAddressSpecificEnough = false;  
-  
-  if (queryAddresses && (queryAddresses.length > 0)) {
-    var recognitionResult = queryAddresses[0];
+  let location = null;
+  let queryAddresses = recognitionResults['com.solveforall.recognition.location.UsAddress'];
+  let queryAddressSpecificEnough = false;
+  let foundExplicitLocation = false;
 
-    var cityStateZip = null;
+  if (queryAddresses && (queryAddresses.length > 0)) {
+    let recognitionResult = queryAddresses[0];
+
+    let cityStateZip = null;
 
     if (recognitionResult.zipCode && (recognitionResult.zipCode >= 5)) {
       cityStateZip = recognitionResult.zipCode;
@@ -256,118 +262,125 @@ function generateResults(recognitionResults, q, context) {
       cityStateZip = recognitionResult.city + ',' + recognitionResult.regionAbbreviation;
       queryAddressSpecificEnough = true;
     } else {
-      console.info('No city/state/zip found');      
+      console.info('No city/state/zip found');
     }
 
     if (queryAddressSpecificEnough) {
-      console.info('cityStateZip = "' + cityStateZip + '"');      
+      console.info('cityStateZip = "' + cityStateZip + '"');
 
       if (recognitionResult.streetAddress) {
         location = recognitionResult.streetAddress + ',';
       } else {
-        location = '';        
+        location = '';
       }
 
       location += cityStateZip;
-        
+
       q = q.replace(recognitionResult.matchedText, '').trim();
-      console.log('Removed US address from query: ' + q);        
+      console.log('Removed US address from query: ' + q);
+
+      foundExplicitLocation = true;
     }
   }
-  
-  var ll = null;
+
+  let ll = null;
   if (!queryAddressSpecificEnough) {
-    var geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
+    let geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
     if (geoResults && (geoResult.length > 0)) {
-      var geoResult = geoResults[0];      
-      ll = geoResult.latitude.toFixed(4) + ',' + geoResult.longitude.toFixed(4);       
+      let geoResult = geoResults[0];
+      ll = geoResult.latitude.toFixed(4) + ',' + geoResult.longitude.toFixed(4);
     }
   }
-  
-  var userLocation = context.location;
+
+  const userLocation = context.location;
   if (!location && !ll && userLocation && userLocation.lat) {
-    ll = userLocation.lat.toFixed(4) + ',' + userLocation.lng.toFixed(4);    
-  }  
-  
-  if (!location && !ll && context.user && context.user.physicalAddresses && 
+    ll = userLocation.lat.toFixed(4) + ',' + userLocation.lng.toFixed(4);
+  }
+
+  if (!location && !ll && context.user && context.user.physicalAddresses &&
       (context.user.physicalAddresses.length > 0)) {
     // FIXME: use setting to pick best one
-    var pa = context.user.physicalAddresses[0];
+    let pa = context.user.physicalAddresses[0];
     if (pa.addressLine1) {
-      location = pa.addressLine1 + ',';       
+      location = pa.addressLine1 + ',';
     } else {
-      location = ''; 
+      location = '';
     }
-    location += (pa.city + ',' + pa.region.abbreviation);    
+    location += (pa.city + ',' + pa.region.abbreviation);
     // FIXME: add country
   }
-  
+
   if (!location && !ll) {
     console.log('No location found');
     return [];
   }
-  
-  var yelpSettings = context.developerSettings.yelp;
-  
+
+  const yelpSettings = context.developerSettings.yelp;
+
   if (!yelpSettings) {
     throw 'No Yelp settings found!';
   }
-  
-  var consumerKey = yelpSettings.consumerKey;
-  var consumerSecret = yelpSettings.consumerSecret;
-  var tokenKey = yelpSettings.token;
-  var tokenSecret = yelpSettings.tokenSecret;
-  
-  if (!(consumerKey && consumerSecret && tokenKey && tokenSecret)) {  
+
+  let consumerKey = yelpSettings.consumerKey;
+  let consumerSecret = yelpSettings.consumerSecret;
+  let tokenKey = yelpSettings.token;
+  let tokenSecret = yelpSettings.tokenSecret;
+
+  if (!(consumerKey && consumerSecret && tokenKey && tokenSecret)) {
     throw 'Missing secret!';
   }
-  
-  var processedQuery = q.replace(/\s+deals?(\s+|$)/, ' ').trim();
-    
+
+  let processedQuery = q.replace(/\s+deals?(\s+|$)/, ' ').trim();
+
   if (!processedQuery) {
-    console.info('Nothing left after removing US address and "deals", not returning results');
-    return [];             
+    if (foundExplicitLocation) {
+      // So "yelp" + address does a restaurant search
+      processedQuery = 'restaurant';
+    } else {
+      console.info('Nothing left after removing US address and "deals", not returning results');
+      return [];
+    }
   }
-    
-  var dealsOnly = (processedQuery !== q);
-  
-  var oauth = OAuth({
+
+  const dealsOnly = (processedQuery !== q);
+
+  const oauth = OAuth({
     consumer: {
       public: consumerKey,
       secret: consumerSecret
     },
     signature_method: 'HMAC-SHA1'
   });
-  
-  var token = {
+
+  const token = {
     public: tokenKey,
     secret: tokenSecret
   };
-  
-  var uri = URI('http://api.yelp.com/v2/search');
+
+  const uri = URI('http://api.yelp.com/v2/search');
   uri.addQuery('term', processedQuery);
-  
+
   if (location) {
-    uri.addQuery('location', location); 
+    uri.addQuery('location', location);
   } else if (ll) {
-    uri.addQuery('ll', ll); 
-  }  
-  
-  if (dealsOnly) {
-    uri.addQuery('deals_filter', 'true'); 
+    uri.addQuery('ll', ll);
   }
-    
-  var url = uri.toString();
-  
-  var requestData = {
+
+  if (dealsOnly) {
+    uri.addQuery('deals_filter', 'true');
+  }
+
+  const url = uri.toString();
+
+  const requestData = {
     url: url,
     method: 'GET',
-    data: {}    
+    data: {}
   };
-  
-  var request = hostAdapter.makeWebRequest(url, {
+
+  const request = hostAdapter.makeWebRequest(url, {
     accept: 'application/json',
-    data: oauth.authorize(requestData, token) 
+    data: oauth.authorize(requestData, token)
   });
 
   request.send('makeResponseHandler(' + JSON.stringify(processedQuery) + ')', 'errorHandler');
