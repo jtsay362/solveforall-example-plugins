@@ -1,5 +1,8 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/* global _, HostAdapter, hostAdapter, ejs, URI, OAuth */
+/* global _, HostAdapter, hostAdapter, ejs, OAuth */
+
+const URI = require('URI');
+const OAuth = require('oauth-1.0a');
 
 function mapUrl(business) {
   const location = business.location;

@@ -1,8 +1,8 @@
 <%
-var address = null;
+let address = null;
 
 try {
-  var recognitionResult = recognitionResults['com.solveforall.recognition.EmailAddress'][0];
+  const recognitionResult = recognitionResults['com.solveforall.recognition.EmailAddress'][0];
   address = recognitionResult.matchedText;
   console.log('Using email address in recognition result: "' + address + '".');
 } catch (e) {
@@ -11,13 +11,13 @@ try {
   console.log('Using email address in query: "' + address + '".');
 }
 
-var hash = md5(address.toLowerCase());
-
-var settings = context.settings;
-var size = settings.size || 80;
-var defaultAvatar = settings.defaultAvatar || 'mm';
-var rating = settings.rating || 'g';
-var url = 'https://secure.gravatar.com/' + hash;
+const SparkMD5 = require('spark-md5');
+const hash = SparkMD5.hash(address.toLowerCase());
+const settings = context.settings;
+const size = settings.size || 80,
+  defaultAvatar = settings.defaultAvatar || 'mm',
+  rating = settings.rating || 'g',
+  url = 'https://secure.gravatar.com/' + hash;
 %>
 <!DOCTYPE html>
 <html>

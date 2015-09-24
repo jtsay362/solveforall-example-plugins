@@ -6,9 +6,8 @@ var renderer = ejs.compile(template);
 
 var context = { settings: {} };
 testCases(test,
-  function setUp() {  
+  function setUp() {
   },
-
 
   function testSmoke() {
     var html = renderer({
@@ -20,12 +19,12 @@ testCases(test,
           "aliases": [
             "ampersand"
           ],
-          "matchedText": "&amp;",          
+          "matchedText": "&amp;",
           "namedCodes": ["&amp;"]
-        }]                 
-      }            
+        }]
+      }
     });
-    assert.that(html.indexOf('<span class=\"symbol\">&amp;</span>') > 0, 
-                eq(true));    
+    assert.that(html.indexOf('<span class=\"symbol\">&amp;</span>') > 0,
+                eq(true));
   }
 );

@@ -3,15 +3,16 @@
 
 var template = loadFile('src/answer_generators/md5/md5.html.ejs');
 var renderer = ejs.compile(template);
+
 testCases(test,
-  function setUp() {  
+  function setUp() {
   },
 
   function testSmoke() {
     var html = renderer({
-      q: 'password'       
+      q: 'password'
     });
-  
+
     assert.that(html.indexOf('5f4dcc3b5aa765d61d8327deb882cf99') > 0, eq(true));
-  }          
-);          
+  }
+);

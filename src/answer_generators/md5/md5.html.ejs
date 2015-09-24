@@ -1,3 +1,6 @@
+<%
+  const SparkMD5 = require('spark-md5');
+%>
 <html>
   <head>
   </head>
@@ -5,6 +8,6 @@
     <p>The MD5 checksum of</p>
     <pre><%= q %></pre>
     <p>is</p>
-    <pre><%= md5(q) %></pre>
+    <pre><%= SparkMD5.hash(q) %></pre>
   </body>
 </html>

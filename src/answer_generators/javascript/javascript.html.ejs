@@ -7,7 +7,7 @@
   context.developerSettings = {};
 
   try {
-    rv = JSON.stringify(eval(q), null, 2);
+    rv = JSON.stringify(eval(context.fullSanitizedQuery), null, 2);
   } catch (err) {
     ex = err;
     relevance = 0.0;

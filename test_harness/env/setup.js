@@ -1,11 +1,17 @@
 function loadBuiltIns() {
 	print('Loading builtins ...');
 
-  [ "ejs", "lodash.underscore.min", "underscore.string.min",
-    "underscore.inflection.min", "URI.min",
-    "hmac-sha1.min", "enc-base64-min", "oauth-1.0a.min",
-    "md5.min", "aliases", "console"].forEach(function (base) {
-    eval(loadFile('test_harness/builtins/' + base + '.js'));
+  [ 'underscore', "underscore.string.min",
+    "underscore.inflection.min",    
+    "aliases", "console", "ejs"].forEach(function (base) {
+
+		print('loading ' + base);
+
+		var code = loadFile('test_harness/builtins/' + base + '.js')
+
+		//print("got " + code);
+
+    eval(code);
   });
 
   _.mixin(_.str.exports());
