@@ -1,7 +1,7 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, node: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global _, min */
 
-const math = require('math-light');
+const math = require('math');
 
 function desiredVariableNameBoost(variables) {
   const numVars = variables.length;
@@ -117,9 +117,10 @@ function recognize(q, context) {
     expression = m[3];
   }
 
-  let expr = math.parse(expression);
-  let code = expr.compile();
-  let variables = variablesInExpression(expr);
+  const expr = math.parse(expression);
+  // For Math 2.x: let code = expr.compile();
+  const code = expr.compile(math);
+  const variables = variablesInExpression(expr);
 
   //print('variables in expression ' + expression + ' are: ' + variables.join(', '));
 
