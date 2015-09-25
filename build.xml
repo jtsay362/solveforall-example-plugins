@@ -25,6 +25,8 @@
           <include name="*.jar" />
         </fileset>
       </classpath>
+      <arg value="-opt" />
+      <arg value="-1" />      
       <arg value="-modules" />
       <arg value="${test_harness.dir}/modules" />
       <arg value="${test_harness.dir}/samples/samples.js" />
