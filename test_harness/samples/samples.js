@@ -2,13 +2,14 @@ importClass(java.io.File);
 importClass(Packages.org.apache.commons.io.FileUtils);
 
 function loadFile(fileName) {
-	var file = new File(fileName);
+	let file = new File(fileName);
 	if (file.isAbsolute() === false) {
 		file = new File(fileName);
 	}
 
-	var out = FileUtils.readFileToString(file);
+	let out = FileUtils.readFileToString(file);
 
+	// Convert Java string to Javascript string
   out = new String(out).toString();
 
   //print(out);
@@ -17,7 +18,7 @@ function loadFile(fileName) {
 }
 
 function outputToFile(fileName, s) {
-  var file = new File(fileName);
+  let file = new File(fileName);
 	if (file.isAbsolute() === false) {
 		file = new File(fileName);
 	}
@@ -27,7 +28,7 @@ function outputToFile(fileName, s) {
 
 eval(loadFile('test_harness/env/setup.js'));
 
-var IMPLICIT_HTML = '<head>\n' +
+let IMPLICIT_HTML = '<head>\n' +
   '<!-- Start simulated environment for sanitized content (for testing only) -->\n' +
   loadFile('test_harness/env/browser/sanitized_content.html');
 
@@ -45,10 +46,12 @@ var IMPLICIT_HTML = '<head>\n' +
 
 IMPLICIT_HTML += '<!-- End simulated environment for sanitized content -->';
 
+const ejs = require('ejs');
+
 function processEjs(inFileName, input, useSanitizedEnvironment, outFilenameSuffix) {
   var template = loadFile('src/answer_generators/wikipedia/info.html.ejs');
 	var renderer = ejs.compile(template);
-	var html = renderer(input);
+	var html = renderer(_.extend(makeImplicitEjsModel(), input));
 
 	if (useSanitizedEnvironment) {
   	html = html.replace('<head>', IMPLICIT_HTML);
@@ -529,6 +532,8 @@ function testWikiInfoBoxOnCity() {
 		}
 	}, true, '_sandiego');
 }
+
+print('Starting samples ...');
 
 testWikiInfoBoxOnPerson();
 testWikiInfoBoxOnCompany();

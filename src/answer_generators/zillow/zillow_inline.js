@@ -1,9 +1,9 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global _, HostAdapter, hostAdapter, XML */
 function makeChangeHtml(change) {
-  var changeString = _.numberFormat(Math.abs(change));
+  const changeString = _.numberFormat(Math.abs(change));
 
-  var changePrefix = null;
+  const changePrefix = null;
   if (change < 0) {
     changePrefix = '<i class="fa fa-long-arrow-down"></i>&nbsp;$' +
       changeString;
@@ -20,9 +20,9 @@ function makeChangeHtml(change) {
 function handleResponse(responseText, httpResponse) {
   console.log('got response text = "' + responseText + '"');
 
-  var xml = new XML(responseText);
+  const xml = new XML(responseText);
 
-  var code = xml.message.code.text().toString().trim();
+  const code = xml.message.code.text().toString().trim();
   if (code !== '0') {
     console.error('Unexpected error code: ' + code);
     return [];
@@ -33,34 +33,34 @@ function handleResponse(responseText, httpResponse) {
     return [];
   }
 
-  var result = xml.response.results.result[0];
+  const result = xml.response.results.result[0];
 
-  var streetAddress = result.address.street.text().toString().trim();
-  var city = result.address.city.text().toString().trim();
-  var state = result.address.state.text().toString().trim();
-  var zipCode = result.address.zipcode.text().toString().trim();
+  const streetAddress = result.address.street.text().toString().trim();
+  const city = result.address.city.text().toString().trim();
+  const state = result.address.state.text().toString().trim();
+  const zipCode = result.address.zipcode.text().toString().trim();
 
-  var cityStateZip = city + ', ' + state + ' ' + zipCode;
-  var fullAddressHtml = _(streetAddress).escapeHTML() + '<br/>' +
+  const cityStateZip = city + ', ' + state + ' ' + zipCode;
+  const fullAddressHtml = _(streetAddress).escapeHTML() + '<br/>' +
     _(cityStateZip).escapeHTML();
 
-  var detailsLink = result.links.homedetails.text().toString().trim();
-  var estimatedValue = _.numberFormat(parseFloat(result.zestimate.amount.text().toString().trim()));
-  var valueChange = parseFloat(result.zestimate.valueChange.text().toString().trim());
-  var valueChangePrefix = makeChangeHtml(valueChange);
+  const detailsLink = result.links.homedetails.text().toString().trim();
+  const estimatedValue = _.numberFormat(parseFloat(result.zestimate.amount.text().toString().trim()));
+  const valueChange = parseFloat(result.zestimate.valueChange.text().toString().trim());
+  const valueChangePrefix = makeChangeHtml(valueChange);
 
-  var estimatedValueUpdated = result.zestimate['last-updated'].text().toString();
+  const estimatedValueUpdated = result.zestimate['last-updated'].text().toString();
 
-  var rent = _.numberFormat(parseFloat(result.rentzestimate.amount.text().toString().trim()));
-  var rentChange = parseFloat(result.rentzestimate.valueChange.text().toString().trim());
-  var rentChangePrefix = makeChangeHtml(rentChange);
-  var rentUpdated = result.rentzestimate['last-updated'].text().toString();
+  const rent = _.numberFormat(parseFloat(result.rentzestimate.amount.text().toString().trim()));
+  const rentChange = parseFloat(result.rentzestimate.valueChange.text().toString().trim());
+  const rentChangePrefix = makeChangeHtml(rentChange);
+  const rentUpdated = result.rentzestimate['last-updated'].text().toString();
 
-  var contentTemplateXml = <heredoc>
+  const contentTemplateXml = <heredoc>
     <![CDATA[
     <html>
       <head></head>
-      <body>        
+      <body>
         <div>
           <dl class="dl-horizontal">
             <dt>
@@ -98,7 +98,7 @@ function handleResponse(responseText, httpResponse) {
         </div>
 
         <p>
-          <small>&copy; Zillow, Inc., 2006-2014. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm">Terms of Use</a>.
+          <small>&copy; Zillow, Inc., 2006-2015. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm">Terms of Use</a>.
           <a href="http://www.zillow.com/wikipages/What-is-a-Zestimate/">What&#39;s a Zestimate?</a></small>
         </p>
       </body>
@@ -106,11 +106,12 @@ function handleResponse(responseText, httpResponse) {
     ]]>
   </heredoc>
 
-  var contentTemplate = contentTemplateXml.toString();
+  const contentTemplate = contentTemplateXml.toString();
 
   console.debug('Content template = "' + contentTemplate + '"');
 
-  var model = {
+  const model = {
+    _: _,
     streetAddress: streetAddress,
     cityStateZip: cityStateZip,
     detailsLink: detailsLink,
@@ -121,6 +122,8 @@ function handleResponse(responseText, httpResponse) {
     rentChangePrefix: rentChangePrefix,
     rentUpdated: rentUpdated
   };
+
+  const ejs = require('ejs');
 
   return [{
     content: ejs.render(contentTemplate, model),
@@ -141,17 +144,17 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  var zwsid = context.developerSettings['ZWSID'];
-  
-  if (!zwsid) {    
+  const zwsid = context.developerSettings['ZWSID'];
+
+  if (!zwsid) {
     throw 'No ZWSID set!'
   }
-  
-  var recognitionResult = recognitionResults['com.solveforall.recognition.location.UsAddress'][0];
 
-  var url = 'http://www.zillow.com/webservice/GetSearchResults.htm'
+  const recognitionResult = recognitionResults['com.solveforall.recognition.location.UsAddress'][0];
 
-  var address = recognitionResult.streetAddress;
+  const url = 'http://www.zillow.com/webservice/GetSearchResults.htm'
+
+  const address = recognitionResult.streetAddress;
 
   if (!address) {
     console.info('No address found');
@@ -164,7 +167,7 @@ function generateResults(recognitionResults, q, context) {
 
   console.info('address = "' + address + '"');
 
-  var cityStateZip = null;
+  let cityStateZip = null;
 
   if (recognitionResult.zipCode && (recognitionResult.zipCode >= 5)) {
     cityStateZip = recognitionResult.zipCode;
@@ -178,7 +181,7 @@ function generateResults(recognitionResults, q, context) {
 
   console.info('cityStateZip = "' + cityStateZip + '"');
 
-  var request = hostAdapter.makeWebRequest(url, {
+  const request = hostAdapter.makeWebRequest(url, {
     data: {
       'zws-id': zwsid,
       address: address,

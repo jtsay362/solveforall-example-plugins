@@ -2,8 +2,8 @@ function loadBuiltIns() {
 	print('Loading builtins ...');
 
   [ 'underscore', "underscore.string.min",
-    "underscore.inflection.min",    
-    "aliases", "console", "ejs"].forEach(function (base) {
+    "underscore.inflection.min",
+    "aliases", "console"].forEach(function (base) {
 
 		print('loading ' + base);
 
@@ -22,6 +22,12 @@ function loadBuiltIns() {
   }); */
 
   print('Loaded builtins.');
+}
+
+function makeImplicitEjsModel() {
+	return {
+		_: _			
+	};
 }
 
 loadBuiltIns();

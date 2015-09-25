@@ -1,16 +1,16 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global loadFile, test, testCases, assert, eq, _, ejs, recognize */
 
-var template = loadFile('src/answer_generators/html_entity/html_entity.html.ejs');
-var renderer = ejs.compile(template);
+const template = loadFile('src/answer_generators/html_entity/html_entity.html.ejs');
+const renderer = require('ejs').compile(template);
 
-var context = { settings: {} };
+const context = { settings: {} };
 testCases(test,
   function setUp() {
   },
 
   function testSmoke() {
-    var html = renderer({
+    var html = renderer(_.extend(makeImplicitEjsModel(), {
       recognitionResults: {
        'com.solveforall.recognition.programming.web.html.Entity': [{
           "recognitionLevel": 1,
@@ -23,7 +23,7 @@ testCases(test,
           "namedCodes": ["&amp;"]
         }]
       }
-    });
+    }));
     assert.that(html.indexOf('<span class=\"symbol\">&amp;</span>') > 0,
                 eq(true));
   }

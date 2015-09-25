@@ -1,30 +1,30 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/*global _, HostAdapter, hostAdapter, ejs */
+/*global _, HostAdapter, hostAdapter */
 
-var ARTIST_KEYS = ['org.dbpedia.ontology.Band', 'org.dbpedia.ontology.MusicalArtist', 'org.dbpedia.ontology.Artist'];
+const ARTIST_KEYS = ['org.dbpedia.ontology.Band', 'org.dbpedia.ontology.MusicalArtist', 'org.dbpedia.ontology.Artist'];
 
 function findBestResult(keys, recognitionResults) {
-  var currentBestResult = null;
-  
+  let currentBestResult = null;
+
   console.log('entering findBestResult');
-  
+
   _(keys).each(function (key) {
-    console.log('findBestResult: checking key ' + key);    
-    
-    var rrList = recognitionResults[key]; 
+    console.log('findBestResult: checking key ' + key);
+
+    const rrList = recognitionResults[key];
     if (!rrList) {
-      return; 
+      return;
     }
 
     _(rrList).each(function (rr) {
        if (!currentBestResult || (rr.recognitionLevel > currentBestResult.recognitionLevel)) {
-          currentBestResult = rr;        
-       }    
-    });    
+          currentBestResult = rr;
+       }
+    });
   });
 
   console.log('Best result = ' + currentBestResult.wikipediaArticleName);
-  
+
   return currentBestResult;
 }
 
@@ -34,7 +34,7 @@ function articleNameToName(articleName, recognitionResults) {
   }).title;
 }
 
-function lowerCaseWords(s) {  
+function lowerCaseWords(s) {
   return s.split(/\s+/).map(function (w) {
     return w.toLowerCase();
   });
@@ -49,37 +49,39 @@ function makeResponseHandler(recognitionLevel, showIfNotFound) {
       return null;
     }
 
-    var artistObj = JSON.parse(responseText);
+    const artistObj = JSON.parse(responseText);
 
     if ((artistObj.albums.length === 0) && (showIfNotFound !== 'true')) {
       console.log('No albums for artist found, not outputting result');
       return null;
     }
-                
+
+    artistObj._ = _;
+
     var contentTemplateXml = <heredoc>
       <![CDATA[
       <html>
         <head></head>
         <body>
-          <% var underscoredArtist = artist.replace(' ', '_'); %>
+          <% const underscoredArtist = artist.replace(' ', '_'); %>
           <% if (albums.length > 0) { %>
             <p>
               Songs by <b><%= artist %></b>:
             </p>
-        
-            <ul>        
+
+            <ul>
             <% _(albums).each(function(album) { %>
               <li>
                 <p>
-                  <%= album.album %> 
+                  <%= album.album %>
                   <% if (album.year) { %>
                     (<%= album.year %>)
                   <% } %>
-                  <% if (album.amazonLink) { %>                  
+                  <% if (album.amazonLink) { %>
                     &nbsp;
                     <a href="<%= album.amazonLink %>">
                       <img src="https://images-na.ssl-images-amazon.com/images/G/01/associates/remote-buy-box/buy6._V192207736_.gif">
-                    </a>                  
+                    </a>
                   <% } %>
                 </p>
                 <ul>
@@ -90,21 +92,22 @@ function makeResponseHandler(recognitionLevel, showIfNotFound) {
                     </a>
                   </li>
                   <% }); %>
-                </ul>            
+                </ul>
               </li>
             <% }); %>
-            </ul>        
+            </ul>
           <% } else { %>
             <p>
             Sorry, I can&apos;t find any songs by <b><%= artist %></b>.
-            </p>                    
+            </p>
           <% } %>
         </body>
       </html>
       ]]>
     </heredoc>;
 
-    var contentTemplate = contentTemplateXml.toString();
+    const contentTemplate = contentTemplateXml.toString();
+    const ejs = require('ejs');
 
     return [{
       content: ejs.render(contentTemplate, artistObj),
@@ -126,29 +129,29 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  var artistResult = findBestResult(ARTIST_KEYS, recognitionResults);  
+  const artistResult = findBestResult(ARTIST_KEYS, recognitionResults);
 
-  var artist = null;
-  var recognitionLevel = 0.0;
+  let artist = null;
+  let recognitionLevel = 0.0;
   if (artistResult) {
-    artist = articleNameToName(artistResult.wikipediaArticleName, recognitionResults);    
+    artist = articleNameToName(artistResult.wikipediaArticleName, recognitionResults);
     recognitionLevel = artistResult.recognitionLevel * 0.5;
   } else {
-    artist = q;        
+    artist = q;
   }
 
-  var url = 'http://lyrics.wikia.com/api.php';
+  const url = 'http://lyrics.wikia.com/api.php';
 
-  var request = hostAdapter.makeWebRequest(url, {
+  const request = hostAdapter.makeWebRequest(url, {
     data: {
       artist: artist,
       fmt: 'realjson'
     }
   });
-  
-  var settings = context.settings;
-  request.send('makeResponseHandler(' + recognitionLevel.toFixed(4) + ',' + 
+
+  const settings = context.settings;
+  request.send('makeResponseHandler(' + recognitionLevel.toFixed(4) + ',' +
                _(settings.showIfNotFound || 'false').toBoolean() + ')');
 
-  return HostAdapter.SUSPEND;    
+  return HostAdapter.SUSPEND;
 }

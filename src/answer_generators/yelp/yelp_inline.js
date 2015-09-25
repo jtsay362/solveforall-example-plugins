@@ -1,8 +1,9 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/* global _, HostAdapter, hostAdapter, ejs, OAuth */
+/* global _, HostAdapter, hostAdapter */
 
 const URI = require('URI');
 const OAuth = require('oauth-1.0a');
+const ejs = require('ejs');
 
 function mapUrl(business) {
   const location = business.location;
@@ -214,6 +215,7 @@ function makeResponseHandler(q) {
     const contentTemplate = contentTemplateXml.toString();
 
     const model = {
+      _: _,
       response: response,
       DISCARDED_PHONE_PREFIX_REGEX: DISCARDED_PHONE_PREFIX_REGEX,
       mapUrl: mapUrl

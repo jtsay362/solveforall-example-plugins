@@ -1,62 +1,62 @@
 <%
-  var recognitionResult = recognitionResults['com.solveforall.recognition.PublicWarning'];
+  const recognitionResult = recognitionResults['com.solveforall.recognition.PublicWarning'];
 
-  if (!recognitionResult || (recognitionResult.length === 0)) {    
-    throw "No public warning found!" 
+  if (!recognitionResult || (recognitionResult.length === 0)) {
+    throw "No public warning found!"
   }
 
-  var warning = recognitionResult[0];
+  const warning = recognitionResult[0];
 
   function makeWeightedList(words) {
     return _(words || []).map(function (x) {
-      return {value : x, weight : 1};       
-    });    
-  }
-  
-  function extractDate(dateAndTime) {
-    dateAndTime = dateAndTime || '';
-    var tIndex = dateAndTime .indexOf('T');    
-    if (tIndex < 0) {
-      return dateAndTime; 
-    }
-    return dateAndTime.substr(0, tIndex);        
+      return {value : x, weight : 1};
+    });
   }
 
-  var categories = makeWeightedList(warning.categories);
+  function extractDate(dateAndTime) {
+    dateAndTime = dateAndTime || '';
+    const tIndex = dateAndTime .indexOf('T');
+    if (tIndex < 0) {
+      return dateAndTime;
+    }
+    return dateAndTime.substr(0, tIndex);
+  }
+
+  const categories = makeWeightedList(warning.categories);
   categories.push({value: 'warning', weight: 1});
 %>
 <!DOCTYPE html>
 <html lang="en">
-  <head>    
+  <head>
     <title><%= warning.title %></title>
     <% if (warning.detailsUrl) { %>
-      <meta name="com.solveforall.meta.answer.uri" content="<%= warning.detailsUrl %>" >    
+      <meta name="com.solveforall.meta.answer.uri" content="<%= warning.detailsUrl %>" >
     <% } %>
     <% if (warning.summaryHtml) { %>
       <meta name="com.solveforall.meta.answer.summary_html" content="<%= warning.summaryHtml %>" >
-    <% } %>    
-      <meta name="com.solveforall.meta.answer.categories" 
+    <% } %>
+      <meta name="com.solveforall.meta.answer.categories"
        content="<%= JSON.stringify(categories) %>" >
-      <meta name="com.solveforall.meta.answer.keywords" 
+      <meta name="com.solveforall.meta.answer.keywords"
        content="<%= JSON.stringify(makeWeightedList(warning.keywords)) %>" >
   </head>
   <body>
     <h3><%= warning.title %></h3>
-    
+
     <p>
       <small>
         Created: <%= extractDate(warning.created) %> | Updated: <%= extractDate(warning.updated) %>
-      </small>    
-    </p>    
-    
+      </small>
+    </p>
+
     <div>
-      <%- warning.bodyHtml %>  
+      <%- warning.bodyHtml %>
     </div>
-    
+
     <% if (warning.detailsUrl) { %>
-      <p>        
+      <p>
         <small>See full <a href="<%= warning.detailsUrl %>">details</a></small>
       </p>
     <% } %>
   </body>
-</html>  
+</html>

@@ -127,6 +127,7 @@ function makeResponseHandler(q, context, tags) {
 
       let template = xml.toString();
       let model = {
+        _: _,
         q: q,
         hits: hits,
         hostForUrl: hostForUrl,
@@ -134,6 +135,7 @@ function makeResponseHandler(q, context, tags) {
         hnUrlForHit: hnUrlForHit,
         tags: tags
       };
+      const ejs = require('ejs');
       let content = ejs.render(template, model);
       const answer = makeLinkAnswer(q, settings, tags);
       answer.content = content;
