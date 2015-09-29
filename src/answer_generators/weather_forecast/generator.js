@@ -2,13 +2,11 @@
 /* global _ */
 
 function isCurrentLocationQuery(q) {
-  'use strict';
   const lowerQuery = q.toLowerCase();
   return (lowerQuery.length === 0) || (lowerQuery === 'weather');
 }
 
 function generateResults(recognitionResults, q, context) {
-  'use strict';
   let placeName = q;
   let relevance = 0.0;
   let lat = null;
@@ -21,7 +19,7 @@ function generateResults(recognitionResults, q, context) {
   } else {
     const wikipediaResults = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
 
-    geoResult = _(wikipediaResults).find(function (wr) {
+    geoResult = _(wikipediaResults).find(wr => {
       const g = wr.geoLocation;
       return g && g.lon && g.lat;
     });
@@ -54,13 +52,13 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  let latString = lat.toFixed(5);
-  let lngString = lng.toFixed(5);
+  const latString = lat.toFixed(5);
+  const lngString = lng.toFixed(5);
 
-  let settings = context.settings;
-  let unitsType = settings.unitsType || 'us';
-  let font = settings.font || 'Helvetica';
-  let color = settings.color || '#00aaff';
+  const settings = context.settings;
+  const unitsType = settings.unitsType || 'us';
+  const font = settings.font || 'Helvetica';
+  const color = settings.color || '#00aaff';
 
   return [{
     label: 'Weather',
@@ -71,7 +69,7 @@ function generateResults(recognitionResults, q, context) {
       encodeURIComponent(font) + '&color=' + encodeURIComponent(color),
     embeddable: true,
     shouldEmbed: true,
-    relevance: relevance,
+    relevance,
     minHeight: 247,
     preferredHeight: 247,
     minWidth: 200,

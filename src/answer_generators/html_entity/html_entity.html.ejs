@@ -1,46 +1,46 @@
 <%
-  var results = recognitionResults['com.solveforall.recognition.programming.web.html.Entity'];
-  if (!results || results.length === 0) {    
+  const results = recognitionResults['com.solveforall.recognition.programming.web.html.Entity'];
+  if (!results || results.length === 0) {
     throw 'No entity found!';
-  }  
-  var rr = results[0];  
-%>  
+  }
+  const rr = results[0];  
+%>
 
 <html>
   <head>
     <style>
       .symbol {
         font-size: 30px;
-        font-weight: bold;            
+        font-weight: bold;
       }
       .footer {
-        margin-top: 10px; 
+        margin-top: 10px;
       }
     </style>
   </head>
   <body>
-    
+
     <div>
       <p>Character: <span class="symbol"><%= rr.symbol %></span>
       <p>
         Code: <code><%= rr.code %></code> (<code><%= rr.hexCode %></code>)
       </p>
-      <% if (rr.namedCodes && (rr.namedCodes.length > 0)) { %>                
+      <% if (rr.namedCodes && (rr.namedCodes.length > 0)) { %>
 
         <p>
           Named <%= _.pluralize('code', rr.namedCodes.length) %>:
           <%- _(rr.namedCodes).map(function (code) { return '<code>' + _.escapeHTML(code) + '</code>' }).join(', ') %>
         </p>
-      <% } %>          
+      <% } %>
       <% if (rr.aliases && (rr.aliases.length > 0)) { %>
         <p>
-          Alias<%= (rr.aliases.length > 1) ? 'es' : '' %>: 
-          <%= rr.aliases.join(', ') %>      
+          Alias<%= (rr.aliases.length > 1) ? 'es' : '' %>:
+          <%= rr.aliases.join(', ') %>
         </p>
       <% } %>
     </div>
-    <footer>    
-      <small><a href="http://dev.w3.org/html5/html-author/charref">See all HTML enties</a></small>    
-    </footer>  
+    <footer>
+      <small><a href="http://dev.w3.org/html5/html-author/charref">See all HTML enties</a></small>
+    </footer>
   </body>
 </html>

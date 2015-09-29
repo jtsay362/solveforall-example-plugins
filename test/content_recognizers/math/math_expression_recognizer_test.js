@@ -8,7 +8,6 @@ testCases(test,
   function setUp() {
   },
 
-
   function testNumber() {
     var r = recognize('999999', context);
     var numbers = r['com.solveforall.recognition.Number'];

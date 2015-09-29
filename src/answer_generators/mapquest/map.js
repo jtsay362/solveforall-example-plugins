@@ -2,18 +2,16 @@
 /*global $, _ */
 
 function generateResults(recognitionResults, q, context) {
-  'use strict';
-
-  var label = null;
-  var query = null;
+  let label = null;
+  let query = null;
 
   try {
-    var usAddressResults = recognitionResults['com.solveforall.recognition.location.UsAddress'];
+    const usAddressResults = recognitionResults['com.solveforall.recognition.location.UsAddress'];
     if (usAddressResults && (usAddressResults.length > 0)) {
       query = usAddressResults[0].normalizedFullAddressWithoutCountry;
     } else {
-      var geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
-      var geoResult = null;
+      const geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
+      let geoResult = null;
 
       if (geoResults && (geoResult.length > 0)) {
         geoResult = geoResults[0];
@@ -43,9 +41,9 @@ function generateResults(recognitionResults, q, context) {
     query += ' (' + encodeURIComponent(label) + ')';
   }
 
-  var settings = context.settings;
-  var uri = 'http://mapq.st/' + encodeURIComponent(settings.action || 'embed') +
-    '?q=' + encodeURIComponent(query) + '&zoom=' + 
+  const settings = context.settings;
+  let uri = 'http://mapq.st/' + encodeURIComponent(settings.action || 'embed') +
+    '?q=' + encodeURIComponent(query) + '&zoom=' +
     encodeURIComponent(settings.zoomLevel || '11') + '&maptype=' +
     encodeURIComponent(settings.mapType || 'map');
 
@@ -58,9 +56,9 @@ function generateResults(recognitionResults, q, context) {
   return [{
     label: 'MapQuest',
     tooltip: 'View map on MapQuest',
-    uri: uri,
+    uri,
     iconUrl: 'http://www.mapquest.com/favicon.ico',
-    embeddable: embeddable,
+    embeddable,
     shouldEmbed: embeddable,
     minWidth: 200,
     preferredWidth: 400,

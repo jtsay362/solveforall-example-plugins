@@ -1,5 +1,5 @@
 <%
-var LOCALITIES_AND_ABBREVIATIONS = ["Alabama","AL","Alaska","AK","American Samoa",
+const LOCALITIES_AND_ABBREVIATIONS = ["Alabama","AL","Alaska","AK","American Samoa",
 "AS","Arizona","AZ","Arkansas","AR","California (Northern)","CA (North)",
 "California (Southern)","CA (South)",
 "Colorado","CO","Connecticut","CT","Delaware","DE","District Of Columbia","DC",
@@ -9,7 +9,7 @@ var LOCALITIES_AND_ABBREVIATIONS = ["Alabama","AL","Alaska","AK","American Samoa
 "New York (West)","NY (West)","New York (Empire)","NY (Empire)","New York (GHI)","NY (GHI)",
 "North Carolina","NC","North Dakota","ND","Ohio","OH","Oklahoma","OK","Oregon","OR","Palau","PW","Pennsylvania","PA","Puerto Rico","PR","Rhode Island","RI","South Carolina","SC","South Dakota","SD","Tennessee","TN","Texas","TX","Utah","UT","Vermont","VT","Virginia","VA","Washington","WA","West Virginia","WV","Wisconsin","WI","Wyoming","WY"];
 
-var preferredLocality = settings.preferredLocality;
+const preferredLocality = settings.preferredLocality;
 %>
 <!doctype html>
 <html>
@@ -27,7 +27,7 @@ var preferredLocality = settings.preferredLocality;
               selected
               <% } %>
             >None (Show all localities)</option>
-            <% for (var i = 0; i < LOCALITIES_AND_ABBREVIATIONS.length; i += 2) { %>
+            <% for (let i = 0; i < LOCALITIES_AND_ABBREVIATIONS.length; i += 2) { %>
               <option value="<%= LOCALITIES_AND_ABBREVIATIONS[i + 1] %>"
                 <% if (LOCALITIES_AND_ABBREVIATIONS[i + 1] === preferredLocality) { %>
                   selected

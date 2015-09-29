@@ -1,5 +1,5 @@
-<%  
-var RECOGNITION_KEYS = [
+<%
+const RECOGNITION_KEYS = [
   'com.solveforall.recognition.programming.web.css.Property',
   'com.solveforall.recognition.programming.web.css.Function',
   'com.solveforall.recognition.programming.web.css.AtRule',
@@ -8,27 +8,27 @@ var RECOGNITION_KEYS = [
   'com.solveforall.recognition.programming.web.css.DataType',
   'com.solveforall.recognition.programming.web.css.GeneralInfo'
 ];
-  
-var rr = null;
-var bestRecognitionKey = null;
+
+let rr = null;
+let bestRecognitionKey = null;
 
 _(RECOGNITION_KEYS).each(function (key) {
-  var list = recognitionResults[key];
-  
+  const list = recognitionResults[key];
+
   _(list || []).each(function (result) {
     if (!rr || (result.recognitionLevel > rr.recognitionLevel)) {
-      rr = result;       
+      rr = result;
       bestRecognitionKey = key;
-    }    
-  });    
+    }
+  });
 });
 
 if (!rr) {
   throw 'No recognition result found!';
 }
 
-var itemName = rr.name;
-var uri = rr.mdnUri || rr.webPlatformUri || rr.w3cUri;
+const itemName = rr.name;
+const uri = rr.mdnUri || rr.webPlatformUri || rr.w3cUri;
 %>
 <!doctype html>
 <html>
@@ -39,20 +39,20 @@ var uri = rr.mdnUri || rr.webPlatformUri || rr.w3cUri;
     <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>" >
     <% } %>
   </head>
-  <body>        
+  <body>
     <h3><%= itemName %></h3>
-    
+
     <p>
-    <% if (rr.summary && (rr.summary.length > 0)) { %>       
-      <%= rr.summary %>          
+    <% if (rr.summary && (rr.summary.length > 0)) { %>
+      <%= rr.summary %>
     <% } else { %>
       No summary available
     <% } %>
-    </p>    
-    
+    </p>
+
     <% if (bestRecognitionKey === 'com.solveforall.recognition.programming.web.css.Property') {  %>
-           
-      <% var meta = rr.metaProperties;  
+
+      <% const meta = rr.metaProperties;
          if (meta && !_(meta).isEmpty()) { %>
         <h4>Overview</h4>
         <table class="table table-condensed">
@@ -62,72 +62,72 @@ var uri = rr.mdnUri || rr.webPlatformUri || rr.w3cUri;
                 <td><%= k %></td>
                 <td><%= meta[k] %></td>
               </tr>
-            <% }); %>                                    
-          </tbody>            
+            <% }); %>
+          </tbody>
         </table>
       <% } %>
-    
-      <h4>Syntax</h4>      
+
+      <h4>Syntax</h4>
 
       <% if (rr.syntax && (rr.syntax.length > 0)) { %>
-        <pre><%= rr.name %>: <%= rr.syntax %></pre>          
+        <pre><%= rr.name %>: <%= rr.syntax %></pre>
       <% } else { %>
         <p>Not available</p>
       <% } %>
 
       <h4>Values</h4>
 
-      <% if (rr.values) { %>          
+      <% if (rr.values) { %>
         <ul>
           <% _(rr.values).each(function (v) { %>
           <li>
             <strong><%= v.name %></strong>
-            <p><%= v.summary || 'No summary available' %></p>  
-          </li>  
+            <p><%= v.summary || 'No summary available' %></p>
+          </li>
           <% }); %>
         </ul>
       <% } else { %>
         <p>Not available</p>
       <% } %>
     <% } %>
-    
-    
+
+
     <h4>Links</h4>
-      
-    <a href="<%= rr.mdnUri %>"><img src="https://developer.cdn.mozilla.net/media/img/favicon.ico" 
+
+    <a href="<%= rr.mdnUri %>"><img src="https://developer.cdn.mozilla.net/media/img/favicon.ico"
        width="16" height="16">&nbsp;
       MDN
-    </a>        
+    </a>
     <% if (rr.webPlatformUri) { %>
       | <a href="<%= rr.webPlatformUri %>"><img src="http://docs.webplatform.org/favicon.ico" width="16" height="16">&nbsp;
           WebPlatform.org</a>
     <% } %>
-    <% if (rr.w3cUri) { %>              
-      | <a href="<%= rr.w3cUri %>"><img src="http://www.w3.org/favicon.ico" 
+    <% if (rr.w3cUri) { %>
+      | <a href="<%= rr.w3cUri %>"><img src="http://www.w3.org/favicon.ico"
          width="16" height="16">&nbsp;
           W3C</a>
     <% } %>
-    
+
     <br/>
-    
+
     <p>
       <small>
         <p>
-          Sources  
+          Sources
         </p>
-        <ul>          
+        <ul>
           <li>
             <a href="<%= rr.mdnUri %>$history">Mozilla Contributors</a> licensed under
             <a href="http://creativecommons.org/licenses/by-sa/2.5/">CC-BY-SA 2.5</a>           </li>
-              
+
           <% if (rr.webPlatformUri) { %>
            <li>
-             <a href="<%= rr.webPlatformUri %>">WebPlatform.org</a> and W3C 
+             <a href="<%= rr.webPlatformUri %>">WebPlatform.org</a> and W3C
              (<a href="https://creativecommons.org/licenses/by/3.0/legalcode">CC-BY</a>)
            </li>
-          <% } %>          
-        </ul>        
+          <% } %>
+        </ul>
       </small>
-    </p>    
+    </p>
   </body>
 </html>

@@ -1,11 +1,11 @@
 <%
-  var results = recognitionResults['com.solveforall.recognition.programming.web.http.StatusCode'];
-  if (!results || results.length === 0) {    
+  const results = recognitionResults['com.solveforall.recognition.programming.web.http.StatusCode'];
+  if (!results || results.length === 0) {
     throw 'No entity found!';
-  }  
-  var rr = results[0];  
-  var BASE_URL = 'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html';
-%>  
+  }
+  const rr = results[0];
+  const BASE_URL = 'http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html';
+%>
 
 <html>
   <head>
@@ -14,29 +14,29 @@
         margin-top: 0;
       }
       .footer {
-        margin-top: 10px; 
+        margin-top: 10px;
       }
     </style>
-    <meta name="com.solveforall.meta.answer.uri" 
-    content="<%= BASE_URL %><%= rr.location ? ('#' + rr.location) : '' %>" > 
+    <meta name="com.solveforall.meta.answer.uri"
+    content="<%= BASE_URL %><%= rr.location ? ('#' + rr.location) : '' %>" >
   </head>
-  <body>    
+  <body>
     <div>
       <h3><%= rr.statusCode %> <%= rr.message %></h3>
       <div>
         <%- rr.descriptionHtml %>
       </div>
-      <% if (rr.members) { %> 
+      <% if (rr.members) { %>
         <div>
           <span class="content_expander">
             <strong>Status codes</strong>:&nbsp;
             <i class="fa fa-chevron-down"></i>
           </span>
-          <div class="content_expandable initially_hidden">           
+          <div class="content_expandable initially_hidden">
             <% _(rr.members).each(function (member) { %>
               <h4 class="content_expander">
                 <a href="<%= BASE_URL %>#<%= member.location %>">
-                  <%= member.statusCode %> <%= member.message %>                  
+                  <%= member.statusCode %> <%= member.message %>
                 </a>
                 &nbsp;
                 <i class="fa fa-chevron-down"></i>
@@ -49,14 +49,14 @@
         </div>
       <% } %>
     </div>
-    <footer>    
-      <% if (rr.class) { 
-           var clazz = rr.class; %>        
+    <footer>
+      <% if (rr.class) {
+           const clazz = rr.class; %>
       <small><a href="<%= BASE_URL %>#<%= clazz.location %>">
         All <%= clazz.message %> <%= clazz.statusCode %> status codes
-      </a>&nbsp;&nbsp;|&nbsp;&nbsp;</small>      
+      </a>&nbsp;&nbsp;|&nbsp;&nbsp;</small>
       <% } %>
-      <small><a href="<%= BASE_URL %>">All HTTP status codes</a></small>    
-    </footer>  
+      <small><a href="<%= BASE_URL %>">All HTTP status codes</a></small>
+    </footer>
   </body>
 </html>

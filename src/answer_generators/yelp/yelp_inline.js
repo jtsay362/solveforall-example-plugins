@@ -29,196 +29,191 @@ function makeResponseHandler(q) {
     }
 
     const DISCARDED_PHONE_PREFIX_REGEX = /^\s*\+?1\-?\s*/;
-    const contentTemplateXml = <heredoc>
-      <![CDATA[
-      <html>
-        <head>
-          <style>
-            .business_title {
-              font-size: large;
-            }
-            .text_container {
-              margin-right: 12px;
-              margin-top: 8px;
-              margin-bottom: 8px;
-              width: calc(100% - 166px);
-              max-width: 600px;
-            }
-            .num_results_label {
-              margin-top: 8px;
-            }
-            .business_container {
-              margin-bottom: 12px;
-            }
-            .snippet_container {
-              margin-top: 8px;
-            }
-            .snippet_image, .deal_image {
-              margin: 6px;
-            }
-            .snippet_text, .deal_text {
-              width: calc(100% - 48px);
-              max-width: 400px;
-            }
-          </style>
-        </head>
-        <body>
-          <p>
-            <img src="http://s3-media4.fl.yelpcdn.com/assets/2/www/img/7e704c57a423/developers/yelp_logo_75x38.png"
-             width="75" height="38" alt="Yelp">
-            <span class="num_results_label"> returned
-              <%= _('result').pluralize(response.total, true) %>:
-            </span>
-          </p>
+    const contentTemplate = `
+<html>
+  <head>
+    <style>
+      .business_title {
+        font-size: large;
+      }
+      .text_container {
+        margin-right: 12px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        width: calc(100% - 166px);
+        max-width: 600px;
+      }
+      .num_results_label {
+        margin-top: 8px;
+      }
+      .business_container {
+        margin-bottom: 12px;
+      }
+      .snippet_container {
+        margin-top: 8px;
+      }
+      .snippet_image, .deal_image {
+        margin: 6px;
+      }
+      .snippet_text, .deal_text {
+        width: calc(100% - 48px);
+        max-width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      <img src="http://s3-media4.fl.yelpcdn.com/assets/2/www/img/7e704c57a423/developers/yelp_logo_75x38.png"
+       width="75" height="38" alt="Yelp">
+      <span class="num_results_label"> returned
+        <%= _('result').pluralize(response.total, true) %>:
+      </span>
+    </p>
 
+    <div>
+    <% const DEAL_URL_PREFIX = 'http://www.dpbolvw.net/click-7730982-10867460?url=';
+       _(response.businesses).each(function (b) { %>
+      <div class="business_container">
+        <div class="text_container pull-left">
           <div>
-          <% let DEAL_URL_PREFIX = 'http://www.dpbolvw.net/click-7730982-10867460?url=';
-             _(response.businesses).each(function (b) { %>
-            <div class="business_container">
-              <div class="text_container pull-left">
-                <div>
-                  <span><a href="<%= b.url %>" class="business_title"><%= b.name %></a></span>
-                  <% if (b.is_closed) { %>
-                    <span class="label label-danger">CLOSED</span>
-                  <% } %>
-                </div>
-                <div>
-                  <span><img src="<%= b.rating_img_url %>"></span>
-                  <span><small><%= _('review').pluralize(b.review_count, true) %></small></span>
-                </div>
-                <div>
-                  <address>
-                  <% let addresses = b.location.display_address || [];
-                     while (addresses.length > 3) {
-                       addresses[0] = addresses[0] + ', ' + addresses[1];
-                       addresses.splice(1, 1);
-                     }
-                     let firstLine = true;
-                     _(addresses).each(function (a) { %>
-                       <%= a %>
-                       <% if (firstLine) {
-                            if (b.distance) { %>
-                              (<%= (b.distance * 0.000621371).toFixed(1) %> mi.)
-                         <% } %>
-                            <a href="<%= mapUrl(b) %>" target="_blank" title="View map">
-                              <i class="fa fa-map-marker fa-lg"></i>
-                            </a>
-                       <%   firstLine = false;
-                          } %>
-                       <br/>
-                     <% }); %>
-                  </address>
-                </div>
-                <div>
-                  <%= b.display_phone ? b.display_phone.replace(DISCARDED_PHONE_PREFIX_REGEX, '') :
-                      '(No phone number available)' %>
-                </div>
+            <span><a href="<%= b.url %>" class="business_title"><%= b.name %></a></span>
+            <% if (b.is_closed) { %>
+              <span class="label label-danger">CLOSED</span>
+            <% } %>
+          </div>
+          <div>
+            <span><img src="<%= b.rating_img_url %>"></span>
+            <span><small><%= _('review').pluralize(b.review_count, true) %></small></span>
+          </div>
+          <div>
+            <address>
+            <% let addresses = b.location.display_address || [];
+               while (addresses.length > 3) {
+                 addresses[0] = addresses[0] + ', ' + addresses[1];
+                 addresses.splice(1, 1);
+               }
+               let firstLine = true;
+               _(addresses).each(function (a) { %>
+                 <%= a %>
+                 <% if (firstLine) {
+                      if (b.distance) { %>
+                        (<%= (b.distance * 0.000621371).toFixed(1) %> mi.)
+                   <% } %>
+                      <a href="<%= mapUrl(b) %>" target="_blank" title="View map">
+                        <i class="fa fa-map-marker fa-lg"></i>
+                      </a>
+                 <%   firstLine = false;
+                    } %>
+                 <br/>
+               <% }); %>
+            </address>
+          </div>
+          <div>
+            <%= b.display_phone ? b.display_phone.replace(DISCARDED_PHONE_PREFIX_REGEX, '') :
+                '(No phone number available)' %>
+          </div>
+        </div>
+        <div class="pull-right">
+          <a href="<%= b.url %>">
+            <img class="img-thumbnail" src="<%= b.image_url %>" width="150" height="150">
+          </a>
+        </div>
+        <div class="clear"></div>
+        <% if (b.snippet_text) { %>
+          <div class="snippet_container">
+            <% if (b.snippet_image_url) { %>
+              <div class="snippet_image pull-left">
+                <img src="<%= b.snippet_image_url %>" width="32" height="32">
               </div>
-              <div class="pull-right">
-                <a href="<%= b.url %>">
-                  <img class="img-thumbnail" src="<%= b.image_url %>" width="150" height="150">
-                </a>
-              </div>
-              <div class="clear"></div>
-              <% if (b.snippet_text) { %>
-                <div class="snippet_container">
-                  <% if (b.snippet_image_url) { %>
-                    <div class="snippet_image pull-left">
-                      <img src="<%= b.snippet_image_url %>" width="32" height="32">
-                    </div>
+            <% } %>
+            <div class="snippet_text pull-left">
+              <i>&ldquo;<%= b.snippet_text %>&rdquo;</i>
+            </div>
+            <div class="clear"></div>
+          </div>
+        <% } %>
+        <% if (b.deals && (b.deals.length > 0)) { %>
+          <div class="deals_container">
+            <span class="label label-success"
+              title="Links to deals are affiliate links, for which Solve for All receives a commission from Yelp.">
+              Affiliate
+            </span>
+            &nbsp;
+            <h4 class="inline-block">
+              <span class="content_expander">
+                <%= _('deal').pluralize(b.deals.length, true) %> available:
+                <i class="fa fa-chevron-down"></i>
+              </span>
+            </h4>
+            <div class="content_expandable initially_hidden">
+            <% _(b.deals).each(function (deal) {
+              let dealUrl = DEAL_URL_PREFIX + encodeURIComponent(deal.url);
+            %>
+              <div class="deal">
+                <p>
+                  <a href="<%= dealUrl %>"><b><%= deal.title %></b></a>
+                </p>
+                <div>
+                  <% if (deal.image_url) { %>
+                  <div class="deal_image pull-left">
+                    <a href="<%= dealUrl %>">
+                      <img src="<%= deal.image_url %>" width="32" height="32">
+                    </a>
+                  </div>
                   <% } %>
-                  <div class="snippet_text pull-left">
-                    <i>&ldquo;<%= b.snippet_text %>&rdquo;</i>
+                  <div class="deal_text pull-left">
+                    <%- deal.what_you_get %>
                   </div>
                   <div class="clear"></div>
                 </div>
-              <% } %>
-              <% if (b.deals && (b.deals.length > 0)) { %>
-                <div class="deals_container">
-                  <span class="label label-success"
-                    title="Links to deals are affiliate links, for which Solve for All receives a commission from Yelp.">
-                    Affiliate
-                  </span>
-                  &nbsp;
-                  <h4 class="inline-block">
-                    <span class="content_expander">
-                      <%= _('deal').pluralize(b.deals.length, true) %> available:
-                      <i class="fa fa-chevron-down"></i>
-                    </span>
-                  </h4>
-                  <div class="content_expandable initially_hidden">
-                  <% _(b.deals).each(function (deal) {
-                    let dealUrl = DEAL_URL_PREFIX + encodeURIComponent(deal.url);
-                  %>
-                    <div class="deal">
-                      <p>
-                        <a href="<%= dealUrl %>"><b><%= deal.title %></b></a>
-                      </p>
-                      <div>
-                        <% if (deal.image_url) { %>
-                        <div class="deal_image pull-left">
-                          <a href="<%= dealUrl %>">
-                            <img src="<%= deal.image_url %>" width="32" height="32">
-                          </a>
-                        </div>
+                <% if (deal.options && (deal.options.length > 0)) { %>
+                  <div class="deal_options">
+                    <b>Options</b>:
+                    <ul>
+                    <% _(deal.options).each(function (option) { %>
+                      <li>
+                        <a href="<%= DEAL_URL_PREFIX + encodeURIComponent(option.purchase_url) %>">
+                          <%= option.title %>
+                        </a>
+                        <% if (option.remaining_count) { %>
+                          <span class="label label-warning"><%= option.remaining_count %> left</span>
                         <% } %>
-                        <div class="deal_text pull-left">
-                          <%- deal.what_you_get %>
-                        </div>
-                        <div class="clear"></div>
-                      </div>
-                      <% if (deal.options && (deal.options.length > 0)) { %>
-                        <div class="deal_options">
-                          <b>Options</b>:
-                          <ul>
-                          <% _(deal.options).each(function (option) { %>
-                            <li>
-                              <a href="<%= DEAL_URL_PREFIX + encodeURIComponent(option.purchase_url) %>">
-                                <%= option.title %>
-                              </a>
-                              <% if (option.remaining_count) { %>
-                                <span class="label label-warning"><%= option.remaining_count %> left</span>
-                              <% } %>
-                            </li>
-                          <% }); %>
-                          </ul>
-                        </div>
-                      <% } %>
-
-                      <% _(['important', 'additional']).each(function (restrictionType) {
-                           let restrictions = deal[restrictionType + '_restrictions'];
-                           if (restrictions && (restrictions.length > 0)) { %>
-                           <p>
-                             <b><%= _(restrictionType).capitalize() %> restrictions</b>:
-                             <ul>
-                             <% _(restrictions.split(/[\r\n]+/)).each(function (line) { %>
-                                <li><%- line %></li>
-                             <% }); %>
-                             </ul>
-                           </p>
-                        <% }
-                         }); %>
-                    </div>
-                  <% }); %>
+                      </li>
+                    <% }); %>
+                    </ul>
                   </div>
-                </div>
-              <% } %>
-            </div>
-            <hr/>
-          <% }); %>
-          </div>
-        </body>
-      </html>
-      ]]>
-    </heredoc>
+                <% } %>
 
-    const contentTemplate = contentTemplateXml.toString();
+                <% _(['important', 'additional']).each(function (restrictionType) {
+                     let restrictions = deal[restrictionType + '_restrictions'];
+                     if (restrictions && (restrictions.length > 0)) { %>
+                     <p>
+                       <b><%= _(restrictionType).capitalize() %> restrictions</b>:
+                       <ul>
+                       <% _(restrictions.split(/[\\r\\n]+/)).each(function (line) { %>
+                          <li><%- line %></li>
+                       <% }); %>
+                       </ul>
+                     </p>
+                  <% }
+                   }); %>
+              </div>
+            <% }); %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+      <hr/>
+    <% }); %>
+    </div>
+  </body>
+</html>`;
 
     const model = {
-      _: _,
-      response: response,
-      DISCARDED_PHONE_PREFIX_REGEX: DISCARDED_PHONE_PREFIX_REGEX,
-      mapUrl: mapUrl
+      _,
+      response,
+      DISCARDED_PHONE_PREFIX_REGEX,
+      mapUrl
     };
 
     return [{

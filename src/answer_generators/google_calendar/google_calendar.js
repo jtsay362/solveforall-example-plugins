@@ -2,32 +2,29 @@
 /*global _, HostAdapter, hostAdapter */
 
 function pad(num, length, def) {
-  'use strict';  
   return _('' + (num || def)).pad(length, '0');
 }
 
 function generateResults(recognitionResults, q, context) {
-  'use strict';
-
-  var recognitionResult = recognitionResults['com.solveforall.recognition.date.DateRange'];
+  const recognitionResult = recognitionResults['com.solveforall.recognition.date.DateRange'];
 
   if (!recognitionResult || (recognitionResult.length === 0)) {
     console.warn("No recognition result found");
     return [];
   }
 
-  var dateRange = recognitionResult[0];
-  var start = dateRange.start;
+  const dateRange = recognitionResult[0];
+  const start = dateRange.start;
 
   if (!start) {
     console.warn("No start date found");
     return [];
   }
 
-  var now = new Date();
-  var paddedMonth = pad(start.month, 2, now.getMonth() + 1);
-  var paddedDay = pad(start.dayOfMonth, 2, now.getDate());
-  var year = '' + (start.year || now.getFullYear());
+  const now = new Date();
+  const paddedMonth = pad(start.month, 2, now.getMonth() + 1);
+  const paddedDay = pad(start.dayOfMonth, 2, now.getDate());
+  const year = '' + (start.year || now.getFullYear());
 
   return [{
     label: 'Google Calendar',

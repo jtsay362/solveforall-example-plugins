@@ -3,7 +3,7 @@
 function makeChangeHtml(change) {
   const changeString = _.numberFormat(Math.abs(change));
 
-  const changePrefix = null;
+  let changePrefix = null;
   if (change < 0) {
     changePrefix = '<i class="fa fa-long-arrow-down"></i>&nbsp;$' +
       changeString;
@@ -56,71 +56,66 @@ function handleResponse(responseText, httpResponse) {
   const rentChangePrefix = makeChangeHtml(rentChange);
   const rentUpdated = result.rentzestimate['last-updated'].text().toString();
 
-  const contentTemplateXml = <heredoc>
-    <![CDATA[
-    <html>
-      <head></head>
-      <body>
-        <div>
-          <dl class="dl-horizontal">
-            <dt>
-              Zestimate<sup>&reg;</sup>
-            </dt>
-            <dd>
-              $<%= estimatedValue %>
-              (<%- valueChangePrefix %> from 30 days ago)
-              <br/>
-              <small>Updated <%= estimatedValueUpdated %></small>
-            </dd>
-            <dt>
-              Rent Zestimate<sup>&reg;</sup>
-            </dt>
-            <dd>
-              $<%= rent %> / month
-              (<%- rentChangePrefix %> from 30 days ago)
-              <br/>
-              <small>Updated <%= rentUpdated %></small>
-            </dd>
-          </dl>
-        </div>
+  const contentTemplate = `
+<html>
+  <head></head>
+  <body>
+    <div>
+      <dl class="dl-horizontal">
+        <dt>
+          Zestimate<sup>&reg;</sup>
+        </dt>
+        <dd>
+          $<%= estimatedValue %>
+          (<%- valueChangePrefix %> from 30 days ago)
+          <br/>
+          <small>Updated <%= estimatedValueUpdated %></small>
+        </dd>
+        <dt>
+          Rent Zestimate<sup>&reg;</sup>
+        </dt>
+        <dd>
+          $<%= rent %> / month
+          (<%- rentChangePrefix %> from 30 days ago)
+          <br/>
+          <small>Updated <%= rentUpdated %></small>
+        </dd>
+      </dl>
+    </div>
 
-        <p>
-          <a href="<%= detailsLink %>">
-            See more details for <%= streetAddress %>, <%= cityStateZip %> on Zillow
-          </a>
-        </p>
+    <p>
+      <a href="<%= detailsLink %>">
+        See more details for <%= streetAddress %>, <%= cityStateZip %> on Zillow
+      </a>
+    </p>
 
-        <div>
-          <a href="http://www.zillow.com/">
-            <img src="https://solveforall.com/resources/images/zillow_150x38.png"
-             width="150" height="38" alt="Zillow Real Estate Search">
-          </a>
-        </div>
+    <div>
+      <a href="http://www.zillow.com/">
+        <img src="https://solveforall.com/resources/images/zillow_150x38.png"
+         width="150" height="38" alt="Zillow Real Estate Search">
+      </a>
+    </div>
 
-        <p>
-          <small>&copy; Zillow, Inc., 2006-2015. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm">Terms of Use</a>.
-          <a href="http://www.zillow.com/wikipages/What-is-a-Zestimate/">What&#39;s a Zestimate?</a></small>
-        </p>
-      </body>
-    </html>
-    ]]>
-  </heredoc>
-
-  const contentTemplate = contentTemplateXml.toString();
+    <p>
+      <small>&copy; Zillow, Inc., 2006-2015. Use is subject to <a href="http://www.zillow.com/corp/Terms.htm">Terms of Use</a>.
+      <a href="http://www.zillow.com/wikipages/What-is-a-Zestimate/">What&#39;s a Zestimate?</a></small>
+    </p>
+  </body>
+</html>`
 
   console.debug('Content template = "' + contentTemplate + '"');
 
   const model = {
-    _: _,
-    streetAddress: streetAddress,
-    cityStateZip: cityStateZip,
-    detailsLink: detailsLink,
-    estimatedValue: estimatedValue,
-    estimatedValueUpdated: estimatedValueUpdated,
-    valueChangePrefix: valueChangePrefix,
-    rent: rent,
-    rentChangePrefix: rentChangePrefix,
-    rentUpdated: rentUpdated
+    _,
+    streetAddress,
+    cityStateZip,
+    detailsLink,
+    estimatedValue,
+    estimatedValueUpdated,
+    valueChangePrefix,
+    rent,
+    rentChangePrefix,
+    rentUpdated
   };
 
   const ejs = require('ejs');
@@ -138,8 +133,6 @@ function handleResponse(responseText, httpResponse) {
 }
 
 function generateResults(recognitionResults, q, context) {
-  'use strict';
-
   if (context.isSuggestionQuery) {
     return [];
   }
@@ -154,7 +147,7 @@ function generateResults(recognitionResults, q, context) {
 
   const url = 'http://www.zillow.com/webservice/GetSearchResults.htm'
 
-  const address = recognitionResult.streetAddress;
+  let address = recognitionResult.streetAddress;
 
   if (!address) {
     console.info('No address found');

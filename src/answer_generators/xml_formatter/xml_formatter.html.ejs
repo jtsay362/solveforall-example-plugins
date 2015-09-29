@@ -1,5 +1,5 @@
 <%
-  var matchedText = q;
+  let matchedText = q;
 
   try {
     matchedText = recognitionResults['com.solveforall.recognition.programming.Xml'][0].matchedText;
@@ -7,25 +7,23 @@
     ;
   }
 
-  var parseErrorMessage = null;
-  var formatted = null;
+  let parseErrorMessage = null;
+  let formatted = null;
   try {
-    var toParse = matchedText.replace(/^<\?[^?]+\?>/, '');
+    const toParse = matchedText.replace(/^<\?[^?]+\?>/, '')
     // FIXME: doesn't handle - in comments
-    toParse = toParse.replace(/<!--[^\-]*-->/, '');      
-    
-    var xml = new XML(toParse);
-    formatted = xml.toXMLString();
-  } catch (e) {    
+      .replace(/<!--[^\-]*-->/, '');
+    formatted = new XML(toParse).toXMLString();
+  } catch (e) {
     if (e instanceof TypeError) {
       parseErrorMessage = e.message;
-    }   
+    }
   }
 %>
 <!doctype html>
 <html>
   <head>
-    <title>XML Formatter</title>    
+    <title>XML Formatter</title>
   </head>
   <body>
     <% if (formatted) { %>
@@ -42,8 +40,8 @@
 <%= matchedText %>
 </pre>
     <div>
-    <%= parseErrorMessage || 'Unknown error' %>        
-    </div>        
+    <%= parseErrorMessage || 'Unknown error' %>
+    </div>
     <% } %>
   </body>
 </html>

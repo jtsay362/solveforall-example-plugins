@@ -14,7 +14,7 @@ do {
     result = r;
   }
   if (text) {
-    text = text.replace(/–+/g, '-');
+    text = text.replace(/\-+/g, '-');
   }
 
   i++;
@@ -71,6 +71,13 @@ let description;
 const RANGE_SUFFIXES = ['YearsStartYear', 'YearsEndYear'];
 const dateRanges = {};
 const IGNORED_VALUE_PREFIXES = ['List of'];
+const IGNORED_NAME_ARRAY = [
+  'Viaf', 'Name', 'Homepage', 'Leader name', 'Leader title', 'Occupation',
+  'Lccn'
+];
+const IGNORED_NAMES = {};
+_(IGNORED_NAME_ARRAY).each(name => IGNORED_NAMES[name] = true);
+
 const NAME_CHANGES = {
   'Is part of' : 'Part of',
   'Nick' : 'Nickname',
@@ -85,14 +92,15 @@ const NAME_CHANGES = {
   'Population urban' : 'Urban population',
   'Utc offset' : 'UTC offset',
   'Area code' : 'Area code(s)',
-  'Postal code' : 'Postal code(s)'
+  'Postal code' : 'Postal code(s)',
+  'Networth' : 'Net Worth'
 };
 
 const numeral = require('numeral');
 
 function humanizeUriValue(v) {
   // Fix weird slash as in org.dbpedia.resource.Mayor–council_government
-  const x = v.value.replace(/–/g, '-');
+  const x = v.value.replace(/\–/g, '-');
   if (v.kind !== 'uri') {
     return x;
   }
@@ -119,14 +127,11 @@ _(semanticProps).chain().keys().each(function (k) {
         value = humanizeUriValue(v);
       }
 
-      switch (name) {
-        case 'Viaf':
-        case 'Name':
-        case 'Homepage':
-        case 'Leader name':
-        case 'Leader title':
+      if (IGNORED_NAMES[name]) {
         return;
+      }
 
+      switch (name) {
         case 'Description':
         description = _.str.capitalize(value);
         return;

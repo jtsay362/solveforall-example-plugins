@@ -1,0 +1,32 @@
+<%
+const ANY_USAGE_TYPE = 'any';
+const usageTypeValues = [ANY_USAGE_TYPE, 'personal', 'work', 'school'];
+const usageTypeLabels =  _(usageTypeValues).map(function (v) {
+  return _(v).capitalize();
+});
+const selectedUsageType = settings.preferredUsageType || ANY_USAGE_TYPE;
+%>
+<!doctype html>
+<html>
+  <head>
+    <title>Yahoo! Directions Settings</title>
+  </head>
+  <body>
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="input_usage_type" class="col-xs-6 control-label">Preferred Address Type</label>
+        <div class="col-xs-4">
+          <select id="input_usage_type" name="preferredUsageType" class="form-control">
+            <% for (let i = 0; i < usageTypeValues.length; i++) { %>
+              <option value="<%= usageTypeValues[i] %>"
+                <% if (usageTypeValues[i] === selectedUsageType) { %>
+                  selected
+                <% } %>
+              ><%= usageTypeLabels[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>

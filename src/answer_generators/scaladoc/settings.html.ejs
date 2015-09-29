@@ -1,6 +1,8 @@
-<% const versions =  ['2.5.1', '2.6.1', '2.7.7', '2.8.2', '2.9.0.1', '2.9.3',
-'2.10.4', '2.11.6', 'current'] %>
-<% const selectedVersion = settings.version || 'current'; %>
+<%
+const VERSIONS =  ['2.5.1', '2.6.1', '2.7.7', '2.8.2', '2.9.0.1', '2.9.3',
+  '2.10.4', '2.11.7', 'current'];
+const selectedVersion = settings.version || 'current';
+%>
 <!doctype html>
 <html>
   <head>
@@ -10,16 +12,15 @@
     <form class="form-horizontal" role="form">
       <div class="form-group">
         <label for="version_input" class="col-xs-4 control-label">Scala Version</label>
-
         <div class="col-xs-4">
           <select id="version_input" name="version" class="form-control">
-            <% for (var i = 0; i < versions.length; i++) { %>
+            <% for (let i = 0; i < VERSIONS.length; i++) { %>
                 <option
-                <% if (selectedVersion === versions[i]) { %>
+                <% if (selectedVersion === VERSIONS[i]) { %>
                      selected="selected"
                 <% } %>
                 >
-                <%= versions[i] %>
+                <%= VERSIONS[i] %>
                 </option>
             <% } %>
           </select>

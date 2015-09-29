@@ -1,7 +1,15 @@
+/* NOTE: as of 9/25/2015, the Wikia API endpoint doesn't seem to be working properly. */
+
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global _, HostAdapter, hostAdapter */
 
-const ARTIST_KEYS = ['org.dbpedia.ontology.Band', 'org.dbpedia.ontology.MusicalArtist', 'org.dbpedia.ontology.Artist'];
+const ARTIST_KEYS = [
+  'org.dbpedia.ontology.Band',
+  'org.dbpedia.ontology.MusicalArtist',
+  'org.dbpedia.ontology.Artist',
+  'org.purl.dc.AmericanSinger',
+  'org.purl.dc.Singer'
+];
 
 function findBestResult(keys, recognitionResults) {
   let currentBestResult = null;
@@ -58,55 +66,51 @@ function makeResponseHandler(recognitionLevel, showIfNotFound) {
 
     artistObj._ = _;
 
-    var contentTemplateXml = <heredoc>
-      <![CDATA[
-      <html>
-        <head></head>
-        <body>
-          <% const underscoredArtist = artist.replace(' ', '_'); %>
-          <% if (albums.length > 0) { %>
-            <p>
-              Songs by <b><%= artist %></b>:
-            </p>
+    const contentTemplate = `
+<html>
+  <head></head>
+  <body>
+    <% const underscoredArtist = artist.replace(' ', '_'); %>
+    <% if (albums.length > 0) { %>
+      <p>
+        Songs by <b><%= artist %></b>:
+      </p>
 
-            <ul>
-            <% _(albums).each(function(album) { %>
-              <li>
-                <p>
-                  <%= album.album %>
-                  <% if (album.year) { %>
-                    (<%= album.year %>)
-                  <% } %>
-                  <% if (album.amazonLink) { %>
-                    &nbsp;
-                    <a href="<%= album.amazonLink %>">
-                      <img src="https://images-na.ssl-images-amazon.com/images/G/01/associates/remote-buy-box/buy6._V192207736_.gif">
-                    </a>
-                  <% } %>
-                </p>
-                <ul>
-                  <% _(album.songs).each(function(song) { %>
-                  <li>
-                    <a href="http://lyrics.wikia.com/<%= underscoredArtist %>:<%= song.replace(' ', '_') %>">
-                      <%= song %>
-                    </a>
-                  </li>
-                  <% }); %>
-                </ul>
-              </li>
+      <ul>
+      <% _(albums).each(function(album) { %>
+        <li>
+          <p>
+            <%= album.album %>
+            <% if (album.year) { %>
+              (<%= album.year %>)
+            <% } %>
+            <% if (album.amazonLink) { %>
+              &nbsp;
+              <a href="<%= album.amazonLink %>">
+                <img src="https://images-na.ssl-images-amazon.com/images/G/01/associates/remote-buy-box/buy6._V192207736_.gif">
+              </a>
+            <% } %>
+          </p>
+          <ul>
+            <% _(album.songs).each(function(song) { %>
+            <li>
+              <a href="http://lyrics.wikia.com/<%= underscoredArtist %>:<%= song.replace(' ', '_') %>">
+                <%= song %>
+              </a>
+            </li>
             <% }); %>
-            </ul>
-          <% } else { %>
-            <p>
-            Sorry, I can&apos;t find any songs by <b><%= artist %></b>.
-            </p>
-          <% } %>
-        </body>
-      </html>
-      ]]>
-    </heredoc>;
+          </ul>
+        </li>
+      <% }); %>
+      </ul>
+    <% } else { %>
+      <p>
+      Sorry, I can&apos;t find any songs by <b><%= artist %></b>.
+      </p>
+    <% } %>
+  </body>
+</html>`;
 
-    const contentTemplate = contentTemplateXml.toString();
     const ejs = require('ejs');
 
     return [{

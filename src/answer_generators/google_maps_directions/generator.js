@@ -75,12 +75,12 @@ function generateResults(recognitionResults, q, context) {
   }
 
   return [{
-    label: 'Yahoo! Directions',
-    iconUrl: 'https://www.yahoo.com/favicon.ico',
-    uri: 'http://maps.yahoo.com/dd_result.php?q1=' + encodeURIComponent(startAddressString) +
-      '&q2=' + encodeURIComponent(destAddressString),
-    summaryHtml: 'Directions to ' + _(destAddressString).escapeHTML(),
-    embeddable: true,
+    label: 'Google Maps Directions',
+    iconUrl: 'https://www.google.com/favicon.ico',
+    uri: 'https://www.google.com/maps/dir/' + encodeURIComponent(startAddressString) +
+      '/' + encodeURIComponent(destAddressString) + '/',
+    tooltip: 'Directions to ' + destAddressString,
+    embeddable: false,
     relevance
   }];
 }

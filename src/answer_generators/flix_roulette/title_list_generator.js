@@ -1,5 +1,5 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/*global _, HostAdapter, hostAdapter, XML, ejs */
+/*global _, HostAdapter, hostAdapter */
 function makeRatingHtml(rating) {
   const IMAGE_URL_BASE = 'https://solveforall.com/libs/jquery-raty/img/';
 
@@ -7,7 +7,7 @@ function makeRatingHtml(rating) {
     return '';
   }
   const intRating = Math.floor(rating);
-  const escapedRating = _(rating).escapeHTML();
+  const escapedRating = _(rating).escape();
 
   let s = '<span title="Rating: ' + escapedRating + '">';
   s += ' <span class="sr-only">' + escapedRating + '</span>';
@@ -41,120 +41,113 @@ function makeResponseHandler(q, key, bestName, bestResult) {
       return [];
     }
 
-    var contentTemplateXml = <heredoc>
-      <![CDATA[
-      <html>
-        <head>
-          <style>
-            .item {
-              margin-bottom: 4px;
-            }
-            .main_info {
-              width: calc(100% - 80px);
-            }
-            .header_line {
-              margin-bottom: 2px;
-            }
-            img.with_fallback {
-              margin-top: 4px;
-              margin-bottom: 4px;
-              margin-right: 10px;
-            }
-            .watch_button {
-              font-weight: bold;
-              margin-bottom: 10px;
-              margin-right: 10px;
-              min-width: 60px;
-              min-height: 40px;
-            }
-            hr {
-              margin-top: 15px;
-              margin-bottom: 15px;
-            }
-          </style>
-        </head>
-        <body>
-          <% for (var i = 0; i < titles.length; i++) {
-            var title = titles[i];
-            var uri = 'http://www.allflicks.net/movies/' +
-              encodeURIComponent(title.show_id) + '/'; %>
-            <div class="item">
-              <div class="pull-left">
-                <a href="http://www.netflix.com/WiPlayer?movieid=<%= encodeURIComponent(title.show_id) %>"
-                 <% if (title.poster) { %>
-                 title="Watch <%= title.show_title %> on Netflix"
-                 <% } else { %>
-                 class="btn btn-danger watch_button"
-                 <% } %>
-                >
-                  <% if (title.poster) { %>
-                    <img class="with_fallback" data-img-src-0="<%= title.poster %>"
-                     width="60" alt="Watch on Netflix">
-                  <% } else { %>
-                    Watch on Netflix
-                  <% } %>
-                </a>
-              </div>
-
-              <div class="pull-left main_info">
-                <div class="header_line">
-                  <a href="<%= uri %>" title="<%= title.summary %>"><b><%= title.show_title %></b></a>
-                  <% if (title.release_year) { %>
-                    (<%= title.release_year %>)
-                  <% } %>
-                  <%- ratingHtmls[i] %>
-                </div>
-
-                <% if (title.show_cast && (title.show_cast.length > 0)) { %>
-                  <div class="header_line">
-                    Cast:
-                    <%- title.show_cast.split(/\s*,\s*/).map(function (name) {
-                      return '<a href="http://allflicks.net/actor/?actor=' +
-                        encodeURIComponent(name) + '" class="plain plain_on_hover">' + _(name).escapeHTML() + '</a>';
-                    }).join(', ') %>
-                  </div>
-                <% } %>
-
-                <div class="header_line">
-                  <% if (title.category) { %>
-                    <a href="http://allflicks.net/?keyword=<%= encodeURIComponent(title.category) %>"
-                     class="plain plain_on_hover">
-                      <%= title.category %>
-                    </a>
-                  <% } %>
-                  <% if (title.runtime && (title.runtime !== 'N/A')) {
-                    if (title.category) { %>
-                    |
-                    <% } %>
-                    <%= title.runtime %>
-                  <% } %>
-                </div>
-              </div>
-              <div class="clear"></div>
-            </div>
-            <% if (i < titles.length - 1) { %>
-              <hr>
+    const contentTemplate = `
+<html>
+  <head>
+    <style>
+      .item {
+        margin-bottom: 4px;
+      }
+      .main_info {
+        width: calc(100% - 80px);
+      }
+      .header_line {
+        margin-bottom: 2px;
+      }
+      img.with_fallback {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        margin-right: 10px;
+      }
+      .watch_button {
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        min-width: 60px;
+        min-height: 40px;
+      }
+      hr {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <% for (var i = 0; i < titles.length; i++) {
+      var title = titles[i];
+      var uri = 'http://www.allflicks.net/movies/' +
+        encodeURIComponent(title.show_id) + '/'; %>
+      <div class="item">
+        <div class="pull-left">
+          <a href="http://www.netflix.com/WiPlayer?movieid=<%= encodeURIComponent(title.show_id) %>"
+           <% if (title.poster) { %>
+           title="Watch <%= title.show_title %> on Netflix"
+           <% } else { %>
+           class="btn btn-danger watch_button"
+           <% } %>
+          >
+            <% if (title.poster) { %>
+              <img class="with_fallback" data-img-src-0="<%= title.poster %>"
+               width="60" alt="Watch on Netflix">
+            <% } else { %>
+              Watch on Netflix
             <% } %>
+          </a>
+        </div>
+
+        <div class="pull-left main_info">
+          <div class="header_line">
+            <a href="<%= uri %>" title="<%= title.summary %>"><b><%= title.show_title %></b></a>
+            <% if (title.release_year) { %>
+              (<%= title.release_year %>)
+            <% } %>
+            <%- ratingHtmls[i] %>
+          </div>
+
+          <% if (title.show_cast && (title.show_cast.length > 0)) { %>
+            <div class="header_line">
+              Cast:
+              <%- title.show_cast.split(/\\s*,\\s*/).map(function (name) {
+                return '<a href="http://allflicks.net/actor/?actor=' +
+                  encodeURIComponent(name) + '" class="plain plain_on_hover">' + _(name).escapeHTML() + '</a>';
+              }).join(', ') %>
+            </div>
           <% } %>
 
-          <p>
-            <small>
-              API access from <a href="http://netflixroulette.net/">Flix Roulette</a>,
-              using data from <a href="http://www.netflix.com">Netflix</a>.
-            </small>
-          </p>
-        </body>
-      </html>
-      ]]>
-    </heredoc>
+          <div class="header_line">
+            <% if (title.category) { %>
+              <a href="http://allflicks.net/?keyword=<%= encodeURIComponent(title.category) %>"
+               class="plain plain_on_hover">
+                <%= title.category %>
+              </a>
+            <% } %>
+            <% if (title.runtime && (title.runtime !== 'N/A')) {
+              if (title.category) { %>
+              |
+              <% } %>
+              <%= title.runtime %>
+            <% } %>
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <% if (i < titles.length - 1) { %>
+        <hr>
+      <% } %>
+    <% } %>
 
-    const contentTemplate = contentTemplateXml.toString();
-
-    console.debug('Content template = "' + contentTemplate + '"');
+    <p>
+      <small>
+        API access from <a href="http://netflixroulette.net/">Flix Roulette</a>,
+        using data from <a href="http://www.netflix.com">Netflix</a>.
+      </small>
+    </p>
+  </body>
+</html>`;
 
     const model = {
-      _: _,
-      titles: titles,
+      _,
+      titles,
       ratingHtmls: _(titles).map(function (title) {
         return makeRatingHtml(title.rating);
       })
@@ -180,11 +173,11 @@ function makeResponseHandler(q, key, bestName, bestResult) {
     const ejs = require('ejs');
 
     return [{
-      label: label,
+      label,
       content: ejs.render(contentTemplate, model),
       contentType: 'text/html',
       serverSideSanitized: true,
-      uri:  uri,
+      uri,
       iconUrl: 'http://www.allflicks.net/favicon.png',
       relevance: bestResult.recognitionLevel - 0.01
     }];

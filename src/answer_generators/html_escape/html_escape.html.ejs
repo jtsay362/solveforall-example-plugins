@@ -2,13 +2,13 @@
   <head>
   </head>
   <body>
-    <% if ((q.length > 20) || /\n\r/.test(q)) { %>                
-      <p>HTML escaping</p>      
-      <pre><%= q %></pre>    
+    <% if ((q.length > 20) || /\n\r/.test(q)) { %>
+      <p>HTML escaping</p>
+      <pre><%= q %></pre>
       <p>yields</p>
-      <pre><%= _.escapeHTML(q) %></pre>        
+      <pre><%= _.escape(q) %></pre>
     <% } else { %>
-      <p>escapeHTML(<code><%= q %></code>) == <code><%= _.escapeHTML(q) %></code></p>
-    <% } %>    
+      <p>escapeHTML(<code><%= q %></code>) == <code><%= _.escape(q) %></code></p>
+    <% } %>
   </body>
 </html>

@@ -93,7 +93,7 @@ function makeResponseHandler(q, context, tags) {
     }
 
     if (collectLinks) {
-      let xml = <s><![CDATA[
+      const template = `
 <!doctype html>
 <html>
   <title>Hacker News Search Results</title>
@@ -122,21 +122,19 @@ function makeResponseHandler(q, context, tags) {
       <small>Search results provided by <a href="https://www.algolia.com/" target="_top">Algolia</a>.</small>
     </p>
   </body>
-</html>
-]]></s>;
+</html>`;
 
-      let template = xml.toString();
-      let model = {
-        _: _,
-        q: q,
-        hits: hits,
-        hostForUrl: hostForUrl,
-        makeSummaryHtml: makeSummaryHtml,
-        hnUrlForHit: hnUrlForHit,
-        tags: tags
+      const model = {
+        _,
+        q,
+        hits,
+        hostForUrl,
+        makeSummaryHtml,
+        hnUrlForHit,
+        tags
       };
       const ejs = require('ejs');
-      let content = ejs.render(template, model);
+      const content = ejs.render(template, model);
       const answer = makeLinkAnswer(q, settings, tags);
       answer.content = content;
       return [answer];
@@ -147,7 +145,7 @@ function makeResponseHandler(q, context, tags) {
         let summaryHtml = makeSummaryHtml(hit, false);
 
         if (hit.story_text) {
-          summaryHtml = _(hit.story_text).escape() + '<br/>' + summaryHtml;
+          summaryHtml = _.escape(hit.story_text) + '<br/>' + summaryHtml;
         }
 
         return {
@@ -155,7 +153,7 @@ function makeResponseHandler(q, context, tags) {
           iconUrl: ICON_URL,
           uri : hit.url || hnUrlForHit(hit),
           // embeddable: false, let solveforall guess
-          summaryHtml: summaryHtml,
+          summaryHtml,
           relevance: BASE_RELEVANCE * (1.0 - Math.pow(2.0, -Math.max((hit.points || 0), 1) * 0.01))
         };
       });
@@ -171,7 +169,6 @@ function generateResults(recognitionResults, q, context) {
   }
 
   const settings = context.settings;
-
 
   const prefixMatches = /^(?:(?:hn|hacker\s*news)\s+)*(?:(?:(stor(?:y|ies)|comments?|polls?|show|ask)\s+)?(?:(?:for|about|on|of)\s+))/i.exec(q);
   let tags = settings.tags || 'story';
@@ -191,7 +188,7 @@ function generateResults(recognitionResults, q, context) {
     return [makeLinkAnswer(q, settings, tags)];
   }
 
-  const url = 'https://hn.algolia.com/api/v1/search';
+  let url = 'https://hn.algolia.com/api/v1/search';
 
   const sortBy = settings.sortBy || 'Popularity';
 

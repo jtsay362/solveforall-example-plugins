@@ -1,15 +1,14 @@
 <%
-var savedSize = settings.size || 80;
+const savedSize = settings.size || 80;
 
-var defaultAvatarValues = ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'];
-var defaultAvatarLabels = ['Mystery-Man', 'Identicon', 'Monster', 'Wavatar', 'Retro', 'Blank'];
-var selectedDefaultAvatar = settings.defaultAvatar || 'mm';
+const defaultAvatarValues = ['mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'];
+const defaultAvatarLabels = ['Mystery-Man', 'Identicon', 'Monster', 'Wavatar', 'Retro', 'Blank'];
+const selectedDefaultAvatar = settings.defaultAvatar || 'mm';
 
-var ratingValues = ['g', 'pg', 'r', 'x'];
-var ratingLabels = _(ratingValues).map(function(rating) { return rating.toUpperCase(); });
-var selectedRating = settings.rating || 'g';
+const ratingValues = ['g', 'pg', 'r', 'x'];
+const ratingLabels = _(ratingValues).map(rating => rating.toUpperCase());
+const selectedRating = settings.rating || 'g';
 %>
-
 <!doctype html>
 <html>
   <head>
@@ -29,7 +28,7 @@ var selectedRating = settings.rating || 'g';
         <label for="input_default_avatar" class="col-xs-4 col-sm-3 control-label">Default Avatar</label>
         <div class="col-xs-6 col-sm-4">
           <select id="input_default_avatar" name="defaultAvatar" class="form-control">
-            <% for (var i = 0; i < defaultAvatarValues.length; i++) { %>
+            <% for (let i = 0; i < defaultAvatarValues.length; i++) { %>
               <option value="<%= defaultAvatarValues[i] %>"
                 <% if (defaultAvatarValues[i] === selectedDefaultAvatar) { %>
                   selected
@@ -43,8 +42,8 @@ var selectedRating = settings.rating || 'g';
       <div class="form-group">
         <label for="input_rating" class="col-xs-4 col-sm-3 control-label">Rating</label>
         <div class="col-xs-6 col-sm-4">
-          <select id="input_rating" name="rating:number" class="form-control">
-            <% for (var i = 0; i < ratingValues.length; i++) { %>
+          <select id="input_rating" name="rating" class="form-control">
+            <% for (let i = 0; i < ratingValues.length; i++) { %>
               <option value="<%= ratingValues[i] %>"
                 <% if (ratingValues[i] === selectedRating) { %>
                   selected

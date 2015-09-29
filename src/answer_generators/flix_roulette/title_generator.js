@@ -1,11 +1,11 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/*global _, HostAdapter, hostAdapter, XML, ejs */
+/*global _, HostAdapter, hostAdapter */
 
 const IMAGE_URL_BASE = 'https://solveforall.com/libs/jquery-raty/img/';
 
 function makeRatingHtml(rating) {
   const intRating = Math.floor(rating);
-  const escapedRating = _(rating).escapeHTML();
+  const escapedRating = _.escape(rating);
 
   let s = '<span title="Rating: ' + escapedRating + '">';
   s += ' <span class="sr-only">' + escapedRating + '</span>';
@@ -32,128 +32,123 @@ function makeResponseHandler(key, bestResult) {
   return function(responseText, httpResponse) {
     console.log('got response text = "' + responseText + '"');
 
-    var title = JSON.parse(responseText);
+    const title = JSON.parse(responseText);
 
-    var uri = 'http://www.allflicks.net/movies/' +
+    const uri = 'http://www.allflicks.net/movies/' +
       encodeURIComponent(title.show_id) + '/';
 
-    var contentTemplateXml = <heredoc>
-      <![CDATA[
-      <html>
-        <head>
-          <style>
-            h4 {
-              margin-top: 0;
-            }
-            .header_line {
-              margin-top: 8px;
-            }
-            dl {
-              margin-bottom: 12px;
-            }
-            dt {
-              margin-top: 8px;
-            }
-            img.poster {
-              margin-right: 10px;
-              margin-bottom: 10px; // In case summary is wrapped to next line
-            }
-            .watch_button {
-              font-weight: bold;
-              margin-bottom: 10px;
-            }
-          </style>
-        </head>
-        <body>
-          <% if (title.poster) { %>
-          <div class="pull-left">
-            <a href="<%= uri %>">
-              <img class="poster with_fallback" data-img-src-0="<%= title.poster %>"
-               width="250" alt="Movie Poster">
-            </a>
-          </div>
-          <% } %>
+    const contentTemplate = `
+<html>
+  <head>
+    <style>
+      h4 {
+        margin-top: 0;
+      }
+      .header_line {
+        margin-top: 8px;
+      }
+      dl {
+        margin-bottom: 12px;
+      }
+      dt {
+        margin-top: 8px;
+      }
+      img.poster {
+        margin-right: 10px;
+        margin-bottom: 10px; /* In case summary is wrapped to next line */
+      }
+      .watch_button {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <% if (title.poster) { %>
+    <div class="pull-left">
+      <a href="<%= uri %>">
+        <img class="poster with_fallback" data-img-src-0="<%= title.poster %>"
+         width="250" alt="Movie Poster">
+      </a>
+    </div>
+    <% } %>
 
-          <div class="pull-left">
-            <h4><%= title.show_title %></h4>
-            <%- ratingHtml %> (<%= title.rating %> / 5.0)
-            <div class="header_line">
-              Released: <%= title.release_year %>
-            </div>
-            <% if (title.director) { %>
-              <div class="header_line">
-              Director:
-              <a href="http://allflicks.net/director/?director=<%= encodeURIComponent(title.director) %>">
-                <%= title.director %>
-              </a>
-              </div>
-            <% } %>
-            <% if (title.category) { %>
-              <div class="header_line">
-                Category:
-                <a href="http://allflicks.net/?keyword=<%= encodeURIComponent(title.category) %>">
-                  <%= title.category %>
-                </a>
-              </div>
-            <% } %>
-            <% if (title.runtime && (title.runtime !== 'N/A')) { %>
-              <div class="header_line">
-                <%= title.runtime %>
-              </div>
-            <% } %>
-            </div>
-          </div>
+    <div class="pull-left">
+      <h4><%= title.show_title %></h4>
+      <%- ratingHtml %> (<%= title.rating %> / 5.0)
+      <div class="header_line">
+        Released: <%= title.release_year %>
+      </div>
+      <% if (title.director) { %>
+        <div class="header_line">
+        Director:
+        <a href="http://allflicks.net/director/?director=<%= encodeURIComponent(title.director) %>">
+          <%= title.director %>
+        </a>
+        </div>
+      <% } %>
+      <% if (title.category) { %>
+        <div class="header_line">
+          Category:
+          <a href="http://allflicks.net/?keyword=<%= encodeURIComponent(title.category) %>">
+            <%= title.category %>
+          </a>
+        </div>
+      <% } %>
+      <% if (title.runtime && (title.runtime !== 'N/A')) { %>
+        <div class="header_line">
+          <%= title.runtime %>
+        </div>
+      <% } %>
+      </div>
+    </div>
 
-          <div class="clear"></div>
+    <div class="clear"></div>
 
-          <div>
-            <dl>
-              <% if (title.show_cast && (title.show_cast.length > 0)) { %>
-              <dt>
-                Cast
-              </dt>
-              <dd>
-                <%- title.show_cast.split(/\s*,\s*/).map(function (name) {
-                  return '<a href="http://allflicks.net/actor/?actor=' +
-                    encodeURIComponent(name) + '">' + _(name).escapeHTML() + '</a>';
-                }).join(', ') %>
-              </dd>
-              <% } %>
-              <dt>
-                Summary
-              </dt>
-              <dd>
-                <%= title.summary %>
-              </dd>
-            </dl>
-          </div>
+    <div>
+      <dl>
+        <% if (title.show_cast && (title.show_cast.length > 0)) { %>
+        <dt>
+          Cast
+        </dt>
+        <dd>
+          <%- title.show_cast.split(/\\s*,\\s*/).map(function (name) {
+            return '<a href="http://allflicks.net/actor/?actor=' +
+              encodeURIComponent(name) + '">' + _(name).escapeHTML() + '</a>';
+          }).join(', ') %>
+        </dd>
+        <% } %>
+        <dt>
+          Summary
+        </dt>
+        <dd>
+          <%= title.summary %>
+        </dd>
+      </dl>
+    </div>
 
-          <div>
-            <a class="btn btn-danger watch_button"
-             href="http://www.netflix.com/WiPlayer?movieid=<%= encodeURIComponent(title.show_id) %>">
-              <i class="fa fa-play"></i> Watch on Netflix
-            </a>
-          </div>
+    <div>
+      <a class="btn btn-danger watch_button"
+       href="http://www.netflix.com/WiPlayer?movieid=<%= encodeURIComponent(title.show_id) %>">
+        <i class="fa fa-play"></i> Watch on Netflix
+      </a>
+    </div>
 
-          <p>
-            <small>
-              API access from <a href="http://netflixroulette.net/">Flix Roulette</a>,
-              using data from <a href="http://www.netflix.com">Netflix</a>.
-            </small>
-          </p>
-        </body>
-      </html>
-      ]]>
-    </heredoc>
-
-    const contentTemplate = contentTemplateXml.toString();
+    <p>
+      <small>
+        API access from <a href="http://netflixroulette.net/">Flix Roulette</a>,
+        using data from <a href="http://www.netflix.com">Netflix</a>.
+      </small>
+    </p>
+  </body>
+</html>`;
 
     const ejs = require('ejs');
 
     const model = {
-      _: _,
-      title: title,
-      uri: uri,
+      _,
+      title,
+      uri,
       ratingHtml: makeRatingHtml(title.rating)
     };
 
@@ -162,9 +157,9 @@ function makeResponseHandler(key, bestResult) {
       content: ejs.render(contentTemplate, model),
       contentType: 'text/html',
       serverSideSanitized: true,
-      uri:  uri,
+      uri,
       iconUrl: 'http://www.allflicks.net/favicon.png',
-      summaryHtml: _(title.summary).escapeHTML(),
+      summaryHtml: _.escape(title.summary),
       relevance: bestResult.recognitionLevel + 0.01
     }];
   };
@@ -177,16 +172,16 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  var articles = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
+  const articles = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
 
   if (articles.length === 0) {
     console.info('No Wikipedia article references found');
     return [];
   }
 
-  var bestResult = null;
-  var bestKey = null;
-  var bestName = null;
+  let bestResult = null;
+  let bestKey = null;
+  let bestName = null;
 
   _(['org.dbpedia.ontology.Film', 'org.dbpedia.ontology.TelevisionShow']).each(function (key) {
     var rrs = recognitionResults[key];
@@ -211,10 +206,10 @@ function generateResults(recognitionResults, q, context) {
     return [];
   }
 
-  var url = 'http://netflixroulette.net/api/api.php?title=' +
+  const url = 'http://netflixroulette.net/api/api.php?title=' +
     encodeURIComponent(bestName);
 
-  var request = hostAdapter.makeWebRequest(url, {
+  const request = hostAdapter.makeWebRequest(url, {
     accept: 'application/json'
   });
 

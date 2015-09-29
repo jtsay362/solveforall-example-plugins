@@ -1,5 +1,5 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/*global loadFile, test, testCases, assert, eq, _, ejs, recognize */
+/*global loadFile, test, testCases, assert, eq, _, recognize */
 
 const template = loadFile('src/answer_generators/html_entity/html_entity.html.ejs');
 const renderer = require('ejs').compile(template);

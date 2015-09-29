@@ -1,15 +1,15 @@
 <%  
-var NPM_BASE_URL = 'https://www.npmjs.org';
+const NPM_BASE_URL = 'https://www.npmjs.org';
 
 function stripTime(s) {
   s = s || '';
-  var tIndex = s.indexOf('T');
+  const tIndex = s.indexOf('T');
   if (tIndex < 0) {
     return s;
   }
   return s.substr(0, tIndex);
 }
-  
+
 var results = recognitionResults['com.solveforall.recognition.programming.web.javascript.NpmModule'];
 if (!results || (results.length === 0)) {
   throw "No result found";
@@ -18,50 +18,50 @@ if (!results || (results.length === 0)) {
 <!doctype html>
 <html>
   <head>
-    <title>NPM Modules</title>  
+    <title>NPM Modules</title>
     <meta charset="UTF-8">
-    <meta name="com.solveforall.meta.answer.uri" content="<%= NPM_BASE_URL + '/search?q=' +  encodeURIComponent(q) %>" >    
+    <meta name="com.solveforall.meta.answer.uri" content="<%= NPM_BASE_URL + '/search?q=' +  encodeURIComponent(q) %>" >
   </head>
-  <body>      
+  <body>
     <table class="table table-condensed">
       <thead>
         <tr>
           <th>Name</th>
           <th>Description</th>
           <th>Latest Version</th>
-          <th>Updated</th>        
+          <th>Updated</th>
         </tr>
       </thead>
       <tbody>
-        <% _(results).each(function (rr) { %>
+        <% _(results).each(rr => { %>
           <tr>
-            <td 
-              <% if (rr.author && rr.author.name) { %>  
+            <td
+              <% if (rr.author && rr.author.name) { %>
               title="Author: <%= rr.author.name %>"
               <% } %>
               >
               <a href="<%= NPM_BASE_URL + '/package/' + rr.name %>" ><%= rr.name %></a>
             </td>
-            <td><%= rr.description || 'N/A' %></td>            
+            <td><%= rr.description || 'N/A' %></td>
             <td>
               <% if (latestVersion = _(rr.versions || []).findWhere({tag : 'latest'})) { %>
-                <%= latestVersion.version %> 
+                <%= latestVersion.version %>
               <% } else { %>
                 ?
               <% } %>
-            </td>                  
-            <td>       
+            </td>
+            <td>
               <% if (rr.time && rr.time.modified) { %>
-                <%= stripTime(rr.time.modified) %> 
+                <%= stripTime(rr.time.modified) %>
               <% } else { %>
                 ?
               <% } %>
-            </td>                
+            </td>
           </tr>
-        <% }); %> 
+        <% }); %>
       </tbody>
     </table>
     <p>
-      <small>Data from <a href="<%= NPM_BASE_URL %>">npmjs.org</a>.</small>    
+      <small>Data from <a href="<%= NPM_BASE_URL %>">npmjs.org</a>.</small>
     </p>
   </body>

@@ -1,19 +1,17 @@
 <%
-var actionLabels = ['Map image only', 'Full page'];
-var actionValues = ['embed', 'map'];
-var selectedAction = settings.action || 'map';
+const actionLabels = ['Map image only', 'Full page'];
+const actionValues = ['embed', 'map'];
+const selectedAction = settings.action || 'map';
 
-var mapTypeLabels = ['Map', 'Aerial', 'Hybrid'];
-var mapTypeValues = _(mapTypeLabels).map(function(label) {
-  return label.toLowerCase();
-});
-var selectedMapType = settings.mapType || 'Map';
+const mapTypeLabels = ['Map', 'Aerial', 'Hybrid'];
+const mapTypeValues = _(mapTypeLabels).map(label => label.toLowerCase());
+const selectedMapType = settings.mapType || 'Map';
 
-var layerLabels = ['None', 'Traffic'];
-var layerValues = ['', 'traffic'];
-var selectedLayer = settings.layer || '';
+const layerLabels = ['None', 'Traffic'];
+const layerValues = ['', 'traffic'];
+const selectedLayer = settings.layer || '';
 
-var selectedZoomLevel = settings.zoomLevel || '11';
+const selectedZoomLevel = settings.zoomLevel || '11';
 %>
 <!doctype html>
 <html>
@@ -26,7 +24,7 @@ var selectedZoomLevel = settings.zoomLevel || '11';
         <label for="input_action" class="col-xs-4 control-label">View</label>
         <div class="col-xs-8">
           <select id="input_action" name="action" class="form-control">
-            <% for (var i = 0; i < actionValues.length; i++) { %>
+            <% for (let i = 0; i < actionValues.length; i++) { %>
               <option value="<%= actionValues[i] %>"
                 <% if (actionValues[i] === selectedAction) { %>
                   selected
@@ -41,7 +39,7 @@ var selectedZoomLevel = settings.zoomLevel || '11';
         <label for="input_map_type" class="col-xs-4 control-label">Map Type</label>
         <div class="col-xs-4">
           <select id="input_map_type" name="mapType" class="form-control">
-            <% for (var i = 0; i < mapTypeValues.length; i++) { %>
+            <% for (let i = 0; i < mapTypeValues.length; i++) { %>
               <option value="<%= mapTypeValues[i] %>"
                 <% if (mapTypeValues[i] === selectedMapType) { %>
                   selected
@@ -64,7 +62,7 @@ var selectedZoomLevel = settings.zoomLevel || '11';
         <label for="input_layer" class="col-xs-4 control-label">Layer</label>
         <div class="col-xs-4">
           <select id="input_layer" name="layer"  class="form-control">
-            <% for (var i = 0; i < layerValues.length; i++) { %>
+            <% for (let i = 0; i < layerValues.length; i++) { %>
               <option value="<%= layerValues[i] %>"
                 <% if (layerValues[i] === selectedLayer) { %>
                   selected

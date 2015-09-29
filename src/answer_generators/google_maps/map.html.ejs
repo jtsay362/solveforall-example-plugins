@@ -1,76 +1,75 @@
 <%
-function isNonBlankString(s) {
-  return s && (s.trim().length > 0);
-}
-
-var address = null;
-var latitude = null;
-var longitude = null;
-var label = null;
+let address = null;
+let latitude = null;
+let longitude = null;
+let label = null;
 
 try {
-  var usAddressResults = recognitionResults['com.solveforall.recognition.location.UsAddress'];
-  
+  const usAddressResults = recognitionResults['com.solveforall.recognition.location.UsAddress'];
+
   if (usAddressResults && (usAddressResults.length > 0)) {
-    var recognitionResult = usAddressResults[0];
+    const recognitionResult = usAddressResults[0];
 
-    var address = recognitionResult.streetAddress || '';
+    address = recognitionResult.streetAddress || '';
 
-    var city = recognitionResult.city;
-    if (isNonBlankString(city)) {
-      if (address.length > 0) {
+    const city = recognitionResult.city;
+    if (city) {
+      if (address) {
         address += ', ';
       }
 
       address += city;
     }
 
-    var state = recognitionResult.stateAbbreviation;
-    if (isNonBlankString(state)) {
-      if (address.length > 0) {
+    const state = recognitionResult.stateAbbreviation;
+    if (state) {
+      if (address) {
         address += ', ';
       }
 
       address += state;
     }
 
-    var zipCode = recognitionResult.zipCode;
-    if (isNonBlankString(zipCode)) {
-      if (address.length > 0) {
+    const zipCode = recognitionResult.zipCode;
+    if (zipCode) {
+      if (address) {
         address += ' ';
       }
       address += zipCode;
     }
   } else {
-    var geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
-    var geoResult = null;
-    
+    const geoResults = recognitionResults['com.solveforall.recognition.location.GeoCoordinates'];
+    let geoResult = null;
+
     if (geoResults && (geoResult.length > 0)) {
-      geoResult = geoResults[0];      
+      geoResult = geoResults[0];
     } else {
-      var wikipediaResults = recognitionResults['com.solveforall.recognition.WikipediaArticle'];      
+      const wikipediaResults = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
 
       geoResult = _(wikipediaResults).find(function (wr) {
-        return wr.longitude && wr.latitude;
+        return wr.geoLocation;
       });
     }
-    
+
     if (geoResult) {
       label = geoResult.matchedText;
-      latitude = geoResult.latitude;
-      longitude = geoResult.longitude;            
-    }      
+      latitude = geoResult.geoLocation.latitude;
+      longitude = geoResult.geoLocation.longitude;
+    }
   }
 } catch (e) {
-  console.log('Recognition result not found, falling back to query, error message = "' + 
-              e.message + "'");  
+  console.log('Recognition result not found, falling back to query, error message = "' +
+              e.message + "'");
 }
 
 if (!address && !latitude) {
-  address = q;   
+  if (!q) {
+    throw 'No address or geolocation found.';  
+  }
+  address = q;
 }
 
-var settings = context.settings;
+const settings = context.settings;
 %>
 <!DOCTYPE html>
 <html>
@@ -90,14 +89,14 @@ var settings = context.settings;
     <div id="map_canvas" style="width:100%; height:100%"></div>
   </section>
 
-  <div id="data" 
+  <div id="data"
   <% if (address) { %>
     data-label="<%= address %>"
     data-address="<%= address %>"
   <% } else if (latitude) { %>
     data-label="<%= label %>"
-    data-latitude="<%= latitude %>" data-longitude="<%= longitude %>"    
-  <% } %>  
+    data-latitude="<%= latitude %>" data-longitude="<%= longitude %>"
+  <% } %>
     data-zoom="<%= (settings.zoomLevel || 15) %>"
     data-map-type="<%= (settings.mapType || 'roadmap') %>"
     data-tilt="<%= (settings.tilt || 'true') %>"

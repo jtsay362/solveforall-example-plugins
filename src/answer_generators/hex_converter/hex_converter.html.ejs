@@ -5,17 +5,29 @@
   </head>
   <body>
     <%
-    var number = null;
-    var numberResult = recognitionResults['com.solveforall.recognition.Number'];
+    let number = null;
+    let inputBase = 10;
+    const numberResult = recognitionResults['com.solveforall.recognition.Number'];
+    const lowerQ = q.toLowerCase();
 
     if (numberResult) {
       number = Math.floor(numberResult[0].doubleValue);
+    } else if (lowerQ.indexOf('0x') === 0) {
+      number = parseInt(lowerQ.substr(2), 16);
+      inputBase = 16;
+    } else if (/[a-f]/.test(lowerQ)) {
+      number = parseInt(lowerQ, 16);
+      inputBase = 16;
     } else {
       number = parseInt(q, 10);
     }
 
-    var hexString = number.toString(16);
+    const hexString = number.toString(16);
     %>
-    <pre><%= number %><sub>10</sub> == 0x<%= hexString %></pre>
+    <% if (inputBase === 10) {%>
+      <pre><%= number %><sub>10</sub> == 0x<%= hexString %></pre>
+    <% } else { %>
+      <pre><%= q %><sub>16</sub> == <%= number %><sub>10</sub></pre>
+    <% } %>
   </body>
 </html>

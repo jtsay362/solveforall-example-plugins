@@ -1,11 +1,11 @@
 <%
-var categoryLabels = ['Apps', 'Music', 'Books', 'Movies', 'Newspapers', 'Devices'];
-var categoryValues = ['apps', 'music', 'books', 'movies', 'newsstand', 'devices'];
-var selectedCategory = settings.category || 'apps';
+const categoryLabels = ['Apps', 'Music', 'Books', 'Movies', 'Newspapers', 'Devices'];
+const categoryValues = ['apps', 'music', 'books', 'movies', 'newsstand', 'devices'];
+const selectedCategory = settings.category || 'apps';
 
-var priceTypeLabels = ['Any', 'Free', 'Paid'];
-var priceTypeValues = ['', '1', '2'];
-var selectedPriceType = settings.priceType || '';
+const priceTypeLabels = ['Any', 'Free', 'Paid'];
+const priceTypeValues = ['', '1', '2'];
+const selectedPriceType = settings.priceType || '';
 %>
 
 <!doctype html>
@@ -19,7 +19,7 @@ var selectedPriceType = settings.priceType || '';
         <label for="input_category" class="col-xs-4 control-label">Category</label>
         <div class="col-xs-4">
           <select id="input_category" name="category" class="form-control">
-            <% for (var i = 0; i < categoryValues.length; i++) { %>
+            <% for (let i = 0; i < categoryValues.length; i++) { %>
               <option value="<%= categoryValues[i] %>"
                 <% if (categoryValues[i] === selectedCategory) { %>
                   selected
@@ -34,7 +34,7 @@ var selectedPriceType = settings.priceType || '';
         <label for="input_price_type" class="col-xs-4 control-label">Price Type</label>
         <div class="col-xs-4">
           <select id="input_price_type" name="priceType" class="form-control">
-            <% for (var i = 0; i < priceTypeValues.length; i++) { %>
+            <% for (let i = 0; i < priceTypeValues.length; i++) { %>
               <option value="<%= priceTypeValues[i] %>"
                 <% if (priceTypeValues[i] === selectedPriceType) { %>
                   selected

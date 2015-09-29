@@ -1,7 +1,7 @@
 <%
-var results = recognitionResults['com.solveforall.recognition.programming.web.html.Element'];
+const results = recognitionResults['com.solveforall.recognition.programming.web.html.Element'];
 
-var rr = null;
+let rr = null;
 
 if (results && (results.length > 0)) {
   rr = results[0];
@@ -11,9 +11,9 @@ if (!rr) {
   throw "No result found";
 }
 
-var tag = rr.name;
-var uri = 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/' + encodeURIComponent(tag);
-var title = '<' + tag + '>';
+const tag = rr.name;
+const uri = 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/' + encodeURIComponent(tag);
+const title = '<' + tag + '>';
 
 %>
 <!doctype html>
@@ -58,7 +58,7 @@ var title = '<' + tag + '>';
           </p>
           <p>
           <% if (attribute.summaryHtml && (attribute.summaryHtml.length > 0)) { %>
-            <%- attribute.summaryHtml %>          
+            <%- attribute.summaryHtml %>
           <% } else { %>
             No summary available
           <% } %>
