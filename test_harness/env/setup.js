@@ -16,17 +16,37 @@ function loadBuiltIns() {
 
   _.mixin(_.str.exports());
 
-  /*
-  Object.keys(ejs).forEach(function (prop) {
-    print('ejs.' + prop + ' = ' + ejs[prop]);
-  }); */
-
   print('Loaded builtins.');
 }
 
+function makeEmptyQueryContext(q) {
+	return {
+		isSuggestionQuery: false,
+		isContentDisplayable: true,
+		fullSanitizedQuery: q,
+		// Not correct but usually not needed
+		tokenizedQuery: {},
+		embedded: false,
+		client: {
+			kind: 'web',
+			version: 'unknown',
+			src: 'answer_page',
+		},
+		requestHeaders: [],
+		locale: {
+			fullText: 'en-US',
+			language: 'en',
+			variant: 'Linux'
+		},
+		grantedPermissions: [],
+		settings: {},
+		developerSettings: {}
+	};
+};
+
 function makeImplicitEjsModel() {
 	return {
-		_: _			
+		_: _
 	};
 }
 

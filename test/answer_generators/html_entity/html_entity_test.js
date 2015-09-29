@@ -1,10 +1,10 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/*global loadFile, test, testCases, assert, eq, _, recognize */
+/*global loadFile, test, testCases, assert, eq, _, anonymous */
 
 eval(loadFile('build/compiled_templates/answer_generators/html_entity/html_entity.html.js'));
 const renderer = anonymous;
 
-const context = { settings: {} };
+const context = makeEmptyQueryContext('blah');
 testCases(test,
   function setUp() {
   },
@@ -22,7 +22,8 @@ testCases(test,
           "matchedText": "&amp;",
           "namedCodes": ["&amp;"]
         }]
-      }
+      },
+      context: context
     }));
     assert.that(html.indexOf('<span class=\"symbol\">&amp;</span>') > 0,
                 eq(true));

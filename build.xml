@@ -1,7 +1,12 @@
 <project name="solveforall-example-plugins" basedir="." default="run-all-tests">
   <property name="test_harness.dir" location="test_harness" />
 
-  <target name="run-all-tests" depends="run-unit-tests"/>
+  <target name="preprocess">
+    <exec executable="gulp">
+    </exec>
+  </target>
+
+  <target name="run-all-tests" depends="preprocess,run-unit-tests"/>
 
   <target name="run-unit-tests">
     <java classname="org.mozilla.javascript.tools.shell.Main">
@@ -26,7 +31,7 @@
         </fileset>
       </classpath>
       <arg value="-opt" />
-      <arg value="-1" />      
+      <arg value="-1" />
       <arg value="-modules" />
       <arg value="${test_harness.dir}/modules" />
       <arg value="${test_harness.dir}/samples/samples.js" />

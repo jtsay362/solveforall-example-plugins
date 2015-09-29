@@ -1,8 +1,10 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
-/*global loadFile, test, testCases, assert, eq, _, recognize */
+/*global loadFile, test, testCases, assert, eq, _, anonymous */
 
 eval(loadFile('build/compiled_templates/answer_generators/public_warnings/warning.html.js'));
 const renderer = anonymous;
+
+const context = makeEmptyQueryContext('blah');
 
 testCases(test,
   function setUp() {
@@ -21,7 +23,8 @@ testCases(test,
           created: '04-12-2015T12:05:33',
           updated: '04-15-2015T16:58:12'
         }]
-      }
+      },
+      context: context
     }));
 
     assert.that(html.indexOf('<p>Altria bites!</p>') > 0, eq(true));

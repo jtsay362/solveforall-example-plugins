@@ -75,8 +75,8 @@ var ANSWER_GENERATOR_MODULES = {
   }
 };
 
-gulp.task('scripts', function () {
-  Object.keys(ANSWER_GENERATOR_MODULES).forEach(function (mod) {
+gulp.task('content-scripts', function () {
+  return Object.keys(ANSWER_GENERATOR_MODULES).forEach(function (mod) {
     var descriptor = ANSWER_GENERATOR_MODULES[mod];
     return gulp.src(
       _.map(descriptor.scripts, function (f) {
@@ -84,25 +84,27 @@ gulp.task('scripts', function () {
       }))
     .pipe(concat(mod + '.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(OUTPUT_DIR + '/answer_generators/' + mod + '/scripts/'));
+    .pipe(gulp.dest(OUTPUT_DIR + '/answer_generator_content/' + mod + '/scripts/'));
   });
-
-  return gulp.src(
-    _.map(['content_recognizers', 'triggers'], function (pluginType) {
-       return SOURCE_DIR + '/' + pluginType + '/*/*.js';
-    }), {
-      base: SOURCE_DIR
-    })
-  .pipe(uglify())
-  .pipe(gulp.dest(OUTPUT_DIR));
 });
 
 gulp.task('sass', function () {
-  return gulp.src('src/answer_generators/**/*.scss')
-  .pipe(sass({
+  return sass('src/answer_generators/**/*.scss', {
     style: 'compressed'
-  }))
-  .pipe(gulp.dest(OUTPUT_DIR + '/answer_generators/'));
+  }).on('error', sass.logError)
+  .pipe(gulp.dest(OUTPUT_DIR + '/answer_generator_content/'));
+});
+
+gulp.task('plugin-scripts', function () {
+  return gulp.src(
+    _.map(['answer_generators', 'content_recognizers', 'triggers'], function (pluginType) {
+       return SOURCE_DIR + '/' + pluginType + '/**/*.js';
+    }).concat(['!**/scripts/*.js']), {
+      base: SOURCE_DIR
+    })
+    .pipe(plumber())
+    .pipe(babel())
+    .pipe(gulp.dest(OUTPUT_DIR + '/plugin_scripts/'));
 });
 
 gulp.task('compile-ejs', function () {
@@ -123,7 +125,7 @@ gulp.task('clean', function(cb) {
   del([OUTPUT_DIR], cb);
 });
 
-gulp.task('build', ['sass', 'scripts']);
+gulp.task('build', ['sass', 'content-scripts']);
 
 
-gulp.task('default', ['compile-ejs']);
+gulp.task('default', ['plugin-scripts', 'compile-ejs']);
