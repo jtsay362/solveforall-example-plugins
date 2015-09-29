@@ -46,24 +46,22 @@ let IMPLICIT_HTML = '<head>\n' +
 
 IMPLICIT_HTML += '<!-- End simulated environment for sanitized content -->';
 
-const ejs = require('ejs');
-
 function processEjs(inFileName, input, useSanitizedEnvironment, outFilenameSuffix) {
-  var template = loadFile('src/answer_generators/wikipedia/info.html.ejs');
-	var renderer = ejs.compile(template);
+  eval(loadFile('build/compiled_templates/' + inFileName));
+	var renderer = anonymous;
 	var html = renderer(_.extend(makeImplicitEjsModel(), input));
 
 	if (useSanitizedEnvironment) {
   	html = html.replace('<head>', IMPLICIT_HTML);
 	}
 
-  outFileName = inFileName.replace('src/answer_generators/', 'build/samples/')
-    .replace(/\.html\.ejs$/, outFilenameSuffix + '.html');
+  outFileName = inFileName.replace(/\.js$/, outFilenameSuffix + '.html');
+	outFileName = 'build/samples/' + outFileName;
   outputToFile(outFileName, html);
 }
 
 function testWikiInfoBoxOnPerson() {
-	processEjs('src/answer_generators/wikipedia/info.html.ejs', {
+	processEjs('answer_generators/wikipedia/info.html.js', {
     context: {
       settings: {
       }
@@ -147,7 +145,7 @@ function testWikiInfoBoxOnPerson() {
 }
 
 function testWikiInfoBoxOnCompany() {
-	processEjs('src/answer_generators/wikipedia/info.html.ejs', {
+	processEjs('answer_generators/wikipedia/info.html.js', {
     context: {
       settings: {
       }
@@ -333,7 +331,7 @@ function testWikiInfoBoxOnCompany() {
 }
 
 function testWikiInfoBoxOnCity() {
-	processEjs('src/answer_generators/wikipedia/info.html.ejs', {
+	processEjs('answer_generators/wikipedia/info.html.js', {
 		context: {
 			settings: {
 			}

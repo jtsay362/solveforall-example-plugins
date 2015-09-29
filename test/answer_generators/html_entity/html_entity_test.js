@@ -1,8 +1,8 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global loadFile, test, testCases, assert, eq, _, recognize */
 
-const template = loadFile('src/answer_generators/html_entity/html_entity.html.ejs');
-const renderer = require('ejs').compile(template);
+eval(loadFile('build/compiled_templates/answer_generators/html_entity/html_entity.html.js'));
+const renderer = anonymous;
 
 const context = { settings: {} };
 testCases(test,

@@ -1,8 +1,8 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global loadFile, test, testCases, assert, eq, _, recognize */
 
-const template = loadFile('src/answer_generators/public_warnings/warning.html.ejs');
-const renderer = require('ejs').compile(template);
+eval(loadFile('build/compiled_templates/answer_generators/public_warnings/warning.html.js'));
+const renderer = anonymous;
 
 testCases(test,
   function setUp() {
