@@ -9,12 +9,17 @@ const MARKET_LABELS = ['Default', 'Argentina - Spanish', 'Austria – German', '
 // $('.informaltable tr td:nth-child(2)').map(function () { return $(this).text().trim() });
 const MARKET_VALUES = [DEFAULT_MARKET, 'es-ar', 'de-at', 'en-au', 'nl-be', 'pt-br', 'bg-bg', 'en-ca', 'fr-ca', 'es-cl', 'es-co', 'hr-hr', 'cs-cz', 'da-dk', 'et-ee', 'fi-fi', 'fr-fr', 'de-de', 'el-gr', 'zh-hant-hk', 'hu-hu', 'id-en', 'id-id', 'en-in', 'en-ie', 'he-il', 'it-it', 'ja-jp', 'ko-kr', 'lv-lv', 'lt-lt', 'en-my', 'ms-my', 'es-mx', 'nl-nl', 'en-nz', 'no-no', 'es-pe', 'tl-ph', 'en-ph', 'pl-pl', 'ro-ro', 'ru-ru', 'ar-xa', 'en-sg', 'sk-sk', 'sl-si', 'ca-es', 'es-es', 'sv-se', 'fr-ch', 'de-ch', 'it-ch', 'th-th', 'zh-hant-tw', 'tr-tr', 'en-gb', 'en-us', 'es-us', /* 'es-ve' , */ 'vi-vn']
 
+const DEFAULT_WEB_MAX_RESULTS = 20;
+const DEFAULT_VIDEO_MAX_RESULTS = 20;
+
 const FILTER_LABELS = ['No', 'Text only', 'Yes'];
 const FILTER_VALUES = ['Strict', 'Moderate', 'Off'];
 
 const market = settings.market || DEFAULT_MARKET;
+
 const webSettings = settings.web || {};
 const webEnabled = (webSettings.enabled !== false);
+const webMaxResults = webSettings.maxResults || DEFAULT_WEB_MAX_RESULTS;
 const filter = settings.filter || 'Moderate';
 
 // News options
@@ -24,6 +29,7 @@ const newsEnabled = (newsSettings.enabled !== false);
 // Video options
 const videoSettings = settings.video || {};
 const videoEnabled = (videoSettings.enabled !== false);
+const videoMaxResults = videoSettings.maxResults || DEFAULT_VIDEO_MAX_RESULTS;
 %>
 <!doctype html>
 <html>
@@ -89,6 +95,13 @@ const videoEnabled = (videoSettings.enabled !== false);
             </label>
           </div>
         </div>
+        <div class="form-group">
+          <label for="input_web_max_results" class="col-xs-4 control-label">Max Results</label>
+          <div class="col-xs-6">
+            <input id="input_web_max_results" name="web[maxResults]:number" type="number"
+             value="<%= webMaxResults %>" min="1" max="50" class="form-control">
+          </div>
+        </div>
       </fieldset>
 
       <fieldset>
@@ -127,6 +140,13 @@ const videoEnabled = (videoSettings.enabled !== false);
                 <% } %>
               >
             </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="input_video_max_results" class="col-xs-4 control-label">Max Results</label>
+          <div class="col-xs-6">
+            <input id="input_video_max_results" name="video[maxResults]:number" type="number"
+             value="<%= videoMaxResults %>" min="1" max="50" class="form-control">
           </div>
         </div>
       </fieldset>
