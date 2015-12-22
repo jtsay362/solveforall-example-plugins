@@ -26,7 +26,7 @@
       <td>params</td>
       <td>Array</td>
       <td>An array of parameter names</td>
-    </tr>    
+    </tr>
     <tr>
       <td>kind</td>
       <td>String</td>
@@ -35,8 +35,8 @@
           <li>method</li>
           <li>function</li>
           <li>class</li>
-          <li>exception</li>        
-        </ul>      
+          <li>exception</li>
+        </ul>
       </td>
     </tr>
     <tr>
@@ -45,9 +45,14 @@
       <td>The path of the documentation, relative to https://docs.python.org/[version]/library/</td>
     </tr>
     <tr>
-      <td>summary</td>
+      <td>summaryHtml</td>
       <td>String</td>
-      <td>A summary of the function/method/class/exception</td>
+      <td>A summary of the function/method/class/exception, in HTML format</td>
+    </tr>
+    <tr>
+      <td>enclosingModule</td>
+      <td>String</td>
+      <td>The name of the module that contains this code object</td>
     </tr>
   </tbody>
 </table>
@@ -60,6 +65,7 @@
   &quot;params&quot;: [&quot;elem&quot;],
   &quot;kind&quot;: &quot;method&quot;,
   &quot;path&quot;: &quot;stdtypes.html#set.add&quot;,
-  &quot;summary&quot;: &quot;Add element elem to the set.\n&quot;
+  &quot;summaryHtml&quot;: &quot;&lt;p&gt;Add element &lt;em&gt;elem&lt;/em&gt; to the set.&lt;/p&gt;&quot;,
+  &quot;enclosingModule&quot;: &quot;stdtypes&quot;
 }
 </pre>
