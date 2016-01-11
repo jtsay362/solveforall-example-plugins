@@ -363,9 +363,12 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
             &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_top">Website</a>
           <% } %>
 
-          <% if (result.geoLocation) { %>
+          <% if (result.geoLocation) {
+              const lat = result.geoLocation.lat.toFixed(5);
+              const lon = result.geoLocation.lon.toFixed(5);
+          %>
             &nbsp;&nbsp;|&nbsp;&nbsp;
-            <a href="https://www.openstreetmap.org/#map=<%= mapZoomLevel %>/<%= result.geoLocation.lat %>/<%= result.geoLocation.lon %>" target="_top">Map</a>
+            <a href="https://www.openstreetmap.org/?mlat=<%= lat %>&mlon=<%= lon %>#map=<%= mapZoomLevel %>/<%= lat %>/<%= lon %>" target="_top">Map</a>
           <% } %>
         </small>
         <br/>
