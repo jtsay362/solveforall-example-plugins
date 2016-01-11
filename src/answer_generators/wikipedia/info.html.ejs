@@ -4,13 +4,15 @@ if (!results || (results.length < 1)) {
   return null;
 }
 
-let result, imageUri, altImageUri, text;
+let result, text;
+imageUris = [];
+altImageUris = [];
 let i = 0;
 do {
   let r = results[i];
-  imageUri = r.depictionImageUri || r.thumbnailImageUri;
+  imageUris = _.compact([r.thumbnailImageUri, r.depictionImageUri]);
   text = r.longAbstract_en;
-  if (imageUri || text) {
+  if ((imageUris.length > 0) || text) {
     result = r;
   }
   if (text) {
@@ -24,24 +26,35 @@ if (!result) {
   throw 'No eligible result found.';
 }
 
-const label = ' (' + result.humanFormattedArticle.replace('(', '[').replace(')', ']') + ')';
+const label = ' (' + result.humanFormattedArticle_en.replace('(', '[').replace(')', ']') + ')';
 
 const settings = context.settings;
 const maxAbstractCharacters = settings.maxAbstractCharacters ||
   (context.isSuggestionQuery ? 10000 : 570);
-const showImage = imageUri && (settings.showImage !== 'false');
+const showImage = (imageUris.length > 0) && (settings.showImage !== 'false');
 
 let requiresExplicitHeight = false;
 if (showImage) {
-  // Wikipedia support HTTPS on all URLs now!
-  if (_.str.startsWith(imageUri, 'http:')) {
-    imageUri = 'https' + imageUri.substr(4);
-  }
+  for (let i = 0; i < imageUris.length; i++) {
+    let imageUri = imageUris[i];
 
-  if (imageUri.indexOf('/commons/') > 0) {
-    altImageUri = imageUri.replace('/commons/', '/en/');
-  } else if (imageUri.indexOf('/en/') > 0) {
-    altImageUri = imageUri.replace('/en/', '/commons/');
+    // Wikipedia support HTTPS on all URLs now!
+    if (_.str.startsWith(imageUri, 'http:')) {
+      imageUri = 'https' + imageUri.substr(4);
+    }
+
+    imageUris[i] = imageUri;
+
+    let altImageUri;
+    if (imageUri.indexOf('/commons/') > 0) {
+      altImageUri = imageUri.replace('/commons/', '/en/');
+    } else if (imageUri.indexOf('/en/') > 0) {
+      altImageUri = imageUri.replace('/en/', '/commons/');
+    }
+
+    if (altImageUri) {
+      altImageUris.push(altImageUri);
+    }
   }
 }
 
@@ -68,15 +81,17 @@ const semanticProps = result.semanticProps || {};
 let semanticPropsArray = [];
 let description;
 
-const RANGE_SUFFIXES = ['YearsStartYear', 'YearsEndYear'];
+const RANGE_SUFFIXES = ['YearsStartDate', 'YearsEndDate', 'YearsStartYear',
+  'YearsEndYear'];
 const dateRanges = {};
 const IGNORED_VALUE_PREFIXES = ['List of'];
 const IGNORED_NAME_ARRAY = [
   'Viaf', 'Name', 'Homepage', 'Leader name', 'Leader title', 'Occupation',
-  'Lccn'
+  'Lccn', 'Individualised gnd', 'Term period',
+  'Rdf schema#see also'
 ];
 const IGNORED_NAMES = {};
-_(IGNORED_NAME_ARRAY).each(name => IGNORED_NAMES[name] = true);
+IGNORED_NAME_ARRAY.forEach(name => IGNORED_NAMES[name] = true);
 
 const NAME_CHANGES = {
   'Is part of' : 'Part of',
@@ -108,7 +123,7 @@ function humanizeUriValue(v) {
   return x.substr(x.lastIndexOf('.') + 1).replace(/_+/g, ' ');
 }
 
-_(semanticProps).chain().keys().each(function (k) {
+Object.keys(semanticProps).forEach(k => {
   try {
     const v = semanticProps[k];
     if (k && v && v.value) {
@@ -116,6 +131,7 @@ _(semanticProps).chain().keys().each(function (k) {
         case 'org.w3.www.1999.02.22-rdf-syntax-ns#type':
         case 'org.w3.www.2003.01.geo.wgs84_pos#lat':
         case 'org.w3.www.2003.01.geo.wgs84_pos#long':
+        case 'org.w3.www.2002.07.owl#differentFrom':
         return;
       }
 
@@ -194,11 +210,11 @@ _(semanticProps).chain().keys().each(function (k) {
 // If there is a birth date, remove birth year, month, etc.
 const SKIP = '__SKIP__';
 
-_(semanticPropsArray).each(function (pair) {
+semanticPropsArray.forEach(pair => {
   const name = pair[0];
   const lowerName = name.toLowerCase();
 
-  _(['year', 'month', 'day']).each(function (period) {
+  ['year', 'month', 'day'].forEach(period => {
     if (_.str.endsWith(lowerName, ' ' + period)) {
       const prefix = lowerName.substr(0, lowerName.length - period.length);
       const datePropertyName = prefix + 'date';
@@ -254,10 +270,10 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
 
   if (end) {
     if (end !== start) {
-      v += ' - ' + end;
+      v += ' ~ ' + end;
     }
   } else {
-    v += ' -';
+    v += ' ~ present';
   }
 
   semanticPropsArray.push([_.str.capitalize(pair[0]), v]);
@@ -272,11 +288,15 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
     <meta name="com.solveforall.meta.answer.embeddable" content="true">
     <meta name="com.solveforall.meta.answer.relevance"
      content="<%= result.recognitionLevel %>">
+    <meta name="com.solveforall.meta.answer.eligible_as_best_answer"
+     content="<%= (q.indexOf('wikipedia') >= 0) %>">
+
     <style>
     .top_container {
-
+      max-width: 760px;
     }
     .title {
+      text-align: left;
       font-size: 20px;
       font-weight: bold;
     }
@@ -297,8 +317,13 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
     .semantic_props_container {
       margin-top: 6px;
     }
-    .semantic_props_container td {
+    .property_name {
+      /* Otherwise max-width isn't honored. */
+      display: block;
+      width: 212px;
+      max-width: 33vw;
       padding-right: 16px;
+      text-align: right;
     }
     </style>
   </head>
@@ -307,11 +332,13 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
       <p class="text-justify">
         <% if (showImage) { %>
           <span class="image_container">
-            <a href="<%= imageUri %>"  target="_top">
-              <img data-img-src-0="<%= imageUri %>"
-                <% if (altImageUri) { %>
-                  data-img-src-1="<%= altImageUri %>"
-                <% } %>
+            <a href="<%= imageUris[0] %>"  target="_top">
+              <img
+                <% let imageIndex = 0;
+                   imageUris.concat(altImageUris).forEach(imageUri => { %>
+                     data-img-src-<%- imageIndex %>="<%= imageUri %>"
+                <%   imageIndex++;
+                   }); %>
                 class="with_fallback img-rounded" width="200"
                 <% if (requiresExplicitHeight) { %>
                 height="200"
@@ -321,7 +348,7 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
           </span>
         <% } %>
 
-        <span class="title"><%= result.humanFormattedArticle %></span>
+        <span class="title"><%= result.humanFormattedArticle_en %></span>
 
         <% if (description) { %>
           <span class="description">(<%= description %>)</span>
@@ -369,9 +396,9 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
         <table>
           <thead></thead>
           <tbody>
-          <% _(semanticPropsArray).each(function (pair) { %>
+          <% semanticPropsArray.forEach(pair => { %>
             <tr>
-              <td><b><%= pair[0] %></b></td>
+              <td class="property_name"><b><%= pair[0] %></b></td>
               <td><%= pair[1] %></td>
             </tr>
           <% }); %>
