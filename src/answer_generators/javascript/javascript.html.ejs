@@ -1,7 +1,7 @@
 <%
-  var rv = null;
-  var ex = null;
-  var relevance = 1.0;
+  let rv = null;
+  let ex = null;
+  let relevance = 1.0;
 
   // Don't leak this!
   context.developerSettings = {};
@@ -12,7 +12,7 @@
     ex = err;
     relevance = 0.0;
   }
-  var MAX_SINGLE_LINE_LENGTH = 40;
+  const MAX_SINGLE_LINE_LENGTH = 40;
 %>
 
 <html>
