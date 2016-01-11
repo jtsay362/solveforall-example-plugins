@@ -24,6 +24,8 @@
 
   const categories = makeWeightedList(warning.categories);
   categories.push({value: 'warning', weight: 1});
+
+  const summaryHtml = warning.summaryHtml;
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,8 +34,8 @@
     <% if (warning.detailsUrl) { %>
       <meta name="com.solveforall.meta.answer.uri" content="<%= warning.detailsUrl %>" >
     <% } %>
-    <% if (warning.summaryHtml) { %>
-      <meta name="com.solveforall.meta.answer.summary_html" content="<%= warning.summaryHtml %>" >
+    <% if (summaryHtml) { %>
+      <meta name="com.solveforall.meta.answer.summary_html" content="<%= summaryHtml %>" >
     <% } %>
       <meta name="com.solveforall.meta.answer.categories"
        content="<%= JSON.stringify(categories) %>" >
@@ -41,22 +43,37 @@
        content="<%= JSON.stringify(makeWeightedList(warning.keywords)) %>" >
   </head>
   <body>
-    <h3><%= warning.title %></h3>
+    <h2 style="margin-top: 0; margin-bottom: 16px;"><%= warning.title %></h2>
 
-    <p>
-      <small>
-        Created: <%= extractDate(warning.created) %> | Updated: <%= extractDate(warning.updated) %>
-      </small>
-    </p>
+    <% if (summaryHtml) { %>
+      <div>
+        <%- summaryHtml %>
+      </div>
+    <% } %>
 
     <div>
-      <%- warning.bodyHtml %>
-    </div>
+      <div class="content_expander" style="margin-top: 12px; margin-bottom: 12px;">
+        <i>Details ...</i>
+        <i class="fa fa-chevron-down"></i>
+      </div>
 
-    <% if (warning.detailsUrl) { %>
-      <p>
-        <small>See full <a href="<%= warning.detailsUrl %>">details</a></small>
-      </p>
-    <% } %>
+      <div class="content_expandable initially_hidden">
+        <p>
+          <small>
+            Created: <%= extractDate(warning.created) %> | Updated: <%= extractDate(warning.updated) %>
+          </small>
+        </p>
+
+        <div>
+          <%- warning.bodyHtml %>
+        </div>
+
+        <% if (warning.detailsUrl) { %>
+          <p>
+            <small>See full <a href="<%= warning.detailsUrl %>">details</a></small>
+          </p>
+        <% } %>
+      </div>
+    </div>
   </body>
 </html>
