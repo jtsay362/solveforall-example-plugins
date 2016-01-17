@@ -86,8 +86,8 @@ const RANGE_SUFFIXES = ['YearsStartDate', 'YearsEndDate', 'YearsStartYear',
 const dateRanges = {};
 const IGNORED_VALUE_PREFIXES = ['List of'];
 const IGNORED_NAME_ARRAY = [
-  'Viaf', 'Name', 'Homepage', 'Leader name', 'Leader title', 'Occupation',
-  'Lccn', 'Individualised gnd', 'Term period',
+  'Background', 'Viaf', 'Name', 'Homepage', 'Leader name', 'Leader title',
+  'Occupation', 'Lccn', 'Individualised gnd', 'Term period',
   'Rdf schema#see also'
 ];
 const IGNORED_NAMES = {};
@@ -139,8 +139,15 @@ Object.keys(semanticProps).forEach(k => {
       let name = _.str.humanize(_.str.capitalize(k.substr(lastDotIndex + 1)));
       const kind = v.kind;
       let value = v.value;
+      let doLink = false;
+
       if (kind === 'uri') {
+        if (value.indexOf('__') >= 0) {
+          return;
+        }
+
         value = humanizeUriValue(v);
+        doLink = true;
       }
 
       if (IGNORED_NAMES[name]) {
@@ -199,7 +206,7 @@ Object.keys(semanticProps).forEach(k => {
       }
 
       if (doPush) {
-        semanticPropsArray.push([name, value]);
+        semanticPropsArray.push([name, value, doLink]);
       }
     }
   } catch (e) {
@@ -210,39 +217,36 @@ Object.keys(semanticProps).forEach(k => {
 // If there is a birth date, remove birth year, month, etc.
 const SKIP = '__SKIP__';
 
-semanticPropsArray.forEach(pair => {
-  const name = pair[0];
-  const lowerName = name.toLowerCase();
+semanticPropsArray.forEach(t => {
+  const lowerName = t[0].toLowerCase();
 
   ['year', 'month', 'day'].forEach(period => {
     if (_.str.endsWith(lowerName, ' ' + period)) {
       const prefix = lowerName.substr(0, lowerName.length - period.length);
       const datePropertyName = prefix + 'date';
-      const datePair = _(semanticPropsArray).find(function (pair2) {
-        return (datePropertyName === pair2[0].toLowerCase());
+      const dateTuple = _(semanticPropsArray).find(function (t2) {
+        return (datePropertyName === t2[0].toLowerCase());
       });
 
-      if (datePair) {
+      if (dateTuple) {
         pair[0] = SKIP;
       }
     }
   });
 });
 
-semanticPropsArray = _(semanticPropsArray).reject(function (pair) {
-  return (pair[0] === SKIP)
-});
+semanticPropsArray = _(semanticPropsArray).reject(t => (t[0] === SKIP));
 
 const leaderName = semanticProps['org.dbpedia.ontology.leaderName'];
 const leaderTitle = semanticProps['org.dbpedia.ontology.leaderTitle'];
 
 if (leaderName && leaderName.value && leaderTitle && leaderTitle.value) {
   semanticPropsArray.push([leaderTitle.value,
-    humanizeUriValue(leaderName)]);
+    humanizeUriValue(leaderName), true]);
 }
 
-semanticPropsArray = _(semanticPropsArray).sortBy(function (pair) {
-  const name = pair[0];
+semanticPropsArray = _(semanticPropsArray).sortBy(t => {
+  const name = t[0];
 
   // Ensures birth name comes before birth date and birth place
   const nameIndex = name.indexOf('name');
@@ -250,10 +254,15 @@ semanticPropsArray = _(semanticPropsArray).sortBy(function (pair) {
     return name.substr(0, nameIndex) + '0' + name.substr(nameIndex + 1);
   }
 
+  // Move Associated properties to the end
+  if (name.indexOf('ssociat') > 0) {
+    return 'zzzz' +  name;
+  }
+
   return name;
 });
 
-_(dateRanges).chain().pairs().sortBy(function (pair) {
+_(dateRanges).chain().pairs().sortBy(pair => {
   return pair[0];
 }).each(function (pair) {
   let v = '';
@@ -276,7 +285,7 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
     v += ' ~ present';
   }
 
-  semanticPropsArray.push([_.str.capitalize(pair[0]), v]);
+  semanticPropsArray.push([_.str.capitalize(pair[0]), v, false]);
 });
 %>
 <!doctype html>
@@ -399,10 +408,18 @@ _(dateRanges).chain().pairs().sortBy(function (pair) {
         <table>
           <thead></thead>
           <tbody>
-          <% semanticPropsArray.forEach(pair => { %>
+          <% semanticPropsArray.forEach(t => { %>
             <tr>
-              <td class="property_name"><b><%= pair[0] %></b></td>
-              <td><%= pair[1] %></td>
+              <td class="property_name"><b><%= t[0] %></b></td>
+              <td>
+                <% if (t[2]) { %>
+                  <a href="https://solveforall.com/answers.do?q=<%= encodeURIComponent(t[1]) %>">
+                <% } %>
+                  <%= t[1] %>
+                <% if (t[2]) { %>
+                  </a>
+                <% } %>
+              </td>
             </tr>
           <% }); %>
           </tbody>
