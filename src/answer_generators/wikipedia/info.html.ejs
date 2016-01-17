@@ -229,7 +229,7 @@ semanticPropsArray.forEach(t => {
       });
 
       if (dateTuple) {
-        pair[0] = SKIP;
+        t[0] = SKIP;
       }
     }
   });
@@ -262,12 +262,10 @@ semanticPropsArray = _(semanticPropsArray).sortBy(t => {
   return name;
 });
 
-_(dateRanges).chain().pairs().sortBy(pair => {
-  return pair[0];
-}).each(function (pair) {
+_(dateRanges).chain().pairs().sortBy(t => t[0]).each(t => {
   let v = '';
 
-  const start = pair[1].start;
+  const start = t[1].start;
 
   if (start) {
     v += start;
@@ -275,7 +273,7 @@ _(dateRanges).chain().pairs().sortBy(pair => {
     v += '(Unknown)';
   }
 
-  const end = pair[1].end;
+  const end = t[1].end;
 
   if (end) {
     if (end !== start) {
@@ -285,7 +283,7 @@ _(dateRanges).chain().pairs().sortBy(pair => {
     v += ' ~ present';
   }
 
-  semanticPropsArray.push([_.str.capitalize(pair[0]), v, false]);
+  semanticPropsArray.push([_.str.capitalize(t[0]), v, false]);
 });
 %>
 <!doctype html>
