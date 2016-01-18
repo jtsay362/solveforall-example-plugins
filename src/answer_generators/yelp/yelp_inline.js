@@ -16,7 +16,7 @@ function mapUrl(business) {
     addQuery('maptype', 'map').addQuery('vs', 'embed').toString();
 }
 
-function makeResponseHandler(q) {
+function makeResponseHandler(q, recognitionLevel) {
   return function (responseText, httpResponse) {
     console.log('got response text = "' + responseText + '"');
 
@@ -223,7 +223,7 @@ function makeResponseHandler(q) {
       label: 'Yelp',
       uri: 'http://www.yelp.com/search?find_desc=' + encodeURIComponent(q),
       iconUrl: 'http://www.yelp.com/favicon.ico',
-      relevance: 1.0
+      relevance: recognitionLevel - 0.1
     }];
   };
 }
@@ -249,9 +249,11 @@ function generateResults(recognitionResults, q, context) {
   let queryAddresses = recognitionResults['com.solveforall.recognition.location.UsAddress'];
   let queryAddressSpecificEnough = false;
   let foundExplicitLocation = false;
+  let recognitionLevel = 0;
 
   if (queryAddresses && (queryAddresses.length > 0)) {
     let recognitionResult = queryAddresses[0];
+    recognitionLevel = recognitionResult.recognitionLevel;
 
     let cityStateZip = null;
 
@@ -289,6 +291,7 @@ function generateResults(recognitionResults, q, context) {
     if (geoResults && (geoResult.length > 0)) {
       let geoResult = geoResults[0];
       ll = geoResult.latitude.toFixed(4) + ',' + geoResult.longitude.toFixed(4);
+      recognitionLevel = geoResult.recognitionLevel;
     }
   }
 
@@ -383,7 +386,8 @@ function generateResults(recognitionResults, q, context) {
     data: oauth.authorize(requestData, token)
   });
 
-  request.send('makeResponseHandler(' + JSON.stringify(processedQuery) + ')', 'errorHandler');
+  request.send('makeResponseHandler(' + JSON.stringify(processedQuery) + ',' +
+    JSON.stringify(recognitionLevel) + ')', 'errorHandler');
 
   return HostAdapter.SUSPEND;
 }
