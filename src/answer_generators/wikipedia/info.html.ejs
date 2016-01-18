@@ -86,9 +86,10 @@ const RANGE_SUFFIXES = ['YearsStartDate', 'YearsEndDate', 'YearsStartYear',
 const dateRanges = {};
 const IGNORED_VALUE_PREFIXES = ['List of'];
 const IGNORED_NAME_ARRAY = [
-  'Background', 'Viaf', 'Name', 'Homepage', 'Leader name', 'Leader title',
-  'Occupation', 'Lccn', 'Individualised gnd', 'Term period',
-  'Rdf schema#see also'
+  'Background', 'Demonym', 'Flag',
+  'Viaf', 'Name', 'Homepage', 'Leader name', 'Leader title',
+  'Occupation', 'Population as of', 'Lccn', 'Individualised gnd', 'Term period',
+  'Time zone', 'Rdf schema#see also', 'Type'
 ];
 const IGNORED_NAMES = {};
 IGNORED_NAME_ARRAY.forEach(name => IGNORED_NAMES[name] = true);
@@ -100,17 +101,61 @@ const NAME_CHANGES = {
   'Area land' : 'Land area',
   'Area total' : 'Total area',
   'Area water' : 'Water area',
+  'Elevation' : 'Elevation (mean)',
   'Percentage of area water' : 'Water area (%)',
-  'Population metro' : 'Metro population',
-  'Population total' : 'Total population',
-  'Population total ranking' : 'Total population rank',
-  'Population urban' : 'Urban population',
+  'Population metro' : 'Population (metro)',
+  'Population total' : 'Population (total)',
+  'Population total ranking' : 'Population rank',
+  'Population urban' : 'Population (urban)',
   'Utc offset' : 'UTC offset',
   'Area code' : 'Area code(s)',
   'Postal code' : 'Postal code(s)',
   'Networth' : 'Net Worth'
 };
 
+const KILOMETER_SQUARED_AREA_UNITS = {
+  factor: 1e-6,
+  unit: ' km<sup>2</sup>'
+};
+
+const METER_LENGTH_UNITS = {
+  unit: ' m'
+};
+
+const NAME_TO_UNITS = {
+  'Area land' : KILOMETER_SQUARED_AREA_UNITS,
+  'Area total' : KILOMETER_SQUARED_AREA_UNITS,
+  'Area water' : KILOMETER_SQUARED_AREA_UNITS,
+  'Elevation' : METER_LENGTH_UNITS,
+  'Maximum elevation' : METER_LENGTH_UNITS,
+  'Minimum elevation' : METER_LENGTH_UNITS,
+  'Percentage of area water' : {
+    unit: '%'
+  },
+  'Population density' : {
+    unit: ' people / km<sup>2</sup>'
+  },
+  'Runtime' : {
+    factor: 1.0 / 60,
+    unit: ' min'
+  },
+  'Population metro' : {
+    unit: ' people'
+  },
+  'Population total' : {
+    unit: ' people'
+  },
+  'Population urban' : {
+    unit: ' people'
+  },
+  'Utc offset' : {
+    unit: ' hour(s)'
+  }
+};
+
+const QUALIFIER_PREFIXES = ['Minimum', 'Maximum', 'Total'];
+
+const moment = require('moment');
 const numeral = require('numeral');
 
 function humanizeUriValue(v) {
@@ -137,6 +182,7 @@ Object.keys(semanticProps).forEach(k => {
 
       const lastDotIndex = k.lastIndexOf('.');
       let name = _.str.humanize(_.str.capitalize(k.substr(lastDotIndex + 1)));
+      let label = name;
       const kind = v.kind;
       let value = v.value;
       let doLink = false;
@@ -160,9 +206,36 @@ Object.keys(semanticProps).forEach(k => {
         return;
 
         default: {
-          const alias = NAME_CHANGES[name];
+          let alias = NAME_CHANGES[name];
           if (alias) {
-            name = alias;
+            label = alias;
+          } else {
+            for (let i = 0; i < QUALIFIER_PREFIXES.length; i++) {
+              const prefix = QUALIFIER_PREFIXES[i];
+
+              if (!alias && _.str.startsWith(name, prefix)) {
+                alias = _.str.capitalize(name.substr(prefix.length + 1)) + ' (';
+
+                switch (prefix) {
+                  case 'Maximum':
+                  alias += 'max';
+                  break;
+
+                  case 'Minimum':
+                  alias += 'min';
+                  break;
+
+                  default:
+                  alias += name.substr(0, prefix.length).toLowerCase();
+                  break;
+                }
+
+                alias += ')';
+              }
+            }
+            if (alias) {
+              label = alias;
+            }
           }
         }
         break;
@@ -172,6 +245,10 @@ Object.keys(semanticProps).forEach(k => {
           return _.str.startsWith(value, prefix);
       })) {
         return;
+      }
+
+      if (v.dataType === 'date') {
+        value = moment(value).format('ll');
       }
 
       let doPush = true;
@@ -190,23 +267,33 @@ Object.keys(semanticProps).forEach(k => {
         }
       }
 
-      switch (v.dataType) {
-        case 'usDollar':
-        value = numeral(parseFloat(value)).format('($ 0.00 a)');
-        break;
-
-        case 'http://www.w3.org/2001/XMLSchema#nonNegativeInteger':
-        value = numeral(parseFloat(value)).format('0,0');
-        break;
-
-        case 'float':
-        case 'http://www.w3.org/2001/XMLSchema#double':
-        value = numeral(parseFloat(value)).format('0,0.0');
-        break;
-      }
-
       if (doPush) {
-        semanticPropsArray.push([name, value, doLink]);
+        const unitData = NAME_TO_UNITS[name] || {};
+        const unit = unitData.unit || '';
+        const factor = unitData.factor || 1;
+        const floatFormat = (!!unitData.unit || !!unitData.factor) ? '0,0' :
+          '0,0.0';
+
+        switch (v.dataType) {
+          case 'usDollar':
+          value = _.escape(numeral(parseFloat(value)).format('($ 0.00 a)'));
+          break;
+
+          case 'http://www.w3.org/2001/XMLSchema#nonNegativeInteger':
+          value = _.escape(numeral(parseFloat(value * factor)).format('0,0')) + unit;
+          break;
+
+          case 'float':
+          case 'http://www.w3.org/2001/XMLSchema#double':
+          value = _.escape(numeral(parseFloat(value * factor)).format(floatFormat)) + unit;
+          break;
+
+          default:
+          value =  _.escape(value) + unit;
+          break;
+        }
+
+        semanticPropsArray.push([label, value, doLink]);
       }
     }
   } catch (e) {
@@ -242,7 +329,7 @@ const leaderTitle = semanticProps['org.dbpedia.ontology.leaderTitle'];
 
 if (leaderName && leaderName.value && leaderTitle && leaderTitle.value) {
   semanticPropsArray.push([leaderTitle.value,
-    humanizeUriValue(leaderName), true]);
+    _.escape(humanizeUriValue(leaderName)), true]);
 }
 
 semanticPropsArray = _(semanticPropsArray).sortBy(t => {
@@ -257,6 +344,12 @@ semanticPropsArray = _(semanticPropsArray).sortBy(t => {
   // Move Associated properties to the end
   if (name.indexOf('ssociat') > 0) {
     return 'zzzz' +  name;
+  }
+
+  // Ensure max value is after mean and min
+  const maxIndex = name.indexOf('(max)');
+  if (maxIndex > 0) {
+    return name.substr(0, maxIndex) + '(zzzz';
   }
 
   return name;
@@ -283,7 +376,7 @@ _(dateRanges).chain().pairs().sortBy(t => t[0]).each(t => {
     v += ' ~ present';
   }
 
-  semanticPropsArray.push([_.str.capitalize(t[0]), v, false]);
+  semanticPropsArray.push([_.str.capitalize(t[0]), _.escape(v), false]);
 });
 %>
 <!doctype html>
@@ -413,7 +506,7 @@ _(dateRanges).chain().pairs().sortBy(t => t[0]).each(t => {
                 <% if (t[2]) { %>
                   <a href="https://solveforall.com/answers.do?q=<%= encodeURIComponent(t[1]) %>">
                 <% } %>
-                  <%= t[1] %>
+                  <%- t[1] %>
                 <% if (t[2]) { %>
                   </a>
                 <% } %>
