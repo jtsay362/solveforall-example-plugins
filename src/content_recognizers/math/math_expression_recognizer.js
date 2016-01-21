@@ -11,11 +11,11 @@ function desiredVariableNameBoost(variables) {
     case 1: {
       let name = variables[0];
       if (name === 'x') {
-        return 0.5;
+        return 1.0;
       } else if (name === 't') {
-        return 0.3;
+        return 0.8;
       } else if (name.length === 1) {
-        return 0.1;
+        return 0.25;
       }
     }
     break;
@@ -25,17 +25,17 @@ function desiredVariableNameBoost(variables) {
         switch (name) {
           case 'x':
           case 'y':
-          rv += 0.5;
+          rv += 0.25;
           break;
 
           case 't':
           case 'u':
-          rv += 0.3;
+          rv += 0.15;
           break;
 
           default:
           if (name.length === 1) {
-            rv += 0.1;
+            rv += 0.05;
           }
           break;
         }
@@ -75,8 +75,8 @@ function desiredVariableNameBoost(variables) {
 function variablesInExpression(expr) {
   const obj = {};
 
-  expr.traverse(function (node) {
-    let name =  node.name;
+  expr.traverse(node => {
+    const name =  node.name;
     if ((node.type === 'SymbolNode') && (math[name] === undefined)) {
       let isVariable = true;
       try {
@@ -125,17 +125,17 @@ function recognize(q, context) {
   //print('variables in expression ' + expression + ' are: ' + variables.join(', '));
 
   //print('code = ' + code);
-  let recognitionLevel = 0.5;
+  let recognitionLevel = 0.0;
 
   if (command) {
     recognitionLevel = 1.0;
   }
 
-  let result = {
+  const result = {
     matchedText: q,
-    command: command,
-    assignedTo: assignedTo,
-    expression: expression
+    command,
+    assignedTo,
+    expression
   };
 
   if (variables.length === 0) {
