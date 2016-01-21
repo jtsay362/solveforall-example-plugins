@@ -16,9 +16,10 @@ function mapUrl(business) {
     addQuery('maptype', 'map').addQuery('vs', 'embed').toString();
 }
 
-function makeResponseHandler(q, recognitionLevel) {
+function makeResponseHandler(boundData) {
   return function (responseText, httpResponse) {
-    console.log('got response text = "' + responseText + '"');
+    console.log(`boundData = ${JSON.stringify(boundData)}`);
+    console.log(`got response text = '${responseText}'`);
 
     const response = JSON.parse(responseText);
     const businesses = response.businesses;
@@ -27,6 +28,12 @@ function makeResponseHandler(q, recognitionLevel) {
       console.log('No businesses found');
       return [];
     }
+
+    const {
+      q,
+      recognitionLevel,
+      location
+    } = boundData;
 
     const DISCARDED_PHONE_PREFIX_REGEX = /^\s*\+?1\-?\s*/;
     const contentTemplate = `
@@ -216,12 +223,18 @@ function makeResponseHandler(q, recognitionLevel) {
       mapUrl
     };
 
+    let uri = 'http://www.yelp.com/search?find_desc=' + encodeURIComponent(q);
+
+    if (location) {
+      uri += '&find_loc=' + encodeURIComponent(location);
+    }
+
     return [{
       content: ejs.render(contentTemplate, model),
       contentType: 'text/html',
       serverSideSanitized: true,
       label: 'Yelp',
-      uri: 'http://www.yelp.com/search?find_desc=' + encodeURIComponent(q),
+      uri,
       iconUrl: 'http://www.yelp.com/favicon.ico',
       relevance: recognitionLevel - 0.1
     }];
@@ -324,12 +337,14 @@ function generateResults(recognitionResults, q, context) {
     throw 'No Yelp settings found!';
   }
 
-  let consumerKey = yelpSettings.consumerKey;
-  let consumerSecret = yelpSettings.consumerSecret;
-  let tokenKey = yelpSettings.token;
-  let tokenSecret = yelpSettings.tokenSecret;
+  const {
+    consumerKey,
+    consumerSecret,
+    token,
+    tokenSecret
+  } = yelpSettings;
 
-  if (!(consumerKey && consumerSecret && tokenKey && tokenSecret)) {
+  if (!(consumerKey && consumerSecret && token && tokenSecret)) {
     throw 'Missing secret!';
   }
 
@@ -355,8 +370,8 @@ function generateResults(recognitionResults, q, context) {
     signature_method: 'HMAC-SHA1'
   });
 
-  const token = {
-    public: tokenKey,
+  const tokenObj = {
+    public: token,
     secret: tokenSecret
   };
 
@@ -376,18 +391,24 @@ function generateResults(recognitionResults, q, context) {
   const url = uri.toString();
 
   const requestData = {
-    url: url,
+    url,
     method: 'GET',
     data: {}
   };
 
   const request = hostAdapter.makeWebRequest(url, {
     accept: 'application/json',
-    data: oauth.authorize(requestData, token)
+    data: oauth.authorize(requestData, tokenObj)
   });
 
-  request.send('makeResponseHandler(' + JSON.stringify(processedQuery) + ',' +
-    JSON.stringify(recognitionLevel) + ')', 'errorHandler');
+  const boundData = {
+    q,
+    recognitionLevel,
+    location
+  };
+
+  request.send('makeResponseHandler(' + JSON.stringify(boundData) + ')',
+    'errorHandler');
 
   return HostAdapter.SUSPEND;
 }
