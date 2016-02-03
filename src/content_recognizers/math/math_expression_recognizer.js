@@ -149,7 +149,7 @@ function recognize(q, context) {
       unit = unitJson.unit;
     }
 
-    result.recognitionLevel = recognitionLevel;
+    result.recognitionLevel = 0.5;
     result.doubleValue = y;
     result.unit = unit;
 
