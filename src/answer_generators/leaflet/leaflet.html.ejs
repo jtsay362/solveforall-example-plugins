@@ -3,6 +3,8 @@ let address = null;
 let latitude = null;
 let longitude = null;
 let label = null;
+const settings = context.settings;
+let zoom = (settings.zoomLevel || 15);
 
 try {
   let usAddressResults = recognitionResults['com.solveforall.recognition.location.UsAddress'];
@@ -63,10 +65,15 @@ try {
 }
 
 if (!address && !latitude) {
-  address = q;
+  if (q) {
+    address = q;
+  } else {
+    console.log('Falling back to equator since query is empty');
+    latitude = 0;
+    longitude = 0;
+    zoom = '1';
+  }
 }
-
-const settings = context.settings;
 %>
 
 <!DOCTYPE html>
@@ -100,11 +107,11 @@ const settings = context.settings;
     <div id="data"
     <% if (address) { %>
       data-address="<%= address %>"
-    <% } else if (latitude) { %>
+    <% } else if (latitude || (latitude === 0)) { %>
       data-label="<%= label %>"
       data-latitude="<%= latitude %>" data-longitude="<%= longitude %>"
     <% } %>
-      data-zoom="<%= (settings.zoomLevel || 15) %>"
+      data-zoom="<%= zoom %>"
       data-tile-provider="<%= (settings.tileProvider || 'MapQuest OSM') %>">
     </div>
 
