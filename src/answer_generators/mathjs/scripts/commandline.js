@@ -332,13 +332,17 @@ function CommandLineEditor (params) {
     dom.input = document.createElement('input');
     dom.input.className = 'input';
     dom.input.title = 'Enter an expression';
+    dom.input.setAttribute('autocomplete', 'off');
+    dom.input.setAttribute('autocapitalize', 'off');
+    dom.input.setAttribute('autocorrect', 'off');
+    dom.input.setAttribute('spellcheck', 'false');
     dom.input.onkeydown = onKeyDown;
     dom.inputLeft.appendChild(dom.input);
 
     // create an eval button
     dom.btnEval = document.createElement('button');
     dom.btnEval.appendChild(document.createTextNode('Evaluate'));
-    dom.btnEval.className = 'eval';
+    dom.btnEval.className = 'btn btn-default eval';
     dom.btnEval.title = 'Evaluate the expression (Enter)';
     dom.btnEval.onclick = evalInput;
     dom.inputRight.appendChild(dom.btnEval);
