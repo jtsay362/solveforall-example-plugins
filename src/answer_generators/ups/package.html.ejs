@@ -1,17 +1,17 @@
-<% 
-  var results = recognitionResults['com.solveforall.recognition.business.UPSTrackingNumber'];
+<%
+  const results = recognitionResults['com.solveforall.recognition.business.UPSTrackingNumber'];
   if (!results || (results.length === 0)) {
     throw 'No tracking number found!';
-  }      
-  var info = results[0];
-  var uri = 'http://wwwapps.ups.com/WebTracking/processRequest?HTMLVersion=5.0&Requester=NES&AgreeToTermsAndConditions=yes&loc=en_US&tracknum=' + encodeURIComponent(info.matchedText);
+  }
+  const info = results[0];
+  const uri = 'http://wwwapps.ups.com/WebTracking/processRequest?HTMLVersion=5.0&Requester=NES&AgreeToTermsAndConditions=yes&loc=en_US&tracknum=' + encodeURIComponent(info.matchedText);
 %>
 <!DOCTYPE html>
 <html>
   <head>
     <title>UPS Package Tracker</title>
-    <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>">     
-  </head>  
+    <meta name="com.solveforall.meta.answer.uri" content="<%= uri %>">
+  </head>
   <body>
     <h3><%= info.matchedText %></h3>
     <table class="table table-striped table-hover table-condensed">
@@ -19,25 +19,25 @@
       <tbody>
         <tr>
           <td>Tracking Number Validity</td>
-          <td><%= info.valid ? 'Valid' : 'Invalid' %></td>    
+          <td><%= info.valid ? 'Valid' : 'Invalid' %></td>
         </tr>
         <tr>
           <td>Account Number</td>
-          <td><%= info.accountNumber %></td>    
+          <td><%= info.accountNumber %></td>
         </tr>
         <tr>
           <td>Invoice Number</td>
-          <td><%= info.invoiceNumber %></td>    
+          <td><%= info.invoiceNumber %></td>
         </tr>
         <tr>          
           <td>Package Number</td>
-          <td><%= info.packageNumber %></td>    
+          <td><%= info.packageNumber %></td>
         </tr>
-        <tr>          
+        <tr>
           <td>Service Type</td>
-          <td><%= info.serviceType %></td>    
-        </tr>          
-      </tbody>        
+          <td><%= info.serviceType %></td>
+        </tr>
+      </tbody>
     </table>
     <p>
       <small>Track package at <a href="<%= uri %>">UPS.com</a></small>

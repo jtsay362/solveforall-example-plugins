@@ -2,18 +2,18 @@
 /** Based on http://www.codeproject.com/KB/recipes/Generate_UPS_Check_Digit.aspx
  */
 function calculate_check_digit(trk) {
-  var runningtotal = 0;
+  let runningtotal = 0;
 
-  for (var i = 0; i < trk.length; i++) {
-    var c = trk.charCodeAt(i) - 48;
+  for (let i = 0; i < trk.length; i++) {
+    const c = trk.charCodeAt(i) - 48;
 
-    if ((i & 1) === 1)  {        
+    if ((i & 1) === 1)  {
       if ((c >= 0) && (c < 10)) {
-        runningtotal += 2 * c;            
-      } else  {                 
+        runningtotal += 2 * c;
+      } else  {
         runningtotal += ((c - 15) % 10) * 2;
       }
-    } else {        
+    } else {
        if ((c >= 0) && (c < 10)) {
          runningtotal += c;
        } else {
@@ -22,74 +22,69 @@ function calculate_check_digit(trk) {
     }
   }
 
-  var x = (runningtotal % 10);
-      
+  const x = (runningtotal % 10);
+
   if (x === 0)  {
    return '0';
   }
-  return '' + (10 - x);  
+  return '' + (10 - x);
 }
 
 function recognize(s, context) {
-  var startIndex = s.indexOf("1Z");
-  
+  const startIndex = s.indexOf("1Z");
+
   if (startIndex < 0) {
     return null;
   }
-  
+
   s = s.substring(startIndex);
-  
+
   if (s.length < 18) {
     return null;
   }
-  
+
   s = s.substring(0, 18);
-  
-  var recognitionLevel = 0.0;
-  var extraInfo = { 
-    valid : false 
-  };
-   
-  function makeReturnValue() {     
-    var result = extraInfo;
-    result.matchedText = s;
-    result.recognitionLevel = recognitionLevel;
-    
+
+  let recognitionLevel = 0.25;
+  let serviceType, accountNumber, invoiceNumber, packageNumber, validCheckDigit;
+  let valid = false;
+
+  function makeReturnValue() {
     return {
-      'com.solveforall.recognition.business.UPSTrackingNumber' : [result]
-    };    
+      'com.solveforall.recognition.business.UPSTrackingNumber' : [{
+        matchedText: s,
+        recognitionLevel,
+        serviceType, accountNumber, invoiceNumber, packageNumber, validCheckDigit,
+        valid
+      }]
+    };
   }
-    
-  extraInfo.accountNumber = s.substring(2, 8);
 
-  recognitionLevel = 0.25;
-    
+  accountNumber = s.substring(2, 8);
+  invoiceNumber = s.substring(10, 15);
+  packageNumber = s.substring(15, 17);
 
-  extraInfo.invoiceNumber = s.substring(10, 15);
-  
-  extraInfo.packageNumber = s.substring(15, 17);  
-    
-  var check_digit = calculate_check_digit(s.substring(2, 17));
-  extraInfo.validCheckDigit = check_digit;
+  const check_digit = calculate_check_digit(s.substring(2, 17));
+  validCheckDigit = check_digit;
 
-  var code = s.substring(8, 10);  
+  let code = s.substring(8, 10);
   if (code == "01") {
-    extraInfo.serviceType = 'Next Day Air';        
+    serviceType = 'Next Day Air';
   } else if (code == '02') {
-    extraInfo.serviceType = 'Second Day Air';        
+    serviceType = 'Second Day Air';
   } else if (code == '03') {
-    extraInfo.serviceType = 'Ground';    
+    serviceType = 'Ground';
   } else {
-    extraInfo.serviceType = '(Invalid)';
+    serviceType = '(Invalid)';
     return makeReturnValue();
   }
-  
+
   if (check_digit !==  s.charAt(17)) {
     return makeReturnValue();
   }
-  
+
   recognitionLevel = 1.0;
-  extraInfo.valid = true;
-  
+  valid = true;
+
   return makeReturnValue();
 }
