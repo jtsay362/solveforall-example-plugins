@@ -174,7 +174,7 @@ function generateResults(recognitionResults, q, context) {
 
   const articles = recognitionResults['com.solveforall.recognition.WikipediaArticle'];
 
-  if (articles.length === 0) {
+  if (!articles || (articles.length === 0)) {
     console.info('No Wikipedia article references found');
     return [];
   }
