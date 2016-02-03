@@ -72,6 +72,9 @@ var ANSWER_GENERATOR_MODULES = {
   },
   leaflet: {
     scripts: ['leaflet-providers', 'leaflet']
+  },
+  mathjs: {
+    scripts: ['math', 'commandline']
   }
 };
 
@@ -126,6 +129,5 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('build', ['sass', 'content-scripts']);
-
 
 gulp.task('default', ['plugin-scripts', 'compile-ejs']);
