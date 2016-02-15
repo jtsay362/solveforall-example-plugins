@@ -1,0 +1,113 @@
+<%
+const allResults = recognitionResults['com.solveforall.recognition.business.OpenPaymentsCompany'];
+
+if (!allResults) {
+  throw 'No results found';
+}
+
+const results = _(allResults).filter(rr => {
+  return (rr.recognitionLevel >= 0.1);
+});
+
+const numeral = require('numeral');
+
+function makeLocation(rr) {
+  let s = '';
+  if (rr.state) {
+    s = rr.state + (rr.country ? ', ' : '')
+  }
+  if (rr.country) {
+    s += rr.country;
+  }
+  return s;
+}
+
+function makeTotalPayments(rr) {
+  if (rr.totalPayments) {
+    return numeral(rr.totalPayments).format('($ 0,0)');
+  } else {
+    return 'None';
+  }
+}
+
+function makeNumPayments(rr) {
+  if (rr.numPayments) {
+    return numeral(rr.numPayments).format('0,0');
+  } else {
+    return 'None';
+  }
+}
+
+function makeUrl(rr) {
+  return 'https://projects.propublica.org/docdollars/company/' +
+    rr.fullName.toLowerCase().replace(/\W+/g, '-').replace(/\-+$/, '');
+}
+
+%>
+<html>
+  <head>
+    <% if (results.length === 1) { %>
+      <meta name="com.solveforall.meta.answer.uri"
+       content="<%= makeUrl(results[0]) %>">
+    <% } %>
+    <style>
+      .number_td {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <% if (results.length === 1) {
+         const singleResult = results[0];  %>
+      <h3><%= singleResult.fullName %></h3>
+      <p>
+        <%= makeLocation(singleResult) %>
+      </p>
+      <h4>Disclosed payments to doctors made in 2014:</h4>
+      <p>
+        Total amount paid:
+        <b><%= makeTotalPayments(singleResult) %></b>
+      </p>
+      <p>
+        Number of payments:
+        <b><%= makeNumPayments(singleResult) %></b>
+      </p>
+   <% } else { %>
+     <h3><%= results.length %> Matching Pharma Companies</h3>
+
+     <p>
+       Disclosed payments to doctors made in 2014:
+     </p>
+
+     <table class="table table-striped table-condensed">
+       <thead>
+         <th>Name</th>
+         <th class="number_td">
+           Total Payments
+         </th>
+         <th class="number_td">
+           # of Payments
+         </th>
+         <th>
+           Based in
+         </th>
+       </thead>
+       <tbody>
+        <% for (let i = 0; i < results.length; i++) {
+             const rr = results[i]; %>
+          <tr>
+            <td><a href="<%= makeUrl(rr) %>"><%= rr.fullName %></a></td>
+            <td class="number_td"><%= makeTotalPayments(rr) %></td>
+            <td class="number_td"><%= makeNumPayments(rr) %></td>
+            <td><%= makeLocation(rr) %></td>
+          </tr>
+        <% } %>
+       </tbody>
+     </table>
+   <% } %>
+   <small>
+     Data from <a href="https://www.cms.gov/OpenPayments/index.html">Open Payments</a>.
+     To explore more, see <a href="https://projects.propublica.org/docdollars/">Dollars for Docs</a>.
+   </small>
+  </body>
+</html>
