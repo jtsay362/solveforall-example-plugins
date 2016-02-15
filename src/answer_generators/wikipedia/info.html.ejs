@@ -80,6 +80,14 @@ const mapZoomLevel = 15;
 const semanticProps = result.semanticProps || {};
 let semanticPropsArray = [];
 let description;
+let homePageUri = result.homePageUri;
+
+if (!homePageUri) {
+  const p = semanticProps['com.xmlns.foaf.0.1.homepage'];
+  if (p) {
+    homePageUri = p.value;
+  }
+}
 
 const RANGE_SUFFIXES = ['YearsStartDate', 'YearsEndDate', 'YearsStartYear',
   'YearsEndYear'];
@@ -459,8 +467,8 @@ _(dateRanges).chain().pairs().sortBy(t => t[0]).each(t => {
           <a href="https://wikipedia.org/wiki/<%= result.article %>"
            target="_top">Full article</a>
 
-          <% if (result.homePageUri) { %>
-            &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= result.homePageUri %>" target="_top">Website</a>
+          <% if (homePageUri) { %>
+            &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<%= homePageUri %>" target="_top">Website</a>
           <% } %>
 
           <% if (result.geoLocation) {
