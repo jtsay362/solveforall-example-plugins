@@ -1,7 +1,7 @@
 /*jslint continue: true, devel: true, evil: true, indent: 2, nomen: true, plusplus: true, regexp: true, rhino: true, sloppy: true, sub: true, unparam: true, vars: true, white: true */
 /*global loadFile, test, testCases, assert, eq, _, recognize */
 
-eval(loadFile('src/content_recognizers/math/math_expression_recognizer.js'));
+eval(loadFile('build/plugin_scripts/content_recognizers/math/math_expression_recognizer.js'));
 
 var context = { settings: {} };
 testCases(test,
