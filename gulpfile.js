@@ -74,7 +74,7 @@ var ANSWER_GENERATOR_MODULES = {
     scripts: ['leaflet-providers', 'leaflet']
   },
   mathjs: {
-    scripts: ['math', 'commandline']
+    scripts: ['commandline']
   }
 };
 
