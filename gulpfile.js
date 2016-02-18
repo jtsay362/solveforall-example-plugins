@@ -11,6 +11,7 @@ var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var sass = require('gulp-ruby-sass');
 var del = require('del');
+var livereload = require('gulp-livereload');
 var SOURCE_DIR = 'src';
 var OUTPUT_DIR = 'build';
 
@@ -85,10 +86,35 @@ gulp.task('content-scripts', function () {
       _.map(descriptor.scripts, function (f) {
          return SOURCE_DIR + '/answer_generators/' + mod + '/scripts/' + f + '.js';
       }))
+    .pipe(babel({
+      presets: ['es2015']
+    }))
     .pipe(concat(mod + '.js'))
     .pipe(uglify())
     .pipe(gulp.dest(OUTPUT_DIR + '/answer_generator_content/' + mod + '/scripts/'));
   });
+});
+
+gulp.task('debug-process-content-scripts', function () {
+  return Object.keys(ANSWER_GENERATOR_MODULES).forEach(function (mod) {
+    var descriptor = ANSWER_GENERATOR_MODULES[mod];
+    return gulp.src(
+      _.map(descriptor.scripts, function (f) {
+         return SOURCE_DIR + '/answer_generators/' + mod + '/scripts/' + f + '.js';
+      }))
+    .pipe(babel({
+      presets: ['es2015']
+    }))
+    .pipe(concat(mod + '.js'))
+    .pipe(gulp.dest(OUTPUT_DIR + '/answer_generator_content/' + mod + '/debug_scripts/'))
+    .pipe(livereload());
+  });
+});
+
+gulp.task('watch-content-scripts', function () {
+  livereload.listen();
+  gulp.watch(SOURCE_DIR + '/answer_generators/**/scripts/*.js',
+    ['debug-process-content-scripts']);
 });
 
 gulp.task('sass', function () {
@@ -106,7 +132,9 @@ gulp.task('plugin-scripts', function () {
       base: SOURCE_DIR
     })
     .pipe(plumber())
-    .pipe(babel())
+    .pipe(babel({
+      presets: ['es2015']
+    }))
     .pipe(gulp.dest(OUTPUT_DIR + '/plugin_scripts/'));
 });
 
