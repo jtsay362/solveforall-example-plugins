@@ -380,9 +380,9 @@ function CommandLineEditor (params) {
   function load() {
     var expr = document.getElementById('data_to_transfer').getAttribute('data-expr');
     if (expr) {
-      eval(expr);
+      eval_expr(expr);
     } else {
-      eval('0');
+      eval_expr('0');
     }
   }
 
@@ -405,7 +405,7 @@ function CommandLineEditor (params) {
     // save(); // TODO: save expressions (first we need a method to restore the examples)
   }
 
-  function eval (expr) {
+  function eval_expr(expr) {
     expr = trim(expr);
 
     if (expr == 'clear') {
@@ -446,7 +446,7 @@ function CommandLineEditor (params) {
   }
 
   function evalInput() {
-    eval(dom.input.value);
+    eval_expr(dom.input.value);
   }
 
   create();
