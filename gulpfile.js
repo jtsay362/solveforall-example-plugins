@@ -115,6 +115,9 @@ gulp.task('watch-content-scripts', function () {
   livereload.listen();
   gulp.watch(SOURCE_DIR + '/answer_generators/**/scripts/*.js',
     ['debug-process-content-scripts']);
+
+  gulp.watch(SOURCE_DIR + '/answer_generators/**/*.scss',
+    ['sass']);
 });
 
 gulp.task('sass', function () {
