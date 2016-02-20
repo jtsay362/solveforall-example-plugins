@@ -11,6 +11,7 @@ const MARKET_VALUES = [DEFAULT_MARKET, 'es-ar', 'de-at', 'en-au', 'nl-be', 'pt-b
 
 const DEFAULT_WEB_MAX_RESULTS = 20;
 const DEFAULT_VIDEO_MAX_RESULTS = 20;
+const DEFAULT_IMAGE_MAX_RESULTS = 8;
 
 const FILTER_LABELS = ['No', 'Text only', 'Yes'];
 const FILTER_VALUES = ['Strict', 'Moderate', 'Off'];
@@ -25,6 +26,11 @@ const filter = settings.filter || 'Moderate';
 // News options
 const newsSettings = settings.news || {};
 const newsEnabled = (newsSettings.enabled !== false);
+
+// Image options
+const imageSettings = settings.image || {};
+const imageEnabled = (imageSettings.enabled !== false);
+const imageMaxResults = imageSettings.maxResults || DEFAULT_IMAGE_MAX_RESULTS;
 
 // Video options
 const videoSettings = settings.video || {};
@@ -120,6 +126,33 @@ const videoMaxResults = videoSettings.maxResults || DEFAULT_VIDEO_MAX_RESULTS;
               <% } %>
               >
             </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Image Search Options</legend>
+
+        <div class="form-group">
+          <label for="input_enable_image" class="col-xs-4 control-label">
+            Search Images?
+          </label>
+          <div class="col-xs-8">
+            <label class="checkbox-inline">
+              <input id="input_enable_image" type="checkbox"
+               name="image[enabled]:boolean" value="true"
+                <% if (imageEnabled) { %>
+                checked
+                <% } %>
+              >
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="input_image_max_results" class="col-xs-4 control-label">Max Results</label>
+          <div class="col-xs-6">
+            <input id="input_image_max_results" name="image[maxResults]:number" type="number"
+             value="<%= imageMaxResults %>" min="1" max="50" class="form-control">
           </div>
         </div>
       </fieldset>
