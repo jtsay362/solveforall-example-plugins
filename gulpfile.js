@@ -76,6 +76,9 @@ var ANSWER_GENERATOR_MODULES = {
   },
   mathjs: {
     scripts: ['commandline']
+  },
+  seatgeek: {
+    scripts: ['events']
   }
 };
 

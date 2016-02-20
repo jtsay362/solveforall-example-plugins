@@ -1,0 +1,43 @@
+<%
+  let performer = q;
+  let relevance = 0;
+  if (recognitionResult) {
+    const articleName = recognitionResult.wikipediaArticleName;
+    const article = _(recognitionResults['com.solveforall.recognition.WikipediaArticle']).find(a => {
+      return (a.article === articleName);
+    });
+
+    // Should be lower than the Wikipedia result itself
+    relevance = article.recognitionLevel - 0.01;
+    performer = article.title;
+  }
+%>
+<html>
+  <head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/spacelab/bootstrap.min.css"
+     rel="stylesheet">
+
+    <link href="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/seatgeek/events.css"
+     rel="stylesheet">
+
+    <meta name="com.solveforall.meta.answer.uri"
+     content="https://seatgeek.com/search?f=1&search=<%= encodeURIComponent(performer) %>" >
+    <meta name="com.solveforall.meta.answer.relevance"
+     content="<%= relevance %>" >
+  </head>
+  <body>
+    <div id="performer_info"></div>
+    <div id="events"></div>
+    <div id="debug"></div>
+    <div id="data_to_transfer" data-performer="<%= performer %>"></div>
+
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.3,underscorejs@1.8.3,bootstrap@3.3.6,momentjs@2.11.2">
+    </script>
+
+    <script src="https://cdn.rawgit.com/jtsay362/ejs-no-node/1e39638e5a87ee940e94a3648ab00ed5d643c3b6/dist/ejs-no-node.min.js">
+    </script>
+
+    <script src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/seatgeek/seatgeek.js">
+    </script>
+  </body>
+</html>
