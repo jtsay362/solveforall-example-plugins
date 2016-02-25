@@ -38,3 +38,7 @@ Pull requests are accepted for the following reasons:
 directory
 * Requested additions to the set of available CommonJS modules: modify or add code to the `test_harness/modules` directory, add a sample to `env_test` that shows it working. Note that these are preferred over built-ins.
 * Requested additions to the built-in Javascript environment: modify or add code to the `test_harness/builtins` directory, add a sample to `env_test` that shows it working.
+* 
+## Help
+
+I'd love to help you develop a plugin! Send a mail to help@solveforall.com and I'll try to set up a time in which I'll try to help you get started or answer any questions you have.
