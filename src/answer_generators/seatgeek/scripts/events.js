@@ -1,4 +1,5 @@
 const API_BASE_URL = 'https://api.seatgeek.com/2/';
+const SEEKGEEK_CLIENT_ID = 'NjUwMjE1M3wxNDgyNzA5MDQz';
 
 const PROVIDER_TO_ICON_URL = {
   lastfm : 'http://static-web.last.fm/static/images/favicon.702b239b6194.ico',
@@ -108,9 +109,22 @@ function showEvents(performer, data) {
   $('#events').html(contents);
 }
 
+function addAuthToUrl(originalUrl) {
+  let url = originalUrl;
+  if (url.indexOf('?') >= 0) {
+    url += '&';
+  } else {
+    url += '?';
+  }
+
+  url += 'client_id=';
+  url += encodeURIComponent(SEATGEEK_CLIENT_ID);
+  return url;
+}
+
 function fetchEventsForPerformer(performer) {
-  const eventEndpointUrl = API_BASE_URL + 'events?performers.id=' +
-    encodeURIComponent(performer.id);
+  const eventEndpointUrl = addAuthToUrl(API_BASE_URL + 'events?performers.id=' +
+    encodeURIComponent(performer.id));
 
   $.ajax({
     url: eventEndpointUrl,
@@ -124,8 +138,8 @@ function fetchEventsForPerformer(performer) {
 
 $(function() {
   const performerName = $('#data_to_transfer').attr('data-performer');
-  const performerUrl = API_BASE_URL + 'performers?q=' +
-    encodeURIComponent(performerName);
+  const performerUrl = addAuthToUrl(API_BASE_URL + 'performers?q=' +
+    encodeURIComponent(performerName));
 
   $.ajax({
     url: performerUrl,
