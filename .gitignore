@@ -1,4 +1,5 @@
 .idea/
 .sass-cache/
-build/
+build/compiled_templates
+build/plugin_scripts
 node_modules/
