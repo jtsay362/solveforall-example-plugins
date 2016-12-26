@@ -1,5 +1,5 @@
 const API_BASE_URL = 'https://api.seatgeek.com/2/';
-const SEEKGEEK_CLIENT_ID = 'NjUwMjE1M3wxNDgyNzA5MDQz';
+const SEATGEEK_CLIENT_ID = 'NjUwMjE1M3wxNDgyNzA5MDQz';
 
 const PROVIDER_TO_ICON_URL = {
   lastfm : 'http://static-web.last.fm/static/images/favicon.702b239b6194.ico',
