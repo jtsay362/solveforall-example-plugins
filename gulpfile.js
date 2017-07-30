@@ -68,6 +68,9 @@ var ANSWER_GENERATOR_MODULES = {
   calculator: {
     scripts: ['ideadeviate_calculator']
   },
+  calendar: {
+    scripts: ['calendar']
+  },
   graphr: {
     scripts: ['util', 'calc', 'parser', 'jsgcalc', 'jsgui']
   },
