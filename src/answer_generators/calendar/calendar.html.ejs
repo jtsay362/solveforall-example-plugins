@@ -7,17 +7,17 @@
     var start = dateRange.start;
 
     if (start) {
-      date = new Date(start.year || parseInt(date.getFullYear()), 
-        (start.month || (date.getMonth() + 1)) - 1, start.dayOfMonth || date.getDate());      
-    }    
-  }  
+      date = new Date(start.year || parseInt(date.getFullYear()),
+        (start.month || (date.getMonth() + 1)) - 1, start.dayOfMonth || date.getDate());
+    }
+  }
 %>
 <!DOCTYPE html>
 <html lang="en">
-  <head>    
-    <link href="https://cdn.jsdelivr.net/bootswatch/3.3.2/spacelab/bootstrap.min.css"
+  <head>
+    <link href="https://cdn.jsdelivr.net/bootswatch/3.3.6/spacelab/bootstrap.min.css"
      rel="stylesheet" >
-    <link href="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/bic_calendar/css/bic_calendar.css"
+    <link href="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/aad01bd4/src/answer_generators/calendar/styles/bic_calendar.css"
      rel="stylesheet" >
   </head>
   <body>
@@ -27,12 +27,12 @@
           <div id="calendar"></div>
         </div>
       </div>
-    </div>            
-    <div id="data" 
+    </div>
+    <div id="data"
      data-year="<%= date.getFullYear() %>" data-month="<%= date.getMonth() + 1 %>" data-day="<%= date.getDate() %>">
-    </div>    
-    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.2,bootstrap@3.3.2"></script>
-    <script src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/bic_calendar/js/bic_calendar.min.js"></script>    
-    <script src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/bic_calendar/js/calendar.js"></script>    
+    </div>
+    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.2,bootstrap@3.3.6"></script>
+    <script src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/aad01bd4/src/answer_generators/calendar/scripts/bic_calendar.min.js"></script>
+    <script src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/aad01bd4/build/answer_generator_content/calendar/scripts/calendar.js"></script>
   </body>
-</html>  
+</html>
