@@ -1,12 +1,12 @@
 <%
-  var equations;
-  var rr = recognitionResults['com.solveforall.recognition.mathematics.SingleVariableFunction'];
+  let equations;
+  const rr = recognitionResults['com.solveforall.recognition.mathematics.SingleVariableFunction'];
   if (rr && (rr.length > 0)) {
-    equations = _(rr).pluck('expression');      
+    equations = _(rr).pluck('expression');
   } else {
     equations = [q];
-  }    
-%>  
+  }
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,13 +15,14 @@
 
   <title>Graphr - The JavaScript Graphing Calculator</title>
 
-  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.2/spacelab/bootstrap.min.css"
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css"
    rel="stylesheet" />
 
   <link href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
    rel="stylesheet" />
 
-  <link rel="stylesheet" type="text/css" href="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/styles/jsgcalc.css" />
+  <link rel="stylesheet" type="text/css"
+   href="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/453ace8d/build/answer_generator_content/graphr/styles/jsgcalc.css" />
 </head>
 
 <body>
@@ -46,7 +47,7 @@
             </tr>
             <tr>
                 <td>x-min:<br /><input id="toolbox_zoombox_xmin" class="jsgcalc_xmin number" type="text" size="4" /></td>
-                <td align="center"><img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/graph.png" style="width: 70px;"/></td>
+                <td align="center"><img src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4b2dc2e7/src/answer_generators/graphr/images/graph.png" style="width: 70px;"/></td>
                 <td>x-max:<br /><input id="toolbox_zoombox_xmax" class="jsgcalc_xmax number" type="text" size="4" /></td>
             </tr>
             <tr>
@@ -81,20 +82,20 @@
   <div id="toolbar">
     <div id="tool_select">
       <button id="tool_select_trace" class="toolbar_option">
-      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/trace.png" alt="Trace" title="Trace"/></button>
+      <img src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4b2dc2e7/src/answer_generators/graphr/images/trace.png" alt="Trace" title="Trace"/></button>
       <button id="tool_select_vertex" class="toolbar_option">
-      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/minmax.png" alt="Local Minima/Maxima" title="Local Minima/Maxima"/></button>
+      <img src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4b2dc2e7/src/answer_generators/graphr/images/minmax.png" alt="Local Minima/Maxima" title="Local Minima/Maxima"/></button>
       <button id="tool_select_root" class="toolbar_option">
-      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/root.png" alt="Root" title="Root"/></button>
+      <img src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4b2dc2e7/src/answer_generators/graphr/images/root.png" alt="Root" title="Root"/></button>
       <button id="tool_select_intersect" class="toolbar_option">
-      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/intersect.png" alt="Intersect" title="Intersect"/></button>
+      <img src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4b2dc2e7/src/answer_generators/graphr/images/intersect.png" alt="Intersect" title="Intersect"/></button>
       <button id="tool_select_derivative" class="toolbar_option">
-      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/derivative.png" alt="Derivative" title="Derivative"/></button>
+      <img src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4b2dc2e7/src/answer_generators/graphr/images/derivative.png" alt="Derivative" title="Derivative"/></button>
       <button id="tool_select_zoombox" class="toolbar_option">
-      <img src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/images/zoombox.png" alt="ZoomBox" title="ZoomBox"/></button>
+      <img src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4b2dc2e7/src/answer_generators/graphr/images/zoombox.png" alt="ZoomBox" title="ZoomBox"/></button>
     </div>
   </div>
-  
+
   <div id="graph_sidebar">
     <div id="graph_inputs"></div>
 
@@ -158,9 +159,9 @@
 
 </div>
 
-    <script src="https://cdn.jsdelivr.net/g/jquery@1.11.2,lodash@2.4.1(lodash.underscore.min.js),bootstrap@3.3.2"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/1.3.0/math.min.js"></script>
-    <script type="text/javascript" src="https://dl.dropboxusercontent.com/u/34577952/solveforall/plugins/graphr/scripts/graphr.js"></script>
+  <script src="https://cdn.jsdelivr.net/g/jquery@1.11.3,lodash@2.4.2(lodash.underscore.min.js),bootstrap@3.3.7"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/1.3.0/math.min.js"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/jtsay362/solveforall-example-plugins/4da27c82/build/answer_generator_content/graphr/scripts/graphr.js"></script>
 </body>
 
 </html>
