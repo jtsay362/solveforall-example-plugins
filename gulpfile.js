@@ -93,7 +93,8 @@ gulp.task('content-scripts', function () {
          return SOURCE_DIR + '/answer_generators/' + mod + '/scripts/' + f + '.js';
       }))
     .pipe(babel({
-      presets: ['es2015']
+      presets: ['es2015'],
+      plugins: ["transform-remove-strict-mode"]
     }))
     .pipe(concat(mod + '.js'))
     .pipe(uglify())
@@ -109,7 +110,8 @@ gulp.task('debug-process-content-scripts', function () {
          return SOURCE_DIR + '/answer_generators/' + mod + '/scripts/' + f + '.js';
       }))
     .pipe(babel({
-      presets: ['es2015']
+      presets: ['es2015'],
+      plugins: ["transform-remove-strict-mode"]
     }))
     .pipe(concat(mod + '.js'))
     .pipe(gulp.dest(OUTPUT_DIR + '/answer_generator_content/' + mod + '/debug_scripts/'))
@@ -142,7 +144,8 @@ gulp.task('plugin-scripts', function () {
     })
     .pipe(plumber())
     .pipe(babel({
-      presets: ['es2015']
+      presets: ['es2015'],
+      plugins: ["transform-remove-strict-mode"]
     }))
     .pipe(gulp.dest(OUTPUT_DIR + '/plugin_scripts/'));
 });
@@ -153,10 +156,14 @@ gulp.task('compile-ejs', function () {
     .pipe(gulpEjs({
       compileDebug: true,
       client: true,
-      assignToVariable: false
+      assignToVariable: false,
+      _with: false
     }))
     .pipe(babel({
-      blacklist: ['strict']  // Since 'with' keyword is used in templates
+       presets: [
+         ["es2015", { "modules": false }]
+       ],
+       plugins: ["transform-remove-strict-mode"]
     }))
     .pipe(gulp.dest(OUTPUT_DIR + '/compiled_templates/'));
 });
